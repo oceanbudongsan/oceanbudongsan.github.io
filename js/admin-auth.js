@@ -19,7 +19,7 @@
   'use strict';
 
   var USER_ID   = 'admin';
-  var PASS_HASH = 'b6ec292847f07d73c2ef22c0c6b9f269e7d74bbf0b20b921dfef62f9144ce921'; // 기본 비밀번호: ocean1234
+  var PASS_HASH = '93ad2d6cdafbe929d0423af6c12f1aece4d3d9862357b1aa9eee109d5a893237'; 
   var KEY       = 'oc-admin-auth';
 
   /* 비밀번호 해시 만들기 (콘솔에서 사용) */
