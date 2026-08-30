@@ -68,6 +68,7 @@
     if (specs) {
       var rows = [];
       if (p.price) rows.push(['가격', p.price]);
+      if (p.unitPublic) rows.push(['동·층', p.unitPublic]);
       if (p.specs) rows.push(['상세 제원', p.specs]);
       if (p.category) rows.push(['구분', p.category]);
       if (p.type) rows.push(['거래 종류', p.type]);
@@ -81,6 +82,20 @@
                    '<span class="font-label-md text-label-md text-on-surface mt-1">' + r[1] + '</span>' +
                  '</div>';
         }).join('');
+      }
+    }
+
+    /* 매물 특징 - 설명 위에 태그로 보여줍니다 */
+    var feat = $('#oc-d-features');
+    if (feat) {
+      var tags = String(p.features || '').split(/[,·]/).map(function (t) { return t.trim(); }).filter(Boolean);
+      if (tags.length) {
+        feat.innerHTML = tags.map(function (t) {
+          return '<span class="text-[13px] font-semibold text-primary bg-sub-blue-bg px-3 py-1.5 rounded-full">' + t + '</span>';
+        }).join('');
+        feat.parentElement.style.display = '';
+      } else {
+        feat.parentElement.style.display = 'none';
       }
     }
 

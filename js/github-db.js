@@ -7,6 +7,20 @@
   'use strict';
 
   const STORAGE_KEY_CONFIG = 'ocean_db_github_config';
+
+  /* 동/호수를 화면용으로 바꿉니다 (101동 1502호 → 101동 15층)
+     전체 호수는 따로 저장하고, 손님에게는 층까지만 보여줍니다. */
+  function maskUnit(text) {
+    var t = String(text || '').trim();
+    if (!t) return '';
+    var m = t.match(/^(.*?)(\d{3,4})\s*호?\s*$/);
+    if (!m) return t;
+    var head = (m[1] || '').trim();
+    var floor = Math.floor(parseInt(m[2], 10) / 100);
+    if (!floor) return t;
+    return (head ? head + ' ' : '') + floor + '층';
+  }
+
   const STORAGE_KEY_POSTS = 'ocean_db_posts_cache';
   const STORAGE_KEY_PROPS = 'ocean_db_props_cache';
 
@@ -233,6 +247,9 @@
         id: isEdit ? propData.id : 'prop-' + Date.now(),
         name: propData.name || '신규 매물',
         category: propData.category || '아파트',
+        features: propData.features || '',
+        unit: propData.unit || '',
+        unitPublic: maskUnit(propData.unit),
         type: propData.type || '매매',
         price: propData.price || '가격 문의',
         specs: propData.specs || '',

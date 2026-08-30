@@ -42,9 +42,14 @@
         '</div>' +
         '<h2 class="font-headline-md text-headline-md mb-2">' + esc(p.name) + '</h2>' +
         (p.specs ? '<p class="text-body-text mb-1">' + esc(p.specs) + '</p>' : '') +
+        (p.unitPublic ? '<p class="text-body-text text-sm mb-1">' + esc(p.unitPublic) + '</p>' : '') +
         '<div class="mb-stack-md">' +
           '<span class="font-headline-md text-headline-md text-primary font-bold">' + esc(p.price) + '</span>' +
         '</div>' +
+        (p.features ? '<div class="flex flex-wrap gap-1 mb-stack-sm">' +
+           String(p.features).split(/[,·]/).map(function (t) { return t.trim(); }).filter(Boolean)
+             .map(function (t) { return '<span class="text-[11px] font-semibold text-primary bg-sub-blue-bg px-2 py-0.5 rounded-full">' + esc(t) + '</span>'; }).join('') +
+           '</div>' : '') +
         (p.description ? '<p class="text-body-text text-sm mb-stack-lg flex-grow">' + esc(p.description) + '</p>' : '<div class="flex-grow"></div>') +
         '<div class="flex gap-3">' +
           '<a class="flex-1 flex items-center justify-center bg-primary text-on-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors active:scale-95 shadow-sm" href="property-detail.html?id=' + encodeURIComponent(p.id) + '">자세히 보기</a>' +
