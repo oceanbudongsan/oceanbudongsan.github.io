@@ -125,6 +125,8 @@
 <input id="oc-search" class="w-full h-[56px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-container text-body-md transition-shadow shadow-sm" placeholder="단지명, 지역명으로 검색해 보세요" type="text">
 </div>
 </div>
+<!-- 매물 종류 버튼 (종류가 2가지 이상일 때만 나옵니다) -->
+<div id="oc-cats" class="flex overflow-x-auto gap-2 pb-4 mb-stack-md hide-scrollbar"></div>
 <!-- Property List -->
 <div id="oc-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card">
 <div class="col-span-full py-16 text-center text-on-surface-variant font-body-md">매물을 불러오는 중입니다...</div>
@@ -166,46 +168,5 @@
 
 
 <script src="js/listings.js"></script>
-<script id="oc-search-js">
-/* 매물 검색 - 화면에 있는 매물 목록을 입력한 글자로 걸러냅니다 */
-(function () {
-  var input = document.getElementById('oc-search');
-  var list  = document.getElementById('oc-list');
-  var empty = document.getElementById('oc-search-empty');
-  if (!input || !list) return;
-
-  function cardList() {
-    var out = [];
-    for (var i = 0; i < list.children.length; i++) {
-      if (list.children[i].nodeType === 1) out.push(list.children[i]);
-    }
-    return out;
-  }
-
-  function normalize(t) {
-    return (t || '').toLowerCase().replace(/\s+/g, '');
-  }
-
-  function filter() {
-    var q = normalize(input.value);
-    var shown = 0;
-
-    cardList().forEach(function (card) {
-      var hit = q === '' || normalize(card.innerText).indexOf(q) !== -1;
-      card.style.display = hit ? '' : 'none';
-      if (hit) shown++;
-    });
-
-    if (empty) empty.classList.toggle('hidden', shown > 0);
-  }
-
-  input.addEventListener('input', filter);
-  document.addEventListener('oc:list-rendered', filter);
-  input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') { e.preventDefault(); filter(); input.blur(); }
-    if (e.key === 'Escape') { input.value = ''; filter(); }
-  });
-})();
-</script>
 <script src="common.js"></script>
 </body></html>
