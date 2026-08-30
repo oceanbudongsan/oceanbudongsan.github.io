@@ -1,0 +1,183 @@
+/* ============================================================
+   OCEAN MOTION DESIGN SYSTEM (인터랙티브 모션 & 고급 비주얼)
+   ============================================================ */
+
+/* 1. Glassmorphism & Visual Tokens */
+.oc-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.oc-glass-dark {
+  background: rgba(25, 31, 40, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.oc-glow-blue {
+  box-shadow: 0 8px 30px rgba(49, 130, 246, 0.18);
+}
+
+.oc-glow-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.oc-glow-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(49, 130, 246, 0.22);
+}
+
+/* 2. Scroll Reveal Animations */
+.oc-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.oc-reveal-scale {
+  opacity: 0;
+  transform: scale(0.93);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.oc-reveal-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.oc-reveal-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.oc-reveal.oc-active,
+.oc-reveal-scale.oc-active,
+.oc-reveal-left.oc-active,
+.oc-reveal-right.oc-active {
+  opacity: 1;
+  transform: translateY(0) scale(1) translateX(0);
+}
+
+/* Delay Helpers */
+.oc-delay-1 { transition-delay: 0.1s; }
+.oc-delay-2 { transition-delay: 0.2s; }
+.oc-delay-3 { transition-delay: 0.3s; }
+.oc-delay-4 { transition-delay: 0.4s; }
+
+/* 3. Floating & Pulse Keyframes */
+@keyframes ocFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.oc-floating {
+  animation: ocFloat 4s ease-in-out infinite;
+}
+
+@keyframes ocPulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(49, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(49, 130, 246, 0); }
+}
+
+.oc-pulse-glow {
+  animation: ocPulseGlow 2.5s infinite;
+}
+
+/* 4. Interactive Card Tilt & Zoom */
+.oc-card-interactive {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.oc-card-interactive:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+}
+
+.oc-img-zoom {
+  overflow: hidden;
+}
+
+.oc-img-zoom img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.oc-card-interactive:hover .oc-img-zoom img {
+  transform: scale(1.08);
+}
+
+/* 5. Ripple Button Effect */
+.oc-btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.oc-btn-ripple::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.oc-btn-ripple:active::after {
+  animation: ocRipple 0.5s ease-out;
+}
+
+@keyframes ocRipple {
+  0% { transform: scale(0, 0) translate(-50%, -50%); opacity: 0.6; }
+  100% { transform: scale(40, 40) translate(-50%, -50%); opacity: 0; }
+}
+
+/* 6. Toast Notification Styling */
+#oc-toast-container {
+  position: fixed;
+  bottom: 84px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.oc-toast {
+  pointer-events: auto;
+  min-width: 280px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: rgba(25, 31, 40, 0.92);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: ocToastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.oc-toast.oc-toast-out {
+  animation: ocToastOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes ocToastIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes ocToastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(20px) scale(0.95); }
+}

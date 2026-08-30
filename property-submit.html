@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>1분 간편 매물 접수 🏡 - 오션 부동산</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#181c23",
+                        "on-primary-fixed": "#001a40",
+                        "tertiary-container": "#ba5900",
+                        "tertiary-fixed": "#ffdbc8",
+                        "primary-fixed-dim": "#acc7ff",
+                        "surface-dim": "#d8d9e3",
+                        "secondary-container": "#2d6fe5",
+                        "tertiary": "#944600",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-surface": "#2d3038",
+                        "card": "#ffffff",
+                        "danger": "#e42939",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#004491",
+                        "surface-container-highest": "#e0e2ec",
+                        "on-primary-container": "#fefcff",
+                        "surface-container-high": "#e6e8f2",
+                        "background": "#f9f9ff",
+                        "primary": "#3182f6", /* Toss-style primary blue */
+                        "sub-blue-bg": "#e8f3ff",
+                        "surface-container-low": "#f2f3fd",
+                        "inverse-primary": "#acc7ff",
+                        "error": "#ba1a1a",
+                        "foreground": "#191f28",
+                        "on-secondary": "#ffffff",
+                        "canvas": "#f2f4f6",
+                        "secondary": "#0056c6",
+                        "on-error": "#ffffff",
+                        "primary-container": "#1071e5",
+                        "secondary-fixed": "#d9e2ff",
+                        "on-primary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "inverse-on-surface": "#eff0fa",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#311300",
+                        "body-text": "#4e5968",
+                        "outline": "#727785",
+                        "on-background": "#181c23",
+                        "outline-variant": "#c1c6d6",
+                        "on-secondary-container": "#fefcff",
+                        "on-surface-variant": "#414754",
+                        "primary-fixed": "#d7e2ff",
+                        "surface-container": "#ecedf7",
+                        "surface-tint": "#005bbe",
+                        "tertiary-fixed-dim": "#ffb689",
+                        "secondary-fixed-dim": "#b0c6ff",
+                        "surface-variant": "#e0e2ec",
+                        "on-tertiary-fixed-variant": "#743500",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#00429b",
+                        "on-secondary-fixed": "#001945"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem", /* 16px radius for Toss style */
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter-card": "16px",
+                        "margin-page": "20px",
+                        "stack-lg": "24px",
+                        "padding-container": "20px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["15px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["22px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f2f4f6; }
+        .toss-input {
+            width: 100%;
+            height: 56px;
+            background-color: #f9f9ff;
+            border: 1px solid #e0e2ec;
+            border-radius: 16px;
+            padding: 0 16px;
+            font-size: 16px;
+            color: #191f28;
+            transition: all 0.2s ease-in-out;
+        }
+        .toss-input:focus {
+            outline: none;
+            border-color: #3182f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(49, 130, 246, 0.1);
+        }
+        .toss-textarea {
+            width: 100%;
+            min-height: 120px;
+            background-color: #f9f9ff;
+            border: 1px solid #e0e2ec;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 16px;
+            color: #191f28;
+            resize: vertical;
+            transition: all 0.2s ease-in-out;
+        }
+        .toss-textarea:focus {
+            outline: none;
+            border-color: #3182f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(49, 130, 246, 0.1);
+        }
+        .chip-radio:checked + label {
+            background-color: #e8f3ff;
+            color: #3182f6;
+            border-color: #3182f6;
+            font-weight: 600;
+        }
+        .chip-checkbox:checked + label {
+            background-color: #e8f3ff;
+            color: #3182f6;
+            border-color: #3182f6;
+            font-weight: 600;
+        }
+        /* Custom Scrollbar for better UX */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c1c6d6; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #727785; }
+    </style>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="common.css">
+</head>
+<body class="text-foreground min-h-screen flex justify-center md:pb-0 pb-[100px]">
+
+
+
+
+
+<div class="w-full max-w-5xl mx-auto bg-canvas min-h-screen relative shadow-sm flex flex-col">
+<!-- Top Navigation (Header) -->
+
+<main class="flex-grow w-full max-w-[900px] mx-auto px-margin-page py-stack-lg flex flex-col gap-stack-lg">
+<!-- Hero Section -->
+<section class="bg-card p-padding-container rounded-xl shadow-sm">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">1분 간편 매물 접수 🏡</h2>
+<p class="font-body-md text-body-md text-body-text">
+                    안녕하세요! 강릉 오션 부동산입니다.<br>
+                    아래에 매물 정보를 남겨주시면, 정확한 시세 분석 후 빠르게 연락드리겠습니다.
+                </p>
+</section>
+<!-- Form Start -->
+<form class="flex flex-col gap-stack-lg" id="property-form">
+<!-- Common Info Section -->
+<section class="bg-card p-padding-container rounded-xl shadow-sm flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">기본 정보</h3>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="userName">이름</label>
+<input class="toss-input" id="userName" name="userName" placeholder="홍길동" required="" type="text">
+</div>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="userPhone">연락처</label>
+<input class="toss-input" id="userPhone" name="userPhone" placeholder="숫자만 입력해 주세요" required="" type="tel">
+</div>
+<div class="flex flex-col gap-stack-sm mt-2">
+<label class="font-label-md text-label-md text-on-surface-variant mb-1">매물 종류</label>
+<div class="relative w-full">
+    <select id="propertyType" name="propertyType" class="toss-input appearance-none cursor-pointer pr-10">
+        <option value="apt_complex">아파트/주상복합</option>
+        <option value="sale_right">분양권/입주권</option>
+        <option value="living_acc">생활형숙박시설</option>
+        <option value="one_office" selected="">오피스텔/원투룸</option>
+        <option value="villa">단독/다가구/빌라</option>
+        <option value="office_com">상가/사무실</option>
+        <option value="land">토지</option>
+    </select>
+    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">
+        <span class="material-symbols-outlined">expand_more</span>
+    </div>
+</div>
+</div>
+</section>
+<!-- Conditional Section A (Apartment/Sale Right) -->
+<section class="bg-card p-padding-container rounded-xl shadow-sm flex flex-col gap-stack-md transition-all duration-300" id="section_apt"><h3 class="font-headline-md text-headline-md text-on-surface">매물 상세 정보</h3><div class="flex flex-col gap-stack-sm"><label class="font-label-md text-label-md text-on-surface-variant" for="oneName">건물명 및 상세 주소</label><input class="toss-input" id="oneName" name="oneName" placeholder="예) 강릉오션시티아이파크 101동 1502호, 또는 지번 상세 입력" type="text"></div><div class="flex flex-col gap-stack-sm"><label class="font-label-md text-label-md text-on-surface-variant mb-1">거래 종류 (중복선택 가능)</label><div class="flex gap-2"><div><input class="chip-checkbox hidden" id="trans_sale_one" name="oneTransType" type="checkbox" value="sale"><label class="flex items-center justify-center px-4 h-10 rounded-full border border-surface-variant bg-surface text-body-text font-body-md text-body-md cursor-pointer transition-colors" for="trans_sale_one">매매</label></div><div><input class="chip-checkbox hidden" id="trans_jeonse_one" name="oneTransType" type="checkbox" value="jeonse"><label class="flex items-center justify-center px-4 h-10 rounded-full border border-surface-variant bg-surface text-body-text font-body-md text-body-md cursor-pointer transition-colors" for="trans_jeonse_one">전세</label></div><div><input class="chip-checkbox hidden" id="trans_monthly_one" name="oneTransType" type="checkbox" value="monthly"><label class="flex items-center justify-center px-4 h-10 rounded-full border border-surface-variant bg-surface text-body-text font-body-md text-body-md cursor-pointer transition-colors" for="trans_monthly_one">월세</label></div></div></div><div class="flex flex-col gap-stack-sm"><label class="font-label-md text-label-md text-on-surface-variant" for="onePrice">희망 가격</label><input class="toss-input" id="onePrice" name="onePrice" placeholder="예) 월세 500/50, 전세 1억 2천" type="text"></div><div class="flex flex-col gap-stack-sm"><label class="font-label-md text-label-md text-on-surface-variant" for="oneFeatures">매물 특징 (선택)</label><textarea class="toss-textarea" id="oneFeatures" name="oneFeatures" placeholder="매물의 장점을 적어주세요. (예: 로열층, 바다조망, 풀옵션 여부, 상가 권리금, 토지 용도 등)"></textarea></div></section>
+<!-- Conditional Section B (One-room/Officetel) - Initially Hidden -->
+<!-- Conditional Section C (Commercial/Land) - Initially Hidden -->
+<!-- Final Section -->
+<section class="bg-card p-padding-container rounded-xl shadow-sm flex flex-col gap-stack-md">
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant mb-1">블로그 마케팅 동의 (선택)</label>
+<p class="text-sm text-body-text mb-2">매물 홍보를 위해 오션 부동산 블로그에 등록하는 것에 동의하십니까?</p>
+<div class="flex gap-2">
+<div class="flex-1">
+<input checked="" class="chip-radio hidden" id="blog_agree" name="blogConsent" type="radio" value="agree">
+<label class="flex items-center justify-center h-12 rounded-lg border border-surface-variant bg-surface text-body-text font-body-md text-body-md cursor-pointer transition-colors" for="blog_agree">동의</label>
+</div>
+<div class="flex-1">
+<input class="chip-radio hidden" id="blog_disagree" name="blogConsent" type="radio" value="disagree">
+<label class="flex items-center justify-center h-12 rounded-lg border border-surface-variant bg-surface text-body-text font-body-md text-body-md cursor-pointer transition-colors" for="blog_disagree">미동의</label>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-variant">
+<label class="flex gap-3 cursor-pointer items-center">
+<input class="mt-1 w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" id="privacyConsent" required="" type="checkbox">
+<div>
+<span class="font-label-md text-label-md text-on-surface block">[필수] 개인정보 수집 및 이용 동의</span>
+<span class="text-xs text-body-text block mt-1">입력하신 정보는 매물 상담을 위해서만 활용되며 안전하게 보관됩니다.</span>
+</div>
+</label>
+</div>
+</section>
+<button class="w-full h-[56px] bg-primary text-on-primary font-headline-md text-label-md rounded-xl shadow-sm hover:bg-secondary transition-colors flex items-center justify-center" type="submit">
+    매물 접수 신청하기
+</button>
+</form>
+</main>
+<!-- Desktop Footer -->
+
+<!-- Mobile Tab Bar -->
+
+</div>
+<script>
+        // Simple logic to switch between property types
+        const typeRadios = document.querySelectorAll('input[name="propertyType"]');
+        const sections = {
+            apt: document.getElementById('section_apt'),
+            one: document.getElementById('section_one'),
+            com: document.getElementById('section_com')
+        };
+
+        typeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                // Hide all
+                Object.values(sections).forEach(sec => {
+                    if(sec) {
+                        sec.classList.add('hidden');
+                        sec.classList.remove('flex');
+                    }
+                });
+                
+                // Show selected
+                const selectedSection = sections[e.target.value];
+                if(selectedSection) {
+                    selectedSection.classList.remove('hidden');
+                    selectedSection.classList.add('flex');
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+<script src="js/property-submit.js"></script>
+<script src="common.js"></script>
+</body></html>

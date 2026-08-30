@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="ko" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Property Search Listing - Ocean Real Estate</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="css/ocean-motion.css" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001a40",
+                        "tertiary-fixed": "#ffdbc8",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2d3038",
+                        "secondary-fixed": "#d9e2ff",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#d7e2ff",
+                        "on-primary-fixed-variant": "#004491",
+                        "surface-variant": "#e0e2ec",
+                        "primary-fixed-dim": "#acc7ff",
+                        "secondary-container": "#2d6fe5",
+                        "surface-tint": "#005bbe",
+                        "on-surface": "#181c23",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#1071e5",
+                        "on-background": "#181c23",
+                        "primary": "#0059b9",
+                        "on-surface-variant": "#414754",
+                        "card": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb689",
+                        "on-secondary-fixed-variant": "#00429b",
+                        "surface": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "danger": "#e42939",
+                        "on-tertiary-fixed-variant": "#743500",
+                        "on-primary-container": "#fefcff",
+                        "surface-container-highest": "#e0e2ec",
+                        "outline-variant": "#c1c6d6",
+                        "inverse-on-surface": "#eff0fa",
+                        "tertiary": "#944600",
+                        "sub-blue-bg": "#e8f3ff",
+                        "on-tertiary-container": "#fffbff",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-fixed": "#311300",
+                        "secondary": "#0056c6",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#acc7ff",
+                        "surface-container": "#ecedf7",
+                        "outline": "#727785",
+                        "surface-container-lowest": "#ffffff",
+                        "canvas": "#f2f4f6",
+                        "background": "#f9f9ff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface-container-high": "#e6e8f2",
+                        "tertiary-container": "#ba5900",
+                        "error": "#ba1a1a",
+                        "foreground": "#191f28",
+                        "on-secondary-fixed": "#001945",
+                        "body-text": "#4e5968",
+                        "surface-dim": "#d8d9e3",
+                        "secondary-fixed-dim": "#b0c6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter-card": "16px",
+                        "margin-page": "20px",
+                        "padding-container": "20px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["22px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-md": ["15px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "headline-md-mobile": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "label-sm-mobile": ["10px", { "lineHeight": "1", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="common.css">
+</head>
+<body class="bg-canvas text-on-background font-body-md min-h-screen flex flex-col">
+
+
+
+
+
+<!-- TopNavBar -->
+
+<!-- Main Content -->
+<main class="w-full max-w-[1200px] mx-auto px-margin-page py-8 flex-grow pb-24">
+<!-- Title & Search -->
+<div class="mb-stack-lg text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg mb-stack-md">오션 부동산 매물 찾기</h1>
+<div class="relative max-w-2xl mx-auto md:mx-0">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[24px]">search</span>
+<input id="oc-search" class="w-full h-[56px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-container text-body-md transition-shadow shadow-sm" placeholder="단지명, 지역명으로 검색해 보세요" type="text">
+</div>
+</div>
+<!-- Property List -->
+<div id="oc-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card">
+<div class="col-span-full py-16 text-center text-on-surface-variant font-body-md">매물을 불러오는 중입니다...</div>
+</div>
+<!-- 검색 결과 안내 -->
+<p id="oc-search-empty" class="hidden text-center text-on-surface-variant py-12">
+  검색 결과가 없습니다. 다른 단지명이나 지역명으로 찾아보세요.
+</p>
+</main>
+
+<!-- Footer -->
+
+<!-- BottomNavBar -->
+
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="js/github-db.js"></script>
+<script src="js/ocean-motion.js"></script>
+
+
+
+<script src="js/listings.js"></script>
+<script id="oc-search-js">
+/* 매물 검색 - 화면에 있는 매물 목록을 입력한 글자로 걸러냅니다 */
+(function () {
+  var input = document.getElementById('oc-search');
+  var list  = document.getElementById('oc-list');
+  var empty = document.getElementById('oc-search-empty');
+  if (!input || !list) return;
+
+  function cardList() {
+    var out = [];
+    for (var i = 0; i < list.children.length; i++) {
+      if (list.children[i].nodeType === 1) out.push(list.children[i]);
+    }
+    return out;
+  }
+
+  function normalize(t) {
+    return (t || '').toLowerCase().replace(/\s+/g, '');
+  }
+
+  function filter() {
+    var q = normalize(input.value);
+    var shown = 0;
+
+    cardList().forEach(function (card) {
+      var hit = q === '' || normalize(card.innerText).indexOf(q) !== -1;
+      card.style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    });
+
+    if (empty) empty.classList.toggle('hidden', shown > 0);
+  }
+
+  input.addEventListener('input', filter);
+  document.addEventListener('oc:list-rendered', filter);
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); filter(); input.blur(); }
+    if (e.key === 'Escape') { input.value = ''; filter(); }
+  });
+})();
+</script>
+<script src="common.js"></script>
+</body></html>

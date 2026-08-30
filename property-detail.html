@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="ko" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>오션 부동산 - 매물 상세</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#004491",
+                      "card": "#ffffff",
+                      "on-secondary-fixed": "#001945",
+                      "tertiary-container": "#ba5900",
+                      "secondary-fixed": "#d9e2ff",
+                      "primary": "#0059b9",
+                      "on-background": "#181c23",
+                      "primary-fixed-dim": "#acc7ff",
+                      "on-tertiary-fixed": "#311300",
+                      "surface-container": "#ecedf7",
+                      "on-tertiary-container": "#fffbff",
+                      "canvas": "#f2f4f6",
+                      "outline-variant": "#c1c6d6",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#eff0fa",
+                      "surface": "#f9f9ff",
+                      "secondary-fixed-dim": "#b0c6ff",
+                      "surface-bright": "#f9f9ff",
+                      "foreground": "#191f28",
+                      "on-tertiary-fixed-variant": "#743500",
+                      "on-primary-container": "#fefcff",
+                      "tertiary-fixed": "#ffdbc8",
+                      "surface-container-highest": "#e0e2ec",
+                      "tertiary-fixed-dim": "#ffb689",
+                      "surface-container-low": "#f2f3fd",
+                      "tertiary": "#944600",
+                      "primary-fixed": "#d7e2ff",
+                      "sub-blue-bg": "#e8f3ff",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#1071e5",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#e0e2ec",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-surface": "#2d3038",
+                      "secondary": "#0056c6",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#acc7ff",
+                      "on-surface": "#181c23",
+                      "surface-tint": "#005bbe",
+                      "on-secondary-container": "#fefcff",
+                      "secondary-container": "#2d6fe5",
+                      "danger": "#e42939",
+                      "body-text": "#4e5968",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#414754",
+                      "surface-dim": "#d8d9e3",
+                      "on-primary-fixed": "#001a40",
+                      "on-secondary-fixed-variant": "#00429b",
+                      "surface-container-high": "#e6e8f2",
+                      "background": "#f9f9ff",
+                      "on-error": "#ffffff",
+                      "outline": "#727785"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "stack-lg": "24px",
+                      "stack-md": "16px",
+                      "gutter-card": "16px",
+                      "margin-page": "20px",
+                      "padding-container": "20px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "15px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "28px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "22px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="common.css">
+</head>
+<body class="bg-canvas text-on-surface min-h-screen pb-20 md:pb-0">
+
+
+
+
+
+<!-- TopNav (Desktop & Mobile header) -->
+
+<main class="w-full max-w-5xl mx-auto px-margin-page py-stack-lg md:py-[40px] flex flex-col gap-stack-lg">
+<!-- Left Content -->
+<div class="flex-1 flex flex-col gap-stack-lg">
+<!-- Image Slider -->
+<div class="w-full bg-card rounded-xl shadow-sm overflow-hidden relative">
+<div id="oc-gallery" class="w-full h-[300px] md:h-[450px] relative bg-surface-container">
+<img id="oc-d-image" class="w-full h-full object-cover" data-alt="A modern luxury apartment complex exterior shot in bright daylight. Clean architectural lines, expansive glass windows, and lush green landscaping around the base. The image should convey premium real estate, high-end living, and modern fintech reliability with bright, natural lighting and clear skies." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBesujQgurPVWpct_OxkW22dSkpIJCwdC13ay2kYROfdhp8eg-RCbwRis_ykbYIDobp_DWSjaIcH-WLs3P_CKv0foQ9f-GIStJ7v2VqxPO0kE42X3NsUhxG2raiEGpwmjqsaPJRLTViDKn2gqjKYCjrFxmdO69HA-UN_gm4V7zNLV6XB0lNDEuUwBNcKPytw_iGocBD09BKZLprd_9wq-ZFZ-jVcQWxi26YI3YfMT1r0Lbwfi2Ec7H11g">
+<div id="oc-d-imgcount" class="absolute bottom-4 right-4 bg-surface/80 backdrop-blur-sm px-3 py-1 rounded-full font-label-sm text-label-sm text-on-surface">1 / 15</div>
+</div>
+</div>
+<!-- Complex Overview -->
+<!-- ===== 매물 영상 =====
+     아래 data-url 에 유튜브 주소를 넣으면 영상이 나옵니다.
+     비워두면 이 칸은 화면에 나타나지 않습니다.            -->
+<section class="bg-card rounded-xl p-padding-container shadow-sm flex flex-col gap-stack-md" id="oc-video-section">
+  <h2 class="font-headline-md text-headline-md text-on-surface">매물 영상</h2>
+  <div data-oc-video data-url=""></div>
+</section>
+
+<section class="bg-card rounded-xl p-padding-container shadow-sm flex flex-col gap-stack-md">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span id="oc-d-badge" class="bg-secondary-fixed text-on-secondary-fixed px-2 py-1 rounded-sm font-label-sm text-label-sm">단지</span>
+</div>
+<h1 id="oc-d-name" class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface m-0">강릉 오션뷰 프레스티지 자이</h1>
+<p class="font-body-md text-body-md text-body-text mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span> <span id="oc-d-location-text">강원도 강릉시 해안로 123</span>
+                    </p>
+</div>
+<div id="oc-d-specs" class="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-outline-variant pt-4 mt-2">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">준공년월</span>
+<span class="font-label-md text-label-md text-on-surface mt-1">2023.11</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">세대수</span>
+<span class="font-label-md text-label-md text-on-surface mt-1">1,240세대</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">주차대수</span>
+<span class="font-label-md text-label-md text-on-surface mt-1">1.8대 / 세대</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">난방방식</span>
+<span class="font-label-md text-label-md text-on-surface mt-1">개별난방 / 도시가스</span>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-4 mt-2" style="display:none;">
+  <span class="font-label-sm text-label-sm text-on-surface-variant">매물 설명</span>
+  <p id="oc-d-description" class="font-body-md text-body-md text-on-surface mt-2 whitespace-pre-line"></p>
+</div>
+</section>
+<!-- Floor Plans -->
+<section id="oc-d-floorplan" class="bg-card rounded-xl p-padding-container shadow-sm">
+<h2 class="font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface mb-stack-md">타입별 평면도</h2>
+<div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md whitespace-nowrap">84A㎡ (34평)</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant hover:bg-surface-container-high rounded-full font-label-md text-label-md whitespace-nowrap transition-colors">84B㎡ (34평)</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant hover:bg-surface-container-high rounded-full font-label-md text-label-md whitespace-nowrap transition-colors">112㎡ (45평)</button>
+</div>
+<div class="w-full bg-canvas rounded-lg flex items-center justify-center p-8">
+<img class="max-h-[300px] object-contain mix-blend-multiply" data-alt="A clean, minimalist 2D architectural floor plan for a modern apartment layout. Bright white background with neat black and grey lines detailing rooms, doors, and windows. It should look professional, legible, and suitable for a high-end real estate app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrSL1hmBxMQsoGttB44XUvEssbv_8Gf8cESSuKTZNHecNBpp-GPV_xDPhlp2qE2JI_7aKinqZwLvtljJKknGpdLtHZ5T1Rm2s13cY-dEzRK7tPj_uKaWejn0nuMuy5k0Id1Abuws-wUjvdyJul3JF2rtt_GJIFq6F-Cq8E6OBPuPTSC2DDyKQYGHyIgVEji45UfiiEM1q7yGcgjrBqSo3XJwFk7hijnJwNj76sj2gorkrZI7rH5noQAg">
+</div>
+</section>
+<!-- Current Listings -->
+<section id="oc-d-listings" class="bg-card rounded-xl p-padding-container shadow-sm">
+<div class="flex justify-between items-center mb-stack-md">
+<h2 class="font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface m-0">현재 매물</h2>
+<span class="font-label-md text-label-md text-primary">총 12건</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Listing Item -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex gap-4 items-center w-full sm:w-auto">
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded font-label-sm text-label-sm">매매</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface">104동 15층</div>
+<div class="font-body-md text-body-md text-body-text text-sm">84A㎡ · 남동향 · 오션뷰</div>
+</div>
+</div>
+<div class="font-headline-md text-headline-md-mobile md:text-headline-md text-primary mt-2 sm:mt-0 w-full sm:w-auto text-right">
+                            8억 5,000
+                        </div>
+</div>
+<!-- Listing Item -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border border-outline-variant rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex gap-4 items-center w-full sm:w-auto">
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded font-label-sm text-label-sm">전세</span>
+<div>
+<div class="font-label-md text-label-md text-on-surface">102동 8층</div>
+<div class="font-body-md text-body-md text-body-text text-sm">84B㎡ · 남향 · 공원뷰</div>
+</div>
+</div>
+<div class="font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface mt-2 sm:mt-0 w-full sm:w-auto text-right">
+                            4억 2,000
+                        </div>
+</div>
+</div>
+<button class="w-full mt-4 py-3 bg-surface-container-high text-on-surface-variant font-label-md text-label-md rounded-lg hover:bg-surface-dim transition-colors">
+                    매물 더보기
+                </button>
+</section>
+<!-- Map & Surroundings -->
+<section id="oc-d-around" class="bg-card rounded-xl p-padding-container shadow-sm mb-8 md:mb-0">
+<h2 class="font-headline-md text-headline-md-mobile md:text-headline-md text-on-surface mb-stack-md">위치 및 주변환경</h2>
+<div class="w-full h-[250px] bg-canvas rounded-lg mb-4 overflow-hidden relative" data-location="강릉시 해안로">
+<!-- Map placeholder -->
+<img class="w-full h-full object-cover" data-alt="A clean, light-mode style digital map showing coastal streets, parks, and water bodies. Pin pointing to a location near the beach. The map aesthetic should be modern, clean, with subtle blue and grey tones suitable for a professional real estate platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAADfy6vVAqnZ-5wLRF3iNO8QNQIkeZ7nghr0_2AfDAoALDp7BKm9dnyZW-80CqxY_DrSP0c6vOb71UmeHvsUqEjJDXX7MiQ2_HN1a6s0XiiBremJLs6Ucf0oKILHhqxGazvvkMJP5Ub6XvKE93cOJXw3YT5W0Qm7gFV2NE-ydYCFi58HRxwFgI1d5FSdwnateFT4w1PvpZ_36diAFHqkTd73U0nW7AmRKiy00Yi5TmAmkzNIuPm8w0KA">
+<div class="absolute inset-0 bg-primary/10 flex items-center justify-center pointer-events-none">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: &quot;FILL&quot; 1;">location_on</span>
+</div>
+</div>
+<ul class="font-body-md text-body-md text-body-text flex flex-col gap-2">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-on-surface-variant text-[20px]">directions_subway</span> 강릉역 KTX (차량 10분)</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-on-surface-variant text-[20px]">school</span> 해오름초등학교 (도보 5분)</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-on-surface-variant text-[20px]">shopping_cart</span> 이마트 강릉점 (차량 5분)</li>
+</ul>
+</section>
+</div>
+<!-- Right Sidebar (Contact) -->
+</main>
+<!-- Footer -->
+
+<!-- BottomNavBar (Mobile Only) -->
+
+
+
+
+
+
+
+
+
+
+<script src="js/github-db.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/video-embed.js"></script>
+<script>
+  /* 영상 주소가 비어 있으면 '매물 영상' 칸 전체를 숨깁니다 */
+  (function () {
+    var box = document.querySelector('#oc-video-section [data-oc-video]');
+    var sec = document.getElementById('oc-video-section');
+    if (sec && (!box || !box.getAttribute('data-url'))) sec.style.display = 'none';
+  })();
+</script>
+<script src="js/property-detail.js"></script>
+<script src="common.js"></script>
+</body></html>

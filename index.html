@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="ko" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>오션 부동산 - 강릉의 모든 프리미엄 아파트</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="css/ocean-motion.css" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#004491",
+                        "card": "#ffffff",
+                        "on-secondary-fixed": "#001945",
+                        "tertiary-container": "#ba5900",
+                        "secondary-fixed": "#d9e2ff",
+                        "primary": "#0059b9",
+                        "on-background": "#181c23",
+                        "primary-fixed-dim": "#acc7ff",
+                        "on-tertiary-fixed": "#311300",
+                        "surface-container": "#ecedf7",
+                        "on-tertiary-container": "#fffbff",
+                        "canvas": "#f2f4f6",
+                        "outline-variant": "#c1c6d6",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "surface": "#f9f9ff",
+                        "secondary-fixed-dim": "#b0c6ff",
+                        "surface-bright": "#f9f9ff",
+                        "foreground": "#191f28",
+                        "on-tertiary-fixed-variant": "#743500",
+                        "on-primary-container": "#fefcff",
+                        "tertiary-fixed": "#ffdbc8",
+                        "surface-container-highest": "#e0e2ec",
+                        "tertiary-fixed-dim": "#ffb689",
+                        "surface-container-low": "#f2f3fd",
+                        "tertiary": "#944600",
+                        "primary-fixed": "#d7e2ff",
+                        "sub-blue-bg": "#e8f3ff",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#1071e5",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e0e2ec",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2d3038",
+                        "secondary": "#0056c6",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#acc7ff",
+                        "on-surface": "#181c23",
+                        "surface-tint": "#005bbe",
+                        "on-secondary-container": "#fefcff",
+                        "secondary-container": "#2d6fe5",
+                        "danger": "#e42939",
+                        "body-text": "#4e5968",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#414754",
+                        "surface-dim": "#d8d9e3",
+                        "on-primary-fixed": "#001a40",
+                        "on-secondary-fixed-variant": "#00429b",
+                        "surface-container-high": "#e6e8f2",
+                        "background": "#f9f9ff",
+                        "on-error": "#ffffff",
+                        "outline": "#727785"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "stack-md": "16px",
+                        "gutter-card": "16px",
+                        "margin-page": "20px",
+                        "padding-container": "20px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["15px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-lg": ["28px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "headline-md": ["22px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "headline-md-mobile": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: theme('colors.canvas'); color: theme('colors.on-background'); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+
+
+
+<link rel="stylesheet" href="common.css">
+</head>
+<body class="antialiased min-h-screen flex flex-col pb-[72px] md:pb-0 overflow-x-hidden">
+
+
+
+
+
+<main class="flex-grow w-full max-w-[1200px] mx-auto px-margin-page pt-6 pb-stack-lg flex flex-col gap-stack-lg">
+<!-- Hero Section with Motion & Dynamic Counters -->
+<section class="bg-gradient-to-br from-white via-blue-50/40 to-slate-50 rounded-2xl p-6 md:p-10 shadow-sm flex flex-col gap-6 md:flex-row md:items-center justify-between border border-blue-100/60 relative overflow-hidden oc-reveal">
+  <!-- Subtle background glow -->
+  <div class="absolute -top-20 -right-20 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="flex flex-col gap-4 md:w-1/2 z-10">
+    
+    <h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-[34px] text-on-surface leading-tight font-extrabold">
+      푸른 바다처럼 시원하고 투명한 중개<br>
+      <span class="text-primary bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">오션 부동산</span>이 함께합니다
+    </h1>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="md:w-1/2 w-full mt-2 md:mt-0 relative z-10">
+    <div class="bg-white p-4 rounded-2xl shadow-xl border border-gray-100 space-y-3">
+      <label class="block text-xs font-bold text-gray-500">통합 매물 빠른 검색</label>
+      <div class="relative w-full h-[52px]">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-primary">search</span>
+        <input id="main-search-input" class="w-full h-full pl-12 pr-4 bg-gray-50 border border-gray-200 rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:bg-white transition-all" placeholder="단지명, 지역명으로 검색 (예: 자이, 롯데캐슬)" type="text">
+      </div>
+      <div class="flex gap-2">
+        <button onclick="filterMainProps('전체')" class="flex-1 py-2 text-xs font-bold rounded-lg bg-primary text-white hover:bg-secondary transition-colors">검색하기</button>
+        <a href="listings.html" class="px-4 py-2 text-xs font-semibold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors flex items-center justify-center">상세필터</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Category Tabs -->
+<section class="flex gap-stack-sm overflow-x-auto no-scrollbar pb-1 oc-reveal oc-delay-1" id="main-category-tabs">
+  <button data-cat="전체" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-all">전체 매물</button>
+  <button data-cat="신규 분양" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">신규 분양</button>
+  <button data-cat="추천 매물" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">추천 매물</button>
+  <button data-cat="기존 매물" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">기존 매물</button>
+</section>
+
+<!-- Dynamic Property Grid (3-column grid) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card oc-reveal oc-delay-2" id="property-grid-container">
+  <!-- Dynamic Property Cards Rendered Here -->
+</section>
+
+<!-- Recent News Teaser Banner Section -->
+<section class="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 oc-reveal oc-delay-3">
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary">newspaper</span>
+      <h2 class="font-headline-md text-headline-md text-gray-900">최신 부동산소식</h2>
+    </div>
+    <a href="news.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+      전체보기 <span class="material-symbols-outlined text-sm">chevron_right</span>
+    </a>
+  </div>
+  <div id="index-news-preview" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- News preview loaded dynamically -->
+  </div>
+</section>
+</main>
+
+
+
+
+
+
+
+<!-- Scripts -->
+<script src="js/github-db.js"></script>
+<script src="js/ocean-motion.js"></script>
+<script>
+  let allProperties = [];
+  let currentFilterCat = '전체';
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadMainData();
+    setupMainEvents();
+  });
+
+  async function loadMainData() {
+    try {
+      allProperties = await OceanDB.getProperties();
+      renderProperties();
+
+      const posts = await OceanDB.getPosts();
+      renderNewsPreview(posts.slice(0, 3));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function renderProperties() {
+    const container = document.getElementById('property-grid-container');
+    const searchVal = (document.getElementById('main-search-input')?.value || '').trim().toLowerCase();
+
+    let filtered = allProperties.filter(p => {
+      const matchCat = (currentFilterCat === '전체' || p.category === currentFilterCat);
+      const matchSearch = !searchVal || p.name.toLowerCase().includes(searchVal) || (p.location && p.location.toLowerCase().includes(searchVal));
+      return matchCat && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full py-12 text-center text-gray-500 bg-white rounded-2xl">
+          등록된 매물이 없거나 검색 조건에 맞지 않습니다.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(p => {
+      let badgeClass = 'bg-[#3182f6] text-white';
+      if (p.badgeColor === 'danger' || p.type === '급매') badgeClass = 'bg-red-500 text-white';
+      if (p.badgeColor === 'info' || p.type === '전세') badgeClass = 'bg-sky-100 text-sky-700 border border-sky-200';
+
+      return `
+        <article class="bg-card rounded-2xl p-padding-container shadow-sm border border-gray-100 flex flex-col gap-stack-md hover:shadow-lg transition-all relative overflow-hidden oc-card-interactive oc-tilt-card">
+          <div class="relative w-full h-48 rounded-xl overflow-hidden bg-canvas oc-img-zoom">
+            <img class="object-cover w-full h-full" src="${p.imageUrl}" alt="${p.name}" loading="lazy">
+            <div class="absolute top-3 left-3 ${badgeClass} px-2.5 py-1 rounded-[8px] font-label-sm text-label-sm uppercase shadow-sm">
+              ${p.type || '매매'}
+            </div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-primary font-bold">${p.category || '아파트'}</span>
+              <span class="text-xs text-gray-400 font-semibold">${p.location || ''}</span>
+            </div>
+            <h2 class="font-headline-md text-headline-md text-on-surface line-clamp-1">${p.name}</h2>
+            <p class="font-body-md text-body-md text-body-text font-semibold text-blue-600">${p.price}</p>
+            <p class="text-xs text-gray-500">${p.specs || ''}</p>
+          </div>
+          <a href="listings.html" class="w-full h-[48px] mt-auto bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:bg-secondary transition-colors flex items-center justify-center shadow-sm">
+            자세히 보기
+          </a>
+        </article>
+      `;
+    }).join('');
+
+    // Re-init tilt cards for new elements
+    if (window.OceanMotion) {
+      window.OceanMotion.initTiltCards();
+    }
+  }
+
+  function renderNewsPreview(posts) {
+    const container = document.getElementById('index-news-preview');
+    if (!posts || posts.length === 0) {
+      container.innerHTML = '<div class="col-span-full text-center text-gray-400 text-xs py-4">등록된 소식이 없습니다.</div>';
+      return;
+    }
+
+    container.innerHTML = posts.map(post => `
+      <a href="news.html" class="p-4 rounded-xl bg-gray-50 hover:bg-blue-50/60 border border-gray-100 transition-all flex flex-col justify-between group">
+        <div>
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="px-2 py-0.5 bg-white text-blue-600 border border-blue-200 text-[11px] font-bold rounded">${post.category || '뉴스'}</span>
+            <span class="text-[11px] text-gray-400">${post.date}</span>
+          </div>
+          <h3 class="font-bold text-sm text-gray-900 group-hover:text-primary transition-colors line-clamp-1">${post.title}</h3>
+          <p class="text-xs text-gray-500 mt-1 line-clamp-2">${post.summary || ''}</p>
+        </div>
+        <span class="text-xs font-bold text-primary mt-3 flex items-center gap-0.5 self-end">
+          읽기 <span class="material-symbols-outlined text-xs">arrow_forward</span>
+        </span>
+      </a>
+    `).join('');
+  }
+
+  function setupMainEvents() {
+    const tabs = document.querySelectorAll('.oc-main-cat-btn');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.className = 'oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all');
+        tab.className = 'oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-all';
+        currentFilterCat = tab.getAttribute('data-cat');
+        renderProperties();
+      });
+    });
+
+    const searchInput = document.getElementById('main-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        renderProperties();
+      });
+    }
+  }
+
+  window.filterMainProps = function(cat) {
+    currentFilterCat = cat;
+    renderProperties();
+  };
+</script>
+
+
+
+
+<script src="common.js"></script>
+</body></html>
