@@ -142,7 +142,7 @@
     <!-- Thumbnail Image URL -->
     <div>
       <div class="flex items-center justify-between mb-1">
-        <label class="font-label-sm text-label-sm text-on-surface-variant font-bold">대표 이미지 URL (선택)</label>
+        <label class="font-label-sm text-label-sm text-on-surface-variant font-bold">대표 이미지 (선택 · 비워두면 본문 첫 사진)</label>
         <button type="button" id="use-sample-img-btn" class="text-xs text-primary font-semibold hover:underline">샘플 이미지 사용</button>
       </div>
       <input id="post-image-url" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="https://images.unsplash.com/... 또는 외부 이미지 URL">
@@ -159,6 +159,10 @@
         <div class="w-px h-5 bg-surface-variant mx-1"></div>
         <button type="button" onclick="insertParagraph()" class="text-on-surface-variant hover:text-primary p-2 rounded-lg hover:bg-surface-container" title="문단 추가"><span class="material-symbols-outlined text-sm">format_paragraph</span></button>
         <button type="button" onclick="insertBulletList()" class="text-on-surface-variant hover:text-primary p-2 rounded-lg hover:bg-surface-container" title="목록"><span class="material-symbols-outlined text-sm">format_list_bulleted</span></button>
+        <div class="w-px h-5 bg-surface-variant mx-1"></div>
+        <button type="button" id="post-photo-btn" class="flex items-center gap-1 text-primary hover:bg-sub-blue-bg px-2.5 py-2 rounded-lg text-xs font-bold transition-colors" title="본문에 사진 넣기"><span class="material-symbols-outlined text-[18px]">add_photo_alternate</span> 사진</button>
+        <input type="file" id="post-photo-file" accept="image/*" multiple class="hidden">
+        <span id="post-photo-status" class="text-[11px] text-gray-500 ml-1"></span>
       </div>
 
       <!-- Body TextArea -->
@@ -199,6 +203,7 @@
 
 <!-- Scripts -->
 <script src="js/github-db.js"></script>
+<script src="js/photo-upload.js"></script>
 <script src="js/ocean-motion.js"></script>
 <script>
   let selectedCategory = '뉴스';
@@ -278,8 +283,14 @@
     e.preventDefault();
 
     const title = document.getElementById('post-title').value.trim();
-    const imageUrl = document.getElementById('post-image-url').value.trim();
+    let imageUrl = document.getElementById('post-image-url').value.trim();
     const content = document.getElementById('post-body').value.trim();
+
+    /* 대표 이미지를 비워두셨으면 본문 첫 사진을 대표로 씁니다 */
+    if (!imageUrl) {
+      const first = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (first) imageUrl = first[1];
+    }
 
     if (!title || !content) {
       alert('제목과 본문 내용을 입력해주세요.');
@@ -348,5 +359,36 @@
   <span class="material-symbols-outlined text-sm">arrow_back</span> 목록으로
 </a>
 </template>
+<script>
+  /* 본문에 사진 넣기 - 고른 사진이 커서 자리에 들어갑니다 */
+  (function () {
+    var btn = document.getElementById('post-photo-btn');
+    var file = document.getElementById('post-photo-file');
+    var body = document.getElementById('post-body');
+    if (btn && file && body && typeof OceanPhoto !== 'undefined') {
+      btn.addEventListener('click', function () { file.click(); });
+      OceanPhoto.attach(file, body, document.getElementById('post-photo-status'), { mode: 'insert' });
+
+      /* 본문에 사진이 들어오면 대표 이미지가 비어 있을 때 첫 사진으로 채웁니다 */
+      var cover = document.getElementById('post-image-url');
+      body.addEventListener('input', function () {
+        if (cover && !cover.value.trim()) {
+          var m = body.value.match(/<img[^>]+src=["']([^"']+)["']/i);
+          if (m) {
+            cover.value = m[1];
+            cover.style.background = '#eef5ff';
+          }
+        }
+      });
+      var watch = setInterval(function () {
+        if (cover && !cover.value.trim()) {
+          var m = body.value.match(/<img[^>]+src=["']([^"']+)["']/i);
+          if (m) { cover.value = m[1]; cover.style.background = '#eef5ff'; }
+        }
+      }, 1500);
+      window.addEventListener('beforeunload', function () { clearInterval(watch); });
+    }
+  })();
+</script>
 <script src="common.js" data-bottomnav="off"></script>
 </body></html>
