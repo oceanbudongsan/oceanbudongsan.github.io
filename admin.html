@@ -241,6 +241,27 @@
           <label class="block text-xs font-bold text-gray-700 mb-1">상세 제원 (면적/층수/세대수)</label>
           <input type="text" id="prop-specs" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 84㎡ · 15층 · 918세대">
         </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">매물 종류</label>
+          <select id="prop-category" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none"><option value="아파트/주상복합">아파트/주상복합</option><option value="분양권/입주권">분양권/입주권</option><option value="생활형숙박시설">생활형숙박시설</option><option value="오피스텔/원투룸">오피스텔/원투룸</option><option value="단독/다가구/빌라">단독/다가구/빌라</option><option value="상가/사무실">상가/사무실</option><option value="토지">토지</option></select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">주소</label>
+          <input type="text" id="prop-location" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 강원도 강릉시 교동">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">동/호수 (관리자만 확인)</label>
+          <input type="text" id="prop-unit" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 101동 1502호">
+          <p class="text-[11px] text-gray-400 mt-1">손님 화면에는 <b>101동 15층</b> 처럼 층까지만 나옵니다.</p>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">매물 특징</label>
+          <input type="text" id="prop-features" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 남향, 바다조망, 즉시입주, 올수리">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-gray-700 mb-1">매물 설명</label>
+        <textarea id="prop-description" rows="2" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 탁 트인 조망권과 최고급 커뮤니티 시설을 갖춘 단지입니다."></textarea>
       </div>
       <div>
         <label class="block text-xs font-bold text-gray-700 mb-1">매물 사진 (한 줄에 하나씩)</label>
@@ -322,8 +343,13 @@
           .split(/[\n,]/).map(function (u) { return u.trim(); }).filter(Boolean);
         const imageUrl = images[0] || '';
         const videoUrl = document.getElementById('prop-video-url').value.trim();
+        const category = document.getElementById('prop-category').value;
+        const location = document.getElementById('prop-location').value.trim();
+        const unit = document.getElementById('prop-unit').value.trim();
+        const features = document.getElementById('prop-features').value.trim();
+        const description = document.getElementById('prop-description').value.trim();
 
-        const res = await OceanDB.saveProperty({ name, type, price, specs, imageUrl, images, videoUrl });
+        const res = await OceanDB.saveProperty({ name, type, price, specs, imageUrl, images, videoUrl, category, location, unit, features, description });
         if (res.success) {
           OceanMotion.showToast(res.mode === 'github' ? '🟢 GitHub 저장소에 매물이 등록되었습니다.' : '매물이 등록되었습니다.', 'success');
           propForm.reset();
@@ -385,7 +411,7 @@
     } else {
       propsTbody.innerHTML = props.map(prop => `
         <tr class="hover:bg-gray-50 transition-colors">
-          <td class="p-4 font-bold text-gray-900">${prop.name}</td>
+          <td class="p-4 font-bold text-gray-900">${prop.name}${prop.unit ? `<div class="text-[11px] font-normal text-gray-400 mt-0.5">${prop.unit}</div>` : ''}</td>
           <td class="p-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded">${prop.type}</span></td>
           <td class="p-4 font-semibold text-blue-600">${prop.price}</td>
           <td class="p-4 text-xs text-gray-500">${prop.specs || '-'}</td>
