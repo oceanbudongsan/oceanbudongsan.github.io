@@ -226,13 +226,13 @@
       if (post.category === '지역정보') badgeBg = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
 
       const imageBlock = post.imageUrl ? `
-        <div class="w-full md:w-48 h-36 md:h-auto rounded-xl overflow-hidden flex-shrink-0 relative oc-img-zoom bg-gray-100">
+        <div class="oc-zoom w-full md:w-48 h-36 md:h-auto rounded-xl overflow-hidden flex-shrink-0 relative bg-gray-100">
           <img class="w-full h-full object-cover" src="${post.imageUrl}" alt="${post.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80'">
         </div>
       ` : '';
 
       return `
-        <article data-id="${post.id}" class="oc-post-card bg-card rounded-2xl p-5 md:p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-5 hover:shadow-md transition-all cursor-pointer group oc-card-interactive">
+        <article data-id="${post.id}" class="oc-lift oc-post-card bg-card rounded-2xl p-5 md:p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-5 cursor-pointer group oc-card-interactive">
           <div class="flex-grow flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between mb-2">
@@ -268,6 +268,9 @@
         </article>
       `;
     }).join('');
+    container.classList.add('oc-stagger');
+    container.classList.remove('oc-in');
+    setTimeout(function () { container.classList.add('oc-in'); }, 30);
 
     // Attach click listener for post detail modal
     document.querySelectorAll('.oc-post-card').forEach(card => {
@@ -349,6 +352,9 @@
     // 목록을 감추고 읽기 화면을 같은 자리에 보여줍니다
     document.querySelectorAll('.oc-list-view').forEach(el => el.classList.add('hidden'));
     modal.classList.remove('hidden');
+    modal.classList.remove('oc-open-in');
+    void modal.offsetWidth;
+    modal.classList.add('oc-open-in');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

@@ -185,6 +185,17 @@
 
     markActive();
 
+    /* 스크롤을 내리면 헤더에 그림자가 생깁니다 */
+    (function () {
+      var head = document.querySelector('.oc-header');
+      if (!head) return;
+      function onScroll() {
+        head.classList.toggle('oc-scrolled', window.scrollY > 8);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
     /* 돋보기 → 이 페이지에 검색창이 있으면 커서를 옮기고, 없으면 매물찾기로 이동 */
     var searchBtn = document.getElementById('oc-search-btn');
     if (searchBtn) {
