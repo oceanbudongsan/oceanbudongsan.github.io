@@ -43,7 +43,7 @@
       .map(function (t) { return t.trim(); }).filter(Boolean);
 
     return '' +
-      '<div class="bg-card rounded-xl p-padding-container flex flex-col hover:shadow-lg transition-shadow duration-200">' +
+      '<div class="oc-lift bg-card rounded-xl p-padding-container flex flex-col">' +
         '<div class="flex justify-between items-start mb-stack-sm">' +
           '<span class="' + badgeStyle + ' px-2 py-1 rounded-[8px] font-label-sm text-label-sm shadow-sm">' + esc(p.type || '매물') + '</span>' +
           '<div class="flex items-center gap-1">' +
@@ -70,7 +70,7 @@
           ? '<p class="text-body-text text-sm mb-stack-lg flex-grow">' + esc(p.description) + '</p>'
           : '<div class="flex-grow"></div>') +
         '<div class="flex gap-3">' +
-          '<a class="flex-1 flex items-center justify-center bg-primary text-on-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors active:scale-95 shadow-sm" href="property-detail.html?id=' + encodeURIComponent(p.id) + '">자세히 보기</a>' +
+          '<a class="flex-1 flex items-center justify-center bg-primary text-on-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors oc-press shadow-sm" href="property-detail.html?id=' + encodeURIComponent(p.id) + '">자세히 보기</a>' +
           '<a href="tel:010-9254-7988" class="flex-1 flex items-center justify-center bg-surface-container-lowest border border-outline-variant text-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-surface-variant transition-colors active:scale-95 shadow-sm">전화 문의</a>' +
         '</div>' +
       '</div>';
@@ -144,6 +144,9 @@
     }
 
     list.innerHTML = props.map(card).join('');
+    list.classList.add('oc-stagger');
+    /* 백그라운드 탭에서도 확실히 보이도록 (requestAnimationFrame 은 숨은 탭에서 멈춥니다) */
+    setTimeout(function () { list.classList.add('oc-in'); }, 30);
 
     cards = [];
     var n = 0;

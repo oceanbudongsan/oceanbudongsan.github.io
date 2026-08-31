@@ -19,7 +19,7 @@
   'use strict';
 
   var USER_ID   = 'admin';
-  var PASS_HASH = '93ad2d6cdafbe929d0423af6c12f1aece4d3d9862357b1aa9eee109d5a893237'; 
+  var PASS_HASH = '93ad2d6cdafbe929d0423af6c12f1aece4d3d9862357b1aa9eee109d5a893237';
   var KEY       = 'oc-admin-auth';
 
   /* 비밀번호 해시 만들기 (콘솔에서 사용) */
@@ -81,9 +81,10 @@
         '<h1>관리자 로그인</h1>' +
         '<p class="sub">오션부동산 관리자만 들어올 수 있습니다.</p>' +
         '<label for="oc-gate-id">아이디</label>' +
-        '<input id="oc-gate-id" type="text" autocomplete="username" autofocus>' +
+        '<input id="oc-gate-id" type="text" value="' + USER_ID + '" readonly ' +
+          'autocomplete="off" style="background:#f2f4f6;color:#6b7684;cursor:default;">' +
         '<label for="oc-gate-pw">비밀번호</label>' +
-        '<input id="oc-gate-pw" type="password" autocomplete="current-password">' +
+        '<input id="oc-gate-pw" type="password" autocomplete="off" autofocus>' +
         '<button type="submit">로그인</button>' +
         '<p class="err" id="oc-gate-err"></p>' +
         '<a class="back" href="index.html">← 홈으로 돌아가기</a>' +
@@ -99,8 +100,13 @@
 
       sha256(pw).then(function (h) {
         if (id === USER_ID && h === PASS_HASH) {
+          /* 저장해두면 다음에 안 물어봅니다. 저장이 막힌 환경이어도
+             아래에서 화면을 바로 열어주므로 로그인은 정상 동작합니다.  */
           try { sessionStorage.setItem(KEY, 'ok'); } catch (e2) {}
-          location.reload();
+
+          if (hide.parentNode) hide.parentNode.removeChild(hide);
+          if (gate.parentNode) gate.parentNode.removeChild(gate);
+          document.body.classList.add('oc-is-admin');
         } else {
           err.textContent = '아이디 또는 비밀번호가 맞지 않습니다.';
           document.getElementById('oc-gate-pw').value = '';

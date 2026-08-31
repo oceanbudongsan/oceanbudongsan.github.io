@@ -1,6 +1,6 @@
 /**
  * OceanDB - GitHub JSON Storage & Local Storage Hybrid DB Engine
- * Vercel 무료 정적 호스팅 환경에서 깃허브 API를 데이터베이스처럼 사용하는 커스텀 엔진
+ * 깃허브 저장소를 데이터베이스처럼 사용하는 엔진 (매물·소식 저장)
  */
 
 (function (window) {
@@ -399,7 +399,7 @@
               </div>
               <div>
                 <h3 class="font-bold text-lg text-gray-900 dark:text-white">무료 GitHub JSON DB 연동 설정</h3>
-                <p class="text-xs text-gray-500">Vercel 호스팅에서 게시글을 100% 무료로 저장/관리합니다.</p>
+                <p class="text-xs text-gray-500">매물과 소식을 깃허브 저장소에 무료로 저장·관리합니다.</p>
               </div>
             </div>
 
