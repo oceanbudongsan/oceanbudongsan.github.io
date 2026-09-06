@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="ko" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>오션 부동산 - 강릉의 모든 프리미엄 아파트</title>
+<title>오션부동산 - 강릉 아파트·오션뷰·분양권 전문</title>
 <!-- GEO:jsonld-business -->
 <script type="application/ld+json">
 {
@@ -329,9 +329,10 @@
       /* 개별 글 페이지가 있으면 그 글로 바로 갑니다 (없으면 소식 목록으로) */
       const href = post.pagePath || 'news.html';
 
-      /* 대표 이미지가 있으면 카드 위쪽에 16:9 로 보여 줍니다 */
+      /* 대표 이미지가 있으면 카드 위쪽에 정사각형으로 보여 줍니다
+         (카드뉴스가 1080x1080 이라 가로형으로 넣으면 위아래 글자가 잘립니다) */
       const thumb = post.imageUrl ? `
-        <div class="w-full aspect-[16/9] rounded-lg overflow-hidden bg-gray-100 mb-3">
+        <div class="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
           <img src="${post.imageUrl}" alt="${post.title}" loading="lazy"
                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                onerror="this.src='${FALLBACK_IMG}'">

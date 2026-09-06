@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="ko" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>부동산소식 - 오션부동산</title>
+<title>오션부동산 - 부동산소식</title>
 <!-- GEO:meta -->
 <meta name="description" content="강릉 부동산 시황, 금리와 정책 변화, 지역 정보, 자주 묻는 질문을 강릉 오션 부동산이 정리해 드립니다.">
 <link rel="canonical" href="https://oceanbudongsan.github.io/news.html">
@@ -238,7 +238,7 @@
       if (post.category === 'FAQ') badgeBg = 'bg-violet-50 text-violet-700 border border-violet-200';
 
       const imageBlock = post.imageUrl ? `
-        <div class="oc-zoom w-full md:w-48 h-36 md:h-auto rounded-xl overflow-hidden flex-shrink-0 relative bg-gray-100">
+        <div class="oc-zoom w-full md:w-48 aspect-square rounded-xl overflow-hidden flex-shrink-0 self-start relative bg-gray-100">
           <img class="w-full h-full object-cover" src="${post.imageUrl}" alt="${post.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80'">
         </div>
       ` : '';
