@@ -19,7 +19,8 @@
     '급매':  'bg-danger text-white',
     '매매':  'bg-primary-container text-on-primary-container',
     '전세':  'bg-sub-blue-bg text-primary',
-    '월세':  'bg-secondary-container text-white'
+    '월세':  'bg-secondary-container text-white',
+    '단기임대': 'bg-tertiary-container text-white'
   };
 
   /* 종류 타일 - 짧은 이름을 쓰고, 등록 폼의 종류와 여기서 연결합니다.
@@ -33,13 +34,30 @@
     { key: '상가',            icon: 'storefront',  cats: ['상가/사무실'] }
   ];
 
+  /* ─────────────────────────────────────────────────────────────
+     지역 목록 — 여기만 고치면 드롭다운이 바뀝니다.
+     빼고 싶은 동은 줄을 지우고, 넣고 싶은 동은 따옴표로 감싸 추가하세요.
+     ───────────────────────────────────────────────────────────── */
+  var REGIONS = [
+    /* 시내 */
+    '강남동', '강문동', '견소동', '경포동', '교동', '금학동', '난곡동', '내곡동',
+    '대전동', '두산동', '병산동', '성덕동', '송정동', '안현동', '옥천동', '운산동',
+    '운정동', '월호평동', '유천동', '임당동', '저동', '죽헌동', '중앙동', '지변동',
+    '초당동', '포남동', '학동', '홍제동',
+    /* 읍·면 */
+    '주문진읍', '강동면', '구정면', '사천면', '성산면', '연곡면', '옥계면', '왕산면'
+  ];
+
+  /* 거래 종류 목록 — 관리자 등록 폼의 '거래 종류' 와 같아야 합니다 */
+  var DEALS = ['급매', '매매', '전세', '월세', '단기임대'];
+
   var state = { tile: '전체', q: '', region: '', deal: '' };
   var cards = [];                    /* { el, cat, region, deal, text } */
 
-  /* 주소에서 동 이름만 (예: '강원특별자치도 강릉시 견소동' -> '견소동') */
-  function regionOf(p) {
-    var parts = String((p && p.location) || '').trim().split(/\s+/).filter(Boolean);
-    return parts.length ? parts[parts.length - 1] : '';
+  /* 주소 전체를 담아 두고, 고른 지역이 주소 안에 들어 있는지로 맞춥니다.
+     ('강원특별자치도 강릉시 주문진읍 교항리' 처럼 뒤에 리(里)가 붙어도 걸립니다) */
+  function locOf(p) {
+    return normalize((p && p.location) || '');
   }
 
   function tileOf(key) {
@@ -118,7 +136,7 @@
     var n = 0;
     cards.forEach(function (c) {
       if (!tileMatch(key, c.cat)) return;
-      if (state.region && c.region !== state.region) return;
+      if (state.region && c.loc.indexOf(normalize(state.region)) === -1) return;
       if (state.deal && c.deal !== state.deal) return;
       if (q && c.text.indexOf(q) === -1) return;
       n++;
@@ -149,15 +167,6 @@
 
   /* ---------- 지역 · 거래 필터 ---------- */
 
-  function options(getter) {
-    var seen = [];
-    cards.forEach(function (c) {
-      var v = getter(c);
-      if (v && seen.indexOf(v) === -1) seen.push(v);
-    });
-    return seen.sort();
-  }
-
   function dropdown(name, label, current, list) {
     var shown = current || label;
     var items = [{ v: '', t: label + ' 전체' }].concat(list.map(function (v) {
@@ -187,12 +196,9 @@
   function drawFilters() {
     if (!filters) return;
 
-    var regions = options(function (c) { return c.region; });
-    var deals   = options(function (c) { return c.deal; });
-
     var html = '';
-    if (regions.length > 1) html += dropdown('region', '지역', state.region, regions);
-    if (deals.length   > 1) html += dropdown('deal',   '거래', state.deal,   deals);
+    html += dropdown('region', '지역', state.region, REGIONS);
+    html += dropdown('deal',   '거래', state.deal,   DEALS);
 
     /* 고른 조건이 있으면 한 번에 지우는 버튼 */
     if (state.region || state.deal || state.q || state.tile !== '전체') {
@@ -217,7 +223,7 @@
 
     cards.forEach(function (c) {
       var hit = tileMatch(state.tile, c.cat) &&
-                (!state.region || c.region === state.region) &&
+                (!state.region || c.loc.indexOf(normalize(state.region)) !== -1) &&
                 (!state.deal   || c.deal   === state.deal) &&
                 (q === '' || c.text.indexOf(q) !== -1);
       c.el.style.display = hit ? '' : 'none';
@@ -255,7 +261,7 @@
       cards.push({
         el: list.children[i],
         cat: (p && p.category) || '',
-        region: regionOf(p),
+        loc: locOf(p),
         deal: (p && p.type) || '',
         text: normalize(list.children[i].innerText + ' ' + ((p && p.category) || ''))
       });
