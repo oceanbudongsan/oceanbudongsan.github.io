@@ -67,7 +67,7 @@
             }).join('') + '</div>'
           : '') +
         (p.description
-          ? '<p class="text-body-text text-sm mb-stack-lg flex-grow">' + esc(p.description) + '</p>'
+          ? '<p class="text-body-text text-sm mb-stack-lg flex-grow line-clamp-3 whitespace-pre-line">' + esc(p.description) + '</p>'
           : '<div class="flex-grow"></div>') +
         '<div class="flex gap-3">' +
           '<a class="flex-1 flex items-center justify-center bg-primary text-on-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors oc-press shadow-sm" href="property-detail.html?id=' + encodeURIComponent(p.id) + '">자세히 보기</a>' +
