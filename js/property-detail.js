@@ -8,6 +8,12 @@
 (function () {
   'use strict';
 
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function param(name) {
     var m = new RegExp('[?&]' + name + '=([^&#]*)').exec(location.search);
     return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : null;
@@ -66,6 +72,10 @@
     var loc = $('#oc-d-location-text');
     if (loc) loc.textContent = p.location || '';
 
+    /* 관리자로 로그인했을 때만 보이는 수정 버튼 */
+    var editBtn = $('#oc-d-edit');
+    if (editBtn) editBtn.href = 'admin.html?edit=' + encodeURIComponent(p.id);
+
     /* 준공년월·세대수 같은 예시 항목 자리에 실제 정보를 넣습니다 */
     var specs = $('#oc-d-specs');
     if (specs) {
@@ -73,7 +83,12 @@
       if (p.propertyNo) rows.push(['매물번호', p.propertyNo]);
       if (p.price) rows.push(['매매가', p.price]);
       /* 동·층은 제목에 이미 있으므로 표에서는 뺍니다 */
-      if (p.specs) rows.push(['면적(평형)', p.specs]);
+      if (p.specs) {
+        /* '공급 108.56㎡ / 전용 84.96㎡' 처럼 적혀 있으면 두 줄로 나눕니다 */
+        var area = String(p.specs);
+        rows.push(['면적(평형)',
+          (/공급|전용/.test(area) ? area.split(/\s*\/\s*/).filter(Boolean) : [area])]);
+      }
       if (p.category) rows.push(['구분', p.category]);
       if (p.type) rows.push(['거래 종류', p.type]);
 
@@ -81,22 +96,28 @@
         specs.style.display = 'none';
       } else {
         specs.innerHTML = rows.map(function (r) {
+          var lines = Array.isArray(r[1]) ? r[1] : [r[1]];
           return '<div class="flex flex-col">' +
-                   '<span class="font-label-sm text-label-sm text-on-surface-variant">' + r[0] + '</span>' +
-                   '<span class="font-label-md text-label-md text-on-surface mt-1">' + r[1] + '</span>' +
+                   '<span class="font-label-sm text-label-sm text-on-surface-variant">' + esc(r[0]) + '</span>' +
+                   '<span class="font-label-md text-label-md text-on-surface mt-1">' +
+                     lines.map(esc).join('<br>') +
+                   '</span>' +
                  '</div>';
         }).join('');
       }
     }
 
-    /* 매물 특징 - 설명 위에 태그로 보여줍니다 */
+    /* 매물 특징 - 왼쪽에 파란 선을 두고 크고 굵은 글자로 보여줍니다 */
     var feat = $('#oc-d-features');
     if (feat) {
-      var tags = String(p.features || '').split(/[,·]/).map(function (t) { return t.trim(); }).filter(Boolean);
-      if (tags.length) {
-        feat.innerHTML = tags.map(function (t) {
-          return '<span class="text-[15px] font-semibold text-primary bg-sub-blue-bg px-3.5 py-2 rounded-full">' + t + '</span>';
-        }).join('');
+      var features = String(p.features || '').trim();
+      if (features) {
+        feat.innerHTML =
+          '<div class="border-l-4 border-primary pl-4 py-0.5">' +
+            '<p class="text-[18px] font-bold text-on-surface leading-relaxed m-0 whitespace-pre-line">' +
+              esc(features) +
+            '</p>' +
+          '</div>';
         feat.parentElement.style.display = '';
       } else {
         feat.parentElement.style.display = 'none';

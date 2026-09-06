@@ -155,8 +155,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/ocean-motion.css?v=20260906i">
-<link rel="stylesheet" href="common.css?v=20260906i">
+<link rel="stylesheet" href="css/ocean-motion.css?v=20260906k">
+<link rel="stylesheet" href="common.css?v=20260906k">
 </head>
 <body class="bg-canvas text-on-surface min-h-screen pb-20 md:pb-0">
 
@@ -215,11 +215,17 @@
 </div>
 <div class="border-t border-outline-variant pt-4 mt-2" style="display:none;">
   <span class="font-label-sm text-label-sm text-on-surface-variant">매물 특징</span>
-  <div id="oc-d-features" class="flex flex-wrap gap-2 mt-2"></div>
+  <div id="oc-d-features" class="mt-3"></div>
 </div>
 <div class="border-t border-outline-variant pt-4 mt-2" style="display:none;">
   <span class="font-label-sm text-label-sm text-on-surface-variant">매물 설명</span>
   <p id="oc-d-description" class="font-body-md text-body-md text-on-surface mt-2 whitespace-pre-line"></p>
+</div>
+<!-- 관리자로 로그인했을 때만 보입니다 -->
+<div class="oc-admin-only border-t border-outline-variant pt-4 mt-2 flex justify-end">
+  <a id="oc-d-edit" href="admin.html" class="inline-flex items-center gap-1 px-5 py-2.5 rounded-xl bg-gray-100 text-gray-700 text-sm font-bold hover:bg-gray-200 transition-colors">
+    <span class="material-symbols-outlined text-[18px]">edit</span> 이 매물 수정하기
+  </a>
 </div>
 </section>
 <!-- Floor Plans -->
@@ -304,9 +310,9 @@
 
 
 
-<script src="js/github-db.js?v=20260906i"></script>
-<script src="js/gallery.js?v=20260906i"></script>
-<script src="js/video-embed.js?v=20260906i"></script>
+<script src="js/github-db.js?v=20260906k"></script>
+<script src="js/gallery.js?v=20260906k"></script>
+<script src="js/video-embed.js?v=20260906k"></script>
 <script>
   /* 영상 주소가 비어 있으면 '매물 영상' 칸 전체를 숨깁니다 */
   (function () {
@@ -315,6 +321,6 @@
     if (sec && (!box || !box.getAttribute('data-url'))) sec.style.display = 'none';
   })();
 </script>
-<script src="js/property-detail.js?v=20260906i"></script>
-<script src="common.js?v=20260906i"></script>
+<script src="js/property-detail.js?v=20260906k"></script>
+<script src="common.js?v=20260906k"></script>
 </body></html>
