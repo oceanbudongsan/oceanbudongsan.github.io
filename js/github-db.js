@@ -42,6 +42,20 @@
     return decodeURIComponent(escape(window.atob(str.replace(/\s/g, ''))));
   }
 
+  /* 저장 충돌인지 판별합니다.
+     GitHub 는 "지금 파일이 이 버전이 맞다"는 확인 코드(sha)를 함께 요구하는데,
+     연달아 저장하면 한 박자 늦은 코드가 가서 거부당합니다.
+     ("... does not match ..." 메시지가 이 경우입니다) */
+  function isShaConflict(status, message) {
+    if (status === 409) return true;
+    if (status === 422 && /does not match|sha/i.test(message || '')) return true;
+    return false;
+  }
+
+  function wait(ms) {
+    return new Promise(function (r) { setTimeout(r, ms); });
+  }
+
   class OceanDBEngine {
     constructor() {
       this.config = this.loadConfig();
@@ -367,9 +381,12 @@
 
     async fetchFileFromGitHub(filePath) {
       const { owner, repo, token, branch } = this.config;
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}?ref=${branch}`;
+      // ?t= 와 no-store 로 브라우저가 예전 응답을 재사용하지 못하게 합니다.
+      // (예전 확인 코드를 보내면 저장이 거부됩니다)
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}?ref=${branch}&t=${Date.now()}`;
 
       const res = await fetch(url, {
+        cache: 'no-store',
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json'
@@ -392,68 +409,83 @@
     async deleteFileFromGitHub(filePath, commitMessage) {
       const { owner, repo, token, branch } = this.config;
 
-      let sha = '';
-      try {
-        sha = (await this.fetchFileFromGitHub(filePath)).sha;
-      } catch (e) {
-        return null;   // 원래 없던 파일
-      }
-
       const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}`;
-      const res = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.github.v3+json'
-        },
-        body: JSON.stringify({ message: commitMessage, sha: sha, branch: branch })
-      });
+      let lastErr = null;
 
-      if (!res.ok) {
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        let sha = '';
+        try {
+          sha = (await this.fetchFileFromGitHub(filePath)).sha;
+        } catch (e) {
+          return null;   // 원래 없던 파일
+        }
+
+        const res = await fetch(url, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.github.v3+json'
+          },
+          body: JSON.stringify({ message: commitMessage, sha: sha, branch: branch })
+        });
+
+        if (res.ok) return await res.json();
+
         const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.message || `GitHub 파일 삭제 실패 (${res.status})`);
+        lastErr = new Error(errJson.message || `GitHub 파일 삭제 실패 (${res.status})`);
+
+        if (!isShaConflict(res.status, errJson.message) || attempt === 3) break;
+        console.warn(`삭제가 충돌하여 다시 시도합니다 (${attempt}/3): ${filePath}`);
+        await wait(400 * attempt);
       }
-      return await res.json();
+
+      throw lastErr;
     }
 
     async pushFileToGitHub(filePath, contentString, commitMessage) {
       const { owner, repo, token, branch } = this.config;
-
-      // 1. 기존 파일의 sha 조회
-      let sha = '';
-      try {
-        const existing = await this.fetchFileFromGitHub(filePath);
-        sha = existing.sha;
-      } catch (e) {
-        console.log(`새로운 파일 생성 시도: ${filePath}`);
-      }
-
-      // 2. PUT 커밋 호출
       const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}`;
-      const payload = {
-        message: commitMessage,
-        content: utf8_to_b64(contentString),
-        branch: branch
-      };
-      if (sha) payload.sha = sha;
 
-      const res = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.github.v3+json'
-        },
-        body: JSON.stringify(payload)
-      });
+      let lastErr = null;
 
-      if (!res.ok) {
+      // 저장이 충돌하면 확인 코드를 새로 받아 최대 3번까지 다시 시도합니다
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        let sha = '';
+        try {
+          sha = (await this.fetchFileFromGitHub(filePath)).sha;
+        } catch (e) {
+          sha = '';   // 원래 없던 파일이면 새로 만듭니다
+        }
+
+        const payload = {
+          message: commitMessage,
+          content: utf8_to_b64(contentString),
+          branch: branch
+        };
+        if (sha) payload.sha = sha;
+
+        const res = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.github.v3+json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) return await res.json();
+
         const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.message || `GitHub 커밋 실패 (${res.status})`);
+        lastErr = new Error(errJson.message || `GitHub 커밋 실패 (${res.status})`);
+
+        if (!isShaConflict(res.status, errJson.message) || attempt === 3) break;
+        console.warn(`저장이 충돌하여 다시 시도합니다 (${attempt}/3): ${filePath}`);
+        await wait(400 * attempt);
       }
 
-      return await res.json();
+      throw lastErr;
     }
 
     stripHtml(html) {
