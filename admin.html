@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="css/ocean-motion.css?v=20260906b" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260906d" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -107,8 +107,8 @@
 
 
 
-<link rel="stylesheet" href="common.css?v=20260906b">
-<script src="js/admin-auth.js?v=20260906b"></script>
+<link rel="stylesheet" href="common.css?v=20260906d">
+<script src="js/admin-auth.js?v=20260906d"></script>
 </head>
 <body class="bg-canvas text-on-surface antialiased flex flex-col min-h-screen">
 
@@ -222,6 +222,20 @@
   <div id="property-form-container" class="hidden bg-card rounded-xl p-6 shadow-sm border border-surface-variant mb-6">
     <h3 class="font-bold text-lg mb-4 text-gray-900">신규 매물 등록</h3>
     <form id="admin-prop-form" class="space-y-4">
+      <!-- 매물번호 (노션 매물장과 같은 두 가지) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-sub-blue-bg rounded-lg">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">매물번호 <span class="font-normal text-gray-500">(손님에게 알려주는 번호)</span></label>
+          <input type="text" id="prop-no" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 13">
+          <p class="text-[11px] text-gray-500 mt-1">노션 매물장의 <b>내부매물번호</b> 와 같은 번호를 넣으세요.</p>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">네이버 매물번호 <span class="font-normal text-gray-500">(선택)</span></label>
+          <input type="text" id="prop-naver-no" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 2543678901">
+          <p class="text-[11px] text-gray-500 mt-1">나중에 이 번호로 <b>네이버·노션·홈페이지</b> 를 이어 자동 등록할 예정입니다.</p>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">매물명</label>
@@ -231,24 +245,28 @@
           <label class="block text-xs font-bold text-gray-700 mb-1">거래 종류</label>
           <select id="prop-type" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none">
             <option value="매매">매매</option>
-            <option value="급매">급매</option>
             <option value="전세">전세</option>
             <option value="월세">월세</option>
             <option value="단기임대">단기임대</option>
           </select>
+          <label class="flex items-center gap-2 mt-2 cursor-pointer select-none">
+            <input type="checkbox" id="prop-urgent" class="w-4 h-4 rounded border-gray-300 text-danger focus:ring-danger">
+            <span class="text-xs font-bold text-danger">급매로 강조</span>
+            <span class="text-[11px] text-gray-400">체크하면 목록에 빨간 급매 표시가 붙습니다</span>
+          </label>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">가격</label>
+          <label class="block text-xs font-bold text-gray-700 mb-1">매매가</label>
           <input type="text" id="prop-price" required class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 70185 (만원 단위) 또는 6억 5,000만원">
           <p id="prop-price-preview" class="text-[11px] mt-1 text-gray-400">숫자만 적으셔도 됩니다. <b>만원 단위</b>로 계산합니다. (월세는 1000/50 처럼)</p>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 mb-1">상세 제원 (면적/층수/세대수)</label>
-          <input type="text" id="prop-specs" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 84㎡ · 15층 · 918세대">
+          <label class="block text-xs font-bold text-gray-700 mb-1">면적(평형)</label>
+          <input type="text" id="prop-specs" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 116㎡ (35평)">
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">매물 종류</label>
-          <select id="prop-category" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none"><option value="아파트/주상복합">아파트/주상복합</option><option value="분양권/입주권">분양권/입주권</option><option value="생활형숙박시설">생활형숙박시설</option><option value="오피스텔/원투룸">오피스텔/원투룸</option><option value="단독/다가구/빌라">단독/다가구/빌라</option><option value="상가/사무실">상가/사무실</option><option value="토지">토지</option></select>
+          <select id="prop-category" class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none"><option value="아파트">아파트</option><option value="아파트분양권">아파트분양권</option><option value="생숙">생숙</option><option value="오피스텔">오피스텔</option><option value="원룸(방)">원룸(방)</option><option value="연립/다세대">연립/다세대</option><option value="단독/다가구">단독/다가구</option><option value="전원주택">전원주택</option><option value="상가점포">상가점포</option><option value="상가주택">상가주택</option><option value="상가건물">상가건물</option><option value="빌딩">빌딩</option><option value="창고">창고</option><option value="토지/임야">토지/임야</option><option value="모텔">모텔</option><option value="펜션">펜션</option></select>
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">주소</label>
@@ -297,6 +315,7 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-surface-container-lowest border-b border-surface-variant text-xs text-gray-500">
+            <th class="p-4 font-bold w-20">번호</th>
             <th class="p-4 font-bold">매물명</th>
             <th class="p-4 font-bold">구분</th>
             <th class="p-4 font-bold">가격</th>
@@ -306,7 +325,7 @@
         </thead>
         <tbody id="props-table-body" class="font-body-md text-body-md divide-y divide-surface-variant">
           <tr>
-            <td colspan="5" class="p-8 text-center text-gray-400">매물 목록을 불러오는 중입니다...</td>
+            <td colspan="6" class="p-8 text-center text-gray-400">매물 목록을 불러오는 중입니다...</td>
           </tr>
         </tbody>
       </table>
@@ -319,10 +338,10 @@
 
 
 <!-- Scripts -->
-<script src="js/price-format.js?v=20260906b"></script>
-<script src="js/github-db.js?v=20260906b"></script>
-<script src="js/photo-upload.js?v=20260906b"></script>
-<script src="js/ocean-motion.js?v=20260906b"></script>
+<script src="js/price-format.js?v=20260906d"></script>
+<script src="js/github-db.js?v=20260906d"></script>
+<script src="js/photo-upload.js?v=20260906d"></script>
+<script src="js/ocean-motion.js?v=20260906d"></script>
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await refreshDashboard();
@@ -341,6 +360,9 @@
     if (propForm) {
       propForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const urgent = document.getElementById('prop-urgent').checked;
+        const propertyNo = document.getElementById('prop-no').value.trim();
+        const naverNo = document.getElementById('prop-naver-no').value.trim();
         const name = document.getElementById('prop-name').value.trim();
         const type = document.getElementById('prop-type').value;
         const price = document.getElementById('prop-price').value.trim();
@@ -359,7 +381,7 @@
         const priceText = (typeof OceanPrice !== 'undefined') ? OceanPrice.format(price) : price;
 
         const res = await OceanDB.saveProperty({
-          id: editingPropId, name, type, price: priceText, specs,
+          id: editingPropId, propertyNo, naverNo, urgent, name, type, price: priceText, specs,
           imageUrl, images, videoUrl, category, location, unit, features, description
         });
 
@@ -424,8 +446,9 @@
     } else {
       propsTbody.innerHTML = props.map(prop => `
         <tr class="hover:bg-gray-50 transition-colors">
+          <td class="p-4 text-sm font-bold text-primary">${prop.propertyNo || '-'}${prop.naverNo ? `<div class="text-[10px] font-normal text-gray-400 mt-0.5">N ${prop.naverNo}</div>` : ''}</td>
           <td class="p-4 font-bold text-gray-900">${prop.name}${prop.unit ? `<div class="text-[11px] font-normal text-gray-400 mt-0.5">${prop.unit}</div>` : ''}</td>
-          <td class="p-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded">${prop.type}</span></td>
+          <td class="p-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded">${prop.type}</span>${prop.urgent ? '<span class="ml-1 px-2 py-0.5 bg-red-50 text-red-600 text-xs font-bold rounded">급매</span>' : ''}</td>
           <td class="p-4 font-semibold text-blue-600">${prop.price}</td>
           <td class="p-4 text-xs text-gray-500">${prop.specs || '-'}</td>
           <td class="p-4 text-right whitespace-nowrap">
@@ -486,6 +509,10 @@
     if (!prop) { alert('매물을 찾을 수 없습니다.'); return; }
 
     const set = (elId, val) => { const el = document.getElementById(elId); if (el) el.value = val || ''; };
+    const urgentBox = document.getElementById('prop-urgent');
+    if (urgentBox) urgentBox.checked = !!prop.urgent;
+    set('prop-no', prop.propertyNo);
+    set('prop-naver-no', prop.naverNo);
     set('prop-name', prop.name);
     set('prop-type', prop.type);
     set('prop-price', prop.price);
@@ -554,5 +581,5 @@
   <span class="material-symbols-outlined text-sm">settings</span> GitHub 연동 설정
 </button>
 </template>
-<script src="common.js?v=20260906b" data-bottomnav="off"></script>
+<script src="common.js?v=20260906d" data-bottomnav="off"></script>
 </body></html>
