@@ -99,6 +99,7 @@
   /* ---------- 카드 ---------- */
   function card(p) {
     var badgeStyle = BADGE[p.type] || 'bg-primary-container text-on-primary-container';
+    var detailHref = 'property-detail.html?id=' + encodeURIComponent(p.id);
     var urgentTag = p.urgent
       ? '<span class="' + URGENT_BADGE + ' px-2 py-1 rounded-[8px] font-label-sm text-label-sm shadow-sm">급매</span>'
       : '';
@@ -121,7 +122,7 @@
 
         /* 대표 사진 (없으면 예전처럼 배지 줄만 나옵니다) */
         (cover
-          ? '<div class="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 mb-stack-sm">' +
+          ? '<a href="' + detailHref + '" class="relative block w-full aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 mb-stack-sm">' +
               '<img src="' + esc(cover) + '" alt="' + esc(p.name) + '" loading="lazy" ' +
                 'class="w-full h-full object-cover" ' +
                 'onerror="this.src=\'' + FALLBACK + '\'">' +
@@ -136,9 +137,9 @@
                   ? '<span class="flex items-center gap-1 text-[11px] font-bold text-on-surface-variant bg-white/90 px-2 py-1 rounded-full">' +
                     '<span class="material-symbols-outlined text-[14px]">photo_library</span>' + shotCount + '</span>' : '') +
               '</div>' +
-            '</div>'
+            '</a>'
           : /* 사진이 없으면 종류에 맞는 그림을 보여 줍니다 (사진 있는 카드와 높이가 같아집니다) */
-            '<div class="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-surface-container ' +
+            '<a href="' + detailHref + '" class="relative block w-full aspect-[4/3] rounded-lg overflow-hidden bg-surface-container ' +
                  'flex flex-col items-center justify-center gap-1.5 mb-stack-sm">' +
               '<span class="material-symbols-outlined text-[44px] text-on-surface-variant opacity-30">' + catIcon(p.category) + '</span>' +
               '<span class="text-[11px] font-bold text-on-surface-variant opacity-50">' + esc(p.category || '매물') + '</span>' +
@@ -148,10 +149,12 @@
               (hasVideo
                 ? '<div class="absolute top-2 right-2"><span class="flex items-center gap-1 text-[11px] font-bold text-primary bg-white/90 px-2 py-1 rounded-full">' +
                   '<span class="material-symbols-outlined text-[14px]">play_circle</span>영상</span></div>' : '') +
-            '</div>') +
+            '</a>') +
 
         '<div class="flex items-baseline gap-2 mb-2">' +
-          '<h2 class="font-headline-md text-headline-md">' + esc(p.name) + '</h2>' +
+          '<h2 class="font-headline-md text-headline-md">' +
+            '<a href="' + detailHref + '" class="hover:text-primary transition-colors">' + esc(p.name) + '</a>' +
+          '</h2>' +
           (p.propertyNo ? '<span class="text-[11px] font-bold text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded shrink-0">' + esc(p.propertyNo) + '번</span>' : '') +
         '</div>' +
         (specLine ? '<p class="text-body-text mb-1">' + esc(specLine) + '</p>' : '') +
