@@ -108,8 +108,7 @@
     var shotCount = shots.length;
     var cover = shots[0] || '';
     var FALLBACK = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80';
-    var tags = String(p.features || '').split(/[,·]/)
-      .map(function (t) { return t.trim(); }).filter(Boolean);
+    var features = String(p.features || '').trim();
 
     /* 상세 제원과 동·층을 한 줄로 (예: 116㎡ / 102동 6층) */
     var specLine = [p.specs, p.unitPublic]
@@ -161,15 +160,12 @@
         '<div class="mb-stack-md">' +
           '<span class="font-headline-md text-headline-md text-primary font-bold">' + esc(p.price) + '</span>' +
         '</div>' +
-        /* 매물 특징을 적었으면 그것만 보여 주고, 없을 때만 매물 설명을 보여 줍니다 */
-        (tags.length
-          ? '<div class="flex flex-wrap gap-1 mb-3">' + tags.map(function (t) {
-              return '<span class="text-[11px] font-semibold text-primary bg-sub-blue-bg px-2 py-0.5 rounded-full">' + esc(t) + '</span>';
-            }).join('') + '</div>' +
-            '<div class="flex-grow"></div>'
-          : (p.description
-              ? '<p class="text-body-text text-sm mb-3 flex-grow line-clamp-3 whitespace-pre-line">' + esc(p.description) + '</p>'
-              : '<div class="flex-grow"></div>')) +
+        /* 매물 특징을 적었으면 그것만, 없을 때만 매물 설명을 보여 줍니다.
+           둘 다 같은 글자 모양입니다 (알약 모양 배경 없음) */
+        (features || p.description
+          ? '<p class="text-body-text text-sm mb-3 flex-grow line-clamp-3 whitespace-pre-line">' +
+              esc(features || p.description) + '</p>'
+          : '<div class="flex-grow"></div>') +
         '<div class="flex gap-3">' +
           '<a class="flex-1 flex items-center justify-center bg-primary text-on-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors oc-press shadow-sm" href="property-detail.html?id=' + encodeURIComponent(p.id) + '">자세히 보기</a>' +
           '<a href="tel:010-9254-7988" class="flex-1 flex items-center justify-center bg-surface-container-lowest border border-outline-variant text-primary h-[48px] rounded-xl font-label-md text-label-md hover:bg-surface-variant transition-colors active:scale-95 shadow-sm">전화 문의</a>' +
