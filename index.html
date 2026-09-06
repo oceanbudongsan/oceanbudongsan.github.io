@@ -62,7 +62,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="css/ocean-motion.css" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260906" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -164,7 +164,7 @@
 
 
 
-<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="common.css?v=20260906">
 </head>
 <body class="antialiased min-h-screen flex flex-col pb-[72px] md:pb-0 overflow-x-hidden">
 
@@ -226,7 +226,7 @@
       전체보기 <span class="material-symbols-outlined text-sm">chevron_right</span>
     </a>
   </div>
-  <div id="index-news-preview" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div id="index-news-preview" class="flex flex-col gap-2">
     <!-- News preview loaded dynamically -->
   </div>
 </section>
@@ -239,8 +239,8 @@
 
 
 <!-- Scripts -->
-<script src="js/github-db.js"></script>
-<script src="js/ocean-motion.js"></script>
+<script src="js/github-db.js?v=20260906"></script>
+<script src="js/ocean-motion.js?v=20260906"></script>
 <script>
   let allProperties = [];
   let currentFilterCat = '전체';
@@ -329,10 +329,10 @@
       /* 개별 글 페이지가 있으면 그 글로 바로 갑니다 (없으면 소식 목록으로) */
       const href = post.pagePath || 'news.html';
 
-      /* 대표 이미지가 있으면 카드 위쪽에 정사각형으로 보여 줍니다
-         (카드뉴스가 1080x1080 이라 가로형으로 넣으면 위아래 글자가 잘립니다) */
+      /* 작은 정사각 썸네일을 오른쪽에 둡니다
+         (카드뉴스가 1080x1080 이라 정사각으로 넣어야 글자가 안 잘립니다) */
       const thumb = post.imageUrl ? `
-        <div class="w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-3">
+        <div class="w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
           <img src="${post.imageUrl}" alt="${post.title}" loading="lazy"
                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                onerror="this.src='${FALLBACK_IMG}'">
@@ -340,19 +340,16 @@
       ` : '';
 
       return `
-      <a href="${href}" class="p-4 rounded-xl bg-gray-50 hover:bg-blue-50/60 border border-gray-100 transition-all flex flex-col justify-between group">
-        <div>
-          ${thumb}
-          <div class="flex items-center gap-2 mb-1.5">
+      <a href="${href}" class="group flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-blue-50/60 border border-gray-100 transition-all">
+        <div class="min-w-0 flex-grow">
+          <div class="flex items-center gap-2 mb-1">
             <span class="px-2 py-0.5 bg-white text-blue-600 border border-blue-200 text-[11px] font-bold rounded">${post.category || '뉴스'}</span>
             <span class="text-[11px] text-gray-400">${post.date}</span>
           </div>
           <h3 class="font-bold text-sm text-gray-900 group-hover:text-primary transition-colors line-clamp-1">${post.title}</h3>
-          <p class="text-xs text-gray-500 mt-1 line-clamp-2">${post.summary || ''}</p>
+          <p class="text-xs text-gray-500 mt-0.5 line-clamp-1">${post.summary || ''}</p>
         </div>
-        <span class="text-xs font-bold text-primary mt-3 flex items-center gap-0.5 self-end">
-          읽기 <span class="material-symbols-outlined text-xs">arrow_forward</span>
-        </span>
+        ${thumb}
       </a>`;
     }).join('');
   }
@@ -385,5 +382,5 @@
 
 
 
-<script src="common.js"></script>
+<script src="common.js?v=20260906"></script>
 </body></html>
