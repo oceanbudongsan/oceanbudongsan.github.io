@@ -100,15 +100,7 @@
         }
       }
 
-      // 2. 로컬 캐시 조회
-      const cached = localStorage.getItem(STORAGE_KEY_POSTS);
-      if (cached) {
-        try {
-          return JSON.parse(cached);
-        } catch (e) {}
-      }
-
-      // 3. 파일 직접 로드 (최초 접속 시 data/posts.json 자원)
+      // 2. 손님 화면에서는 항상 최신 자료 파일을 먼저 읽습니다
       try {
         const res = await fetch('./data/posts.json?t=' + Date.now());
         if (res.ok) {
@@ -117,7 +109,13 @@
           return posts;
         }
       } catch (e) {
-        console.error('posts.json 기본 로드 실패:', e);
+        console.warn('소식 자료를 받지 못했습니다. 저장해 둔 자료를 씁니다.', e);
+      }
+
+      // 3. 인터넷이 끊겼을 때만 예전 자료를 씁니다
+      const cached = localStorage.getItem(STORAGE_KEY_POSTS);
+      if (cached) {
+        try { return JSON.parse(cached); } catch (e) {}
       }
 
       return [];
@@ -304,13 +302,9 @@
         } catch (err) {}
       }
 
-      const cached = localStorage.getItem(STORAGE_KEY_PROPS);
-      if (cached) {
-        try {
-          return this.normalizeProps(JSON.parse(cached));
-        } catch (e) {}
-      }
-
+      /* 손님 화면에서는 항상 최신 자료 파일을 먼저 읽습니다.
+         (예전에는 브라우저에 저장해 둔 자료를 먼저 써서, 한 번 왔던 손님에게
+          새로 올린 매물이 안 보이는 문제가 있었습니다) */
       try {
         const res = await fetch('./data/properties.json?t=' + Date.now());
         if (res.ok) {
@@ -318,7 +312,15 @@
           localStorage.setItem(STORAGE_KEY_PROPS, JSON.stringify(props));
           return props;
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn('매물 자료를 받지 못했습니다. 저장해 둔 자료를 씁니다.', e);
+      }
+
+      /* 인터넷이 끊겼을 때만 예전 자료를 씁니다 */
+      const cached = localStorage.getItem(STORAGE_KEY_PROPS);
+      if (cached) {
+        try { return this.normalizeProps(JSON.parse(cached)); } catch (e) {}
+      }
 
       return [];
     }
