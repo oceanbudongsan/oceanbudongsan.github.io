@@ -8,10 +8,11 @@
 (function () {
   'use strict';
 
-  var list  = document.getElementById('oc-list');
-  var cats  = document.getElementById('oc-cats');
-  var empty = document.getElementById('oc-search-empty');
-  var input = document.getElementById('oc-search');
+  var list    = document.getElementById('oc-list');
+  var tiles   = document.getElementById('oc-tiles');
+  var filters = document.getElementById('oc-filters');
+  var empty   = document.getElementById('oc-search-empty');
+  var input   = document.getElementById('oc-search');
   if (!list || typeof OceanDB === 'undefined') return;
 
   var BADGE = {
@@ -21,8 +22,36 @@
     '월세':  'bg-secondary-container text-white'
   };
 
-  var state = { cat: '전체', q: '' };
-  var cards = [];                    /* { el, cat, text } */
+  /* 종류 타일 - 짧은 이름을 쓰고, 등록 폼의 종류와 여기서 연결합니다.
+     타일에 없는 종류(오피스텔/원투룸, 단독/다가구/빌라, 토지)에 올린 매물도
+     '전체' 에서는 빠짐없이 보입니다. */
+  var TILES = [
+    { key: '전체',           icon: 'grid_view',   cats: null },
+    { key: '아파트',          icon: 'apartment',   cats: ['아파트/주상복합'] },
+    { key: '분양권',          icon: 'sell',        cats: ['분양권/입주권'] },
+    { key: '생활형숙박시설',   icon: 'hotel',       cats: ['생활형숙박시설'] },
+    { key: '상가',            icon: 'storefront',  cats: ['상가/사무실'] }
+  ];
+
+  var state = { tile: '전체', q: '', region: '', deal: '' };
+  var cards = [];                    /* { el, cat, region, deal, text } */
+
+  /* 주소에서 동 이름만 (예: '강원특별자치도 강릉시 견소동' -> '견소동') */
+  function regionOf(p) {
+    var parts = String((p && p.location) || '').trim().split(/\s+/).filter(Boolean);
+    return parts.length ? parts[parts.length - 1] : '';
+  }
+
+  function tileOf(key) {
+    for (var i = 0; i < TILES.length; i++) if (TILES[i].key === key) return TILES[i];
+    return null;
+  }
+
+  function tileMatch(key, cat) {
+    var t = tileOf(key);
+    if (!t || !t.cats) return true;          /* 전체 */
+    return t.cats.indexOf(cat) !== -1;
+  }
 
   function esc(t) {
     return String(t == null ? '' : t)
@@ -81,52 +110,116 @@
       '</div>';
   }
 
-  /* ---------- 매물 종류 버튼 ---------- */
-  function paintCats() {
-    if (!cats) return;
-    Array.prototype.forEach.call(cats.querySelectorAll('.oc-cat-btn'), function (b) {
-      var on = b.getAttribute('data-cat') === state.cat;
-      b.className = 'oc-cat-btn shrink-0 px-5 py-2.5 rounded-full font-label-md text-label-md transition-colors active:scale-95 ' +
-        (on ? 'bg-primary text-on-primary shadow-sm'
-            : 'bg-surface-container-high text-on-surface-variant hover:bg-surface-variant');
+  /* ---------- 종류 타일 ---------- */
+
+  /* 그 타일을 골랐을 때 몇 건이 나오는지 (다른 조건은 그대로 둔 채 셉니다) */
+  function countFor(key) {
+    var q = normalize(state.q);
+    var n = 0;
+    cards.forEach(function (c) {
+      if (!tileMatch(key, c.cat)) return;
+      if (state.region && c.region !== state.region) return;
+      if (state.deal && c.deal !== state.deal) return;
+      if (q && c.text.indexOf(q) === -1) return;
+      n++;
     });
+    return n;
   }
 
-  function drawCats(props) {
-    if (!cats) return;
+  function drawTiles() {
+    if (!tiles) return;
 
-    var seen = [];
-    props.forEach(function (p) {
-      var c = (p.category || '').trim();
-      if (c && seen.indexOf(c) === -1) seen.push(c);
-    });
-
-    /* 종류가 한 가지뿐이면 버튼을 보여줄 이유가 없습니다 */
-    if (seen.length < 2) { cats.innerHTML = ''; return; }
-
-    cats.innerHTML = ['전체'].concat(seen).map(function (c) {
-      return '<button type="button" data-cat="' + esc(c) + '" class="oc-cat-btn">' + esc(c) + '</button>';
+    tiles.innerHTML = TILES.map(function (t) {
+      var on = state.tile === t.key;
+      var n  = countFor(t.key);
+      return '' +
+        '<button type="button" data-tile="' + esc(t.key) + '" ' +
+          'class="relative flex flex-col items-center justify-center gap-1.5 h-[92px] rounded-xl border transition-all active:scale-95 ' +
+          (on ? 'bg-card border-primary shadow-sm text-on-surface'
+              : 'bg-surface-container border-transparent text-on-surface-variant hover:bg-surface-variant') + '">' +
+          '<span class="material-symbols-outlined text-[24px]">' + t.icon + '</span>' +
+          '<span class="text-sm font-bold">' + esc(t.key) + '</span>' +
+          (n > 0
+            ? '<span class="absolute top-2 right-2 min-w-[22px] h-[22px] px-1.5 rounded-full bg-primary text-white ' +
+              'text-[11px] font-bold flex items-center justify-center">' + n + '</span>'
+            : '') +
+        '</button>';
     }).join('');
-
-    Array.prototype.forEach.call(cats.querySelectorAll('.oc-cat-btn'), function (b) {
-      b.addEventListener('click', function () {
-        state.cat = b.getAttribute('data-cat');
-        paintCats();
-        apply();
-      });
-    });
-    paintCats();
   }
 
-  /* ---------- 걸러내기 (종류 + 검색어 동시 적용) ---------- */
+  /* ---------- 지역 · 거래 필터 ---------- */
+
+  function options(getter) {
+    var seen = [];
+    cards.forEach(function (c) {
+      var v = getter(c);
+      if (v && seen.indexOf(v) === -1) seen.push(v);
+    });
+    return seen.sort();
+  }
+
+  function dropdown(name, label, current, list) {
+    var shown = current || label;
+    var items = [{ v: '', t: label + ' 전체' }].concat(list.map(function (v) {
+      return { v: v, t: v };
+    }));
+
+    return '' +
+      '<details class="oc-filter relative">' +
+        '<summary class="cursor-pointer select-none inline-flex items-center gap-1 px-4 py-2 rounded-full border text-sm font-bold transition-colors ' +
+          (current ? 'border-primary bg-sub-blue-bg text-primary'
+                   : 'border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-variant') + '">' +
+          esc(shown) +
+          '<span class="material-symbols-outlined text-[18px]">expand_more</span>' +
+        '</summary>' +
+        '<div class="absolute left-0 z-20 mt-2 min-w-[170px] max-h-72 overflow-auto bg-white border border-gray-200 rounded-xl shadow-lg py-1">' +
+          items.map(function (o) {
+            var on = (current || '') === o.v;
+            return '<button type="button" data-filter="' + name + '" data-value="' + esc(o.v) + '" ' +
+              'class="w-full text-left px-4 py-2 text-sm transition-colors ' +
+              (on ? 'bg-sub-blue-bg text-primary font-bold' : 'text-on-surface hover:bg-gray-50') + '">' +
+              esc(o.t) + '</button>';
+          }).join('') +
+        '</div>' +
+      '</details>';
+  }
+
+  function drawFilters() {
+    if (!filters) return;
+
+    var regions = options(function (c) { return c.region; });
+    var deals   = options(function (c) { return c.deal; });
+
+    var html = '';
+    if (regions.length > 1) html += dropdown('region', '지역', state.region, regions);
+    if (deals.length   > 1) html += dropdown('deal',   '거래', state.deal,   deals);
+
+    /* 고른 조건이 있으면 한 번에 지우는 버튼 */
+    if (state.region || state.deal || state.q || state.tile !== '전체') {
+      html += '<button type="button" id="oc-reset" class="inline-flex items-center gap-1 px-3.5 py-2 rounded-full text-sm font-bold ' +
+              'text-on-surface-variant hover:bg-surface-variant transition-colors">' +
+              '<span class="material-symbols-outlined text-[18px]">refresh</span>초기화</button>';
+    }
+
+    filters.innerHTML = html;
+  }
+
+  function redraw() {
+    drawTiles();
+    drawFilters();
+    apply();
+  }
+
+  /* ---------- 걸러내기 (종류 + 지역 + 거래 + 검색어) ---------- */
   function apply() {
     var q = normalize(state.q);
     var shown = 0;
 
     cards.forEach(function (c) {
-      var okCat  = (state.cat === '전체') || (c.cat === state.cat);
-      var okText = (q === '') || (c.text.indexOf(q) !== -1);
-      var hit = okCat && okText;
+      var hit = tileMatch(state.tile, c.cat) &&
+                (!state.region || c.region === state.region) &&
+                (!state.deal   || c.deal   === state.deal) &&
+                (q === '' || c.text.indexOf(q) !== -1);
       c.el.style.display = hit ? '' : 'none';
       if (hit) shown++;
     });
@@ -144,7 +237,8 @@
 
     if (!props.length) {
       list.innerHTML = message('등록된 매물이 없습니다.');
-      if (cats) cats.innerHTML = '';
+      if (tiles) tiles.innerHTML = '';
+      if (filters) filters.innerHTML = '';
       return;
     }
 
@@ -161,25 +255,64 @@
       cards.push({
         el: list.children[i],
         cat: (p && p.category) || '',
+        region: regionOf(p),
+        deal: (p && p.type) || '',
         text: normalize(list.children[i].innerText + ' ' + ((p && p.category) || ''))
       });
     }
 
-    drawCats(props);
-    apply();
+    redraw();
   }).catch(function () {
     list.innerHTML = message('매물을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  });
+
+  /* ---------- 타일 · 필터 클릭 ---------- */
+  function closeDropdowns(except) {
+    Array.prototype.forEach.call(document.querySelectorAll('.oc-filter[open]'), function (d) {
+      if (d !== except) d.removeAttribute('open');
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var tileBtn = e.target.closest && e.target.closest('[data-tile]');
+    if (tileBtn) {
+      state.tile = tileBtn.getAttribute('data-tile');
+      redraw();
+      return;
+    }
+
+    var opt = e.target.closest && e.target.closest('[data-filter]');
+    if (opt) {
+      state[opt.getAttribute('data-filter')] = opt.getAttribute('data-value');
+      closeDropdowns();
+      redraw();
+      return;
+    }
+
+    if (e.target.closest && e.target.closest('#oc-reset')) {
+      state.tile = '전체';
+      state.region = '';
+      state.deal = '';
+      state.q = '';
+      if (input) input.value = '';
+      redraw();
+      return;
+    }
+
+    /* 드롭다운 밖을 누르면 닫습니다 */
+    var inside = e.target.closest && e.target.closest('.oc-filter');
+    closeDropdowns(inside);
   });
 
   /* ---------- 검색창 ---------- */
   if (input) {
     input.addEventListener('input', function () {
       state.q = input.value;
-      apply();
+      redraw();
     });
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
-      if (e.key === 'Escape') { input.value = ''; state.q = ''; apply(); }
+      if (e.key === 'Escape') { input.value = ''; state.q = ''; redraw(); }
     });
   }
 })();
