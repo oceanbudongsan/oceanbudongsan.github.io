@@ -55,7 +55,7 @@
     }
 
     var badge = $('#oc-d-badge');
-    if (badge) badge.textContent = p.type || p.badge || '매물';
+    if (badge) badge.textContent = (p.urgent ? '급매 · ' : '') + (p.type || p.badge || '매물');
 
     /* 제목에 동·층까지 함께 보여줍니다 (예: 강릉오션시티아이피크 102동 6층) */
     var name = $('#oc-d-name');
@@ -70,9 +70,10 @@
     var specs = $('#oc-d-specs');
     if (specs) {
       var rows = [];
-      if (p.price) rows.push(['가격', p.price]);
+      if (p.propertyNo) rows.push(['매물번호', p.propertyNo]);
+      if (p.price) rows.push(['매매가', p.price]);
       /* 동·층은 제목에 이미 있으므로 표에서는 뺍니다 */
-      if (p.specs) rows.push(['상세 제원', p.specs]);
+      if (p.specs) rows.push(['면적(평형)', p.specs]);
       if (p.category) rows.push(['구분', p.category]);
       if (p.type) rows.push(['거래 종류', p.type]);
 

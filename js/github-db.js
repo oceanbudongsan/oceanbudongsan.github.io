@@ -264,13 +264,40 @@
     // ----------------------------------------------------
     // 매물 (Properties) 관리 API
     // ----------------------------------------------------
+    /* 예전 자료를 지금 방식으로 맞춰 줍니다
+       · 거래 종류 '급매'  -> 매매 + 급매표시
+       · 예전 매물 종류 이름 -> 노션 매물장과 같은 이름 */
+    normalizeProps(list) {
+      var CAT_MAP = {
+        '아파트/주상복합': '아파트',
+        '분양권/입주권': '아파트분양권',
+        '생활형숙박시설': '생숙',
+        '오피스텔/원투룸': '오피스텔',
+        '단독/다가구/빌라': '단독/다가구',
+        '상가/사무실': '상가점포',
+        '토지': '토지/임야'
+      };
+
+      return (list || []).map(function (p) {
+        if (!p) return p;
+        var out = p;
+        if (out.type === '급매') {
+          out = Object.assign({}, out, { type: '매매', urgent: true });
+        }
+        if (CAT_MAP[out.category]) {
+          out = Object.assign({}, out, { category: CAT_MAP[out.category] });
+        }
+        return out;
+      });
+    }
+
     async getProperties() {
       let props = [];
       if (this.isGitHubConfigured()) {
         try {
           const remoteData = await this.fetchFileFromGitHub(this.config.pathProperties);
           if (remoteData && remoteData.content) {
-            props = JSON.parse(remoteData.content);
+            props = this.normalizeProps(JSON.parse(remoteData.content));
             localStorage.setItem(STORAGE_KEY_PROPS, JSON.stringify(props));
             return props;
           }
@@ -280,14 +307,14 @@
       const cached = localStorage.getItem(STORAGE_KEY_PROPS);
       if (cached) {
         try {
-          return JSON.parse(cached);
+          return this.normalizeProps(JSON.parse(cached));
         } catch (e) {}
       }
 
       try {
         const res = await fetch('./data/properties.json?t=' + Date.now());
         if (res.ok) {
-          props = await res.json();
+          props = this.normalizeProps(await res.json());
           localStorage.setItem(STORAGE_KEY_PROPS, JSON.stringify(props));
           return props;
         }
@@ -308,18 +335,24 @@
 
       const formatted = {
         id: isEdit ? propData.id : 'prop-' + Date.now(),
+        /* 노션 매물장과 같은 두 가지 번호
+           propertyNo : 내부매물번호 (손님에게 말하는 짧은 번호)
+           naverNo    : 매물번호(네이버번호) - 네이버·노션·홈페이지를 잇는 열쇠 */
+        propertyNo: (propData.propertyNo || '').trim(),
+        naverNo: (propData.naverNo || '').trim(),
         name: propData.name || '신규 매물',
         category: propData.category || '아파트',
         features: propData.features || '',
         unit: propData.unit || '',
         unitPublic: maskUnit(propData.unit),
         type: propData.type || '매매',
+        urgent: !!propData.urgent,
         price: propData.price || '가격 문의',
         specs: propData.specs || '',
         location: propData.location || '강원도 강릉시',
         status: propData.status || '노출중',
         badge: propData.badge || propData.type || '매매',
-        badgeColor: propData.type === '급매' ? 'danger' : propData.type === '전세' ? 'info' : 'primary',
+        badgeColor: propData.urgent ? 'danger' : propData.type === '전세' ? 'info' : 'primary',
         imageUrl: propData.imageUrl || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80',
         description: propData.description || '',
         images: (Array.isArray(propData.images) && propData.images.length)
