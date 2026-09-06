@@ -128,7 +128,8 @@
       }
     }
 
-    document.title = (p.name || '매물 상세') + ' - 오션 부동산';
+    document.title = '오션부동산 - ' + (p.name || '매물 상세') +
+                     (p.unitPublic ? ' ' + p.unitPublic : '');
   }
 
   OceanDB.getProperties().then(function (props) {

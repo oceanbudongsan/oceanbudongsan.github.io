@@ -272,7 +272,7 @@ window.OceanGEO = (function () {
       '<meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
       '<base href="../">',
-      '<title>' + esc(title) + ' - ' + INFO.company + '</title>',
+      '<title>오션부동산 - ' + esc(title) + '</title>',
       '<meta name="description" content="' + esc(desc) + '">',
       '<link rel="canonical" href="' + esc(url) + '">',
       '<meta property="og:type" content="article">',
