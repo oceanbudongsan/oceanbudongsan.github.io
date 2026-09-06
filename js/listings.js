@@ -27,12 +27,27 @@
      타일에 없는 종류(오피스텔/원투룸, 단독/다가구/빌라, 토지)에 올린 매물도
      '전체' 에서는 빠짐없이 보입니다. */
   var TILES = [
-    { key: '전체',           icon: 'grid_view',   cats: null },
-    { key: '아파트',          icon: 'apartment',   cats: ['아파트', '아파트/주상복합'] },
-    { key: '분양권',          icon: 'sell',        cats: ['아파트분양권', '분양권/입주권'] },
-    { key: '생활형숙박시설',   icon: 'hotel',       cats: ['생숙', '생활형숙박시설'] },
-    { key: '상가',            icon: 'storefront',  cats: ['상가점포', '상가주택', '상가건물', '빌딩', '상가/사무실'] }
+    { key: '전체',     icon: 'grid_view',   cats: null },
+    { key: '아파트',    icon: 'apartment',   cats: ['아파트', '아파트/주상복합'] },
+    { key: '분양권',    icon: 'sell',        cats: ['아파트분양권', '분양권/입주권'] },
+    { key: '상가',      icon: 'storefront',  cats: ['상가점포', '상가주택', '상가건물', '빌딩', '상가/사무실'] },
+    { key: '오피스텔',  icon: 'domain',      cats: ['오피스텔', '오피스텔/원투룸', '원룸(방)'] },
+    { key: '토지',      icon: 'landscape',   cats: ['토지/임야', '토지'] }
   ];
+
+  /* 사진이 없을 때 보여줄 종류별 그림 */
+  var CAT_ICON = {
+    '아파트': 'apartment', '아파트/주상복합': 'apartment',
+    '아파트분양권': 'sell', '분양권/입주권': 'sell',
+    '오피스텔': 'domain', '오피스텔/원투룸': 'domain', '원룸(방)': 'door_front',
+    '연립/다세대': 'holiday_village', '단독/다가구': 'house', '단독/다가구/빌라': 'house',
+    '전원주택': 'cottage', '상가점포': 'storefront', '상가주택': 'storefront',
+    '상가건물': 'store', '상가/사무실': 'storefront', '빌딩': 'corporate_fare',
+    '창고': 'warehouse', '토지/임야': 'landscape', '토지': 'landscape',
+    '생숙': 'hotel', '생활형숙박시설': 'hotel', '모텔': 'hotel', '펜션': 'cabin'
+  };
+
+  function catIcon(c) { return CAT_ICON[c] || 'home_work'; }
 
   /* ─────────────────────────────────────────────────────────────
      지역 목록 — 여기만 고치면 드롭다운이 바뀝니다.
@@ -122,13 +137,17 @@
                     '<span class="material-symbols-outlined text-[14px]">photo_library</span>' + shotCount + '</span>' : '') +
               '</div>' +
             '</div>'
-          : '<div class="flex justify-between items-start mb-stack-sm">' +
-              '<div class="flex items-center gap-1">' + urgentTag +
+          : /* 사진이 없으면 종류에 맞는 그림을 보여 줍니다 (사진 있는 카드와 높이가 같아집니다) */
+            '<div class="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-surface-container ' +
+                 'flex flex-col items-center justify-center gap-1.5 mb-stack-sm">' +
+              '<span class="material-symbols-outlined text-[44px] text-on-surface-variant opacity-30">' + catIcon(p.category) + '</span>' +
+              '<span class="text-[11px] font-bold text-on-surface-variant opacity-50">' + esc(p.category || '매물') + '</span>' +
+              '<div class="absolute top-2 left-2 flex items-center gap-1">' + urgentTag +
                 '<span class="' + badgeStyle + ' px-2 py-1 rounded-[8px] font-label-sm text-label-sm shadow-sm">' + esc(p.type || '매물') + '</span>' +
               '</div>' +
               (hasVideo
-                ? '<span class="flex items-center gap-1 text-[11px] font-bold text-primary bg-sub-blue-bg px-2 py-1 rounded-full">' +
-                  '<span class="material-symbols-outlined text-[14px]">play_circle</span>영상</span>' : '') +
+                ? '<div class="absolute top-2 right-2"><span class="flex items-center gap-1 text-[11px] font-bold text-primary bg-white/90 px-2 py-1 rounded-full">' +
+                  '<span class="material-symbols-outlined text-[14px]">play_circle</span>영상</span></div>' : '') +
             '</div>') +
 
         '<div class="flex items-baseline gap-2 mb-2">' +
