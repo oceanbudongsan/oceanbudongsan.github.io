@@ -57,8 +57,11 @@
     var badge = $('#oc-d-badge');
     if (badge) badge.textContent = p.type || p.badge || '매물';
 
+    /* 제목에 동·층까지 함께 보여줍니다 (예: 강릉오션시티아이피크 102동 6층) */
     var name = $('#oc-d-name');
-    if (name) name.textContent = p.name || '매물';
+    if (name) {
+      name.textContent = (p.name || '매물') + (p.unitPublic ? ' ' + p.unitPublic : '');
+    }
 
     var loc = $('#oc-d-location-text');
     if (loc) loc.textContent = p.location || '';
@@ -68,7 +71,7 @@
     if (specs) {
       var rows = [];
       if (p.price) rows.push(['가격', p.price]);
-      if (p.unitPublic) rows.push(['동·층', p.unitPublic]);
+      /* 동·층은 제목에 이미 있으므로 표에서는 뺍니다 */
       if (p.specs) rows.push(['상세 제원', p.specs]);
       if (p.category) rows.push(['구분', p.category]);
       if (p.type) rows.push(['거래 종류', p.type]);
@@ -91,7 +94,7 @@
       var tags = String(p.features || '').split(/[,·]/).map(function (t) { return t.trim(); }).filter(Boolean);
       if (tags.length) {
         feat.innerHTML = tags.map(function (t) {
-          return '<span class="text-[13px] font-semibold text-primary bg-sub-blue-bg px-3 py-1.5 rounded-full">' + t + '</span>';
+          return '<span class="text-[15px] font-semibold text-primary bg-sub-blue-bg px-3.5 py-2 rounded-full">' + t + '</span>';
         }).join('');
         feat.parentElement.style.display = '';
       } else {

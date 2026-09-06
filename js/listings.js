@@ -42,6 +42,12 @@
     var tags = String(p.features || '').split(/[,·]/)
       .map(function (t) { return t.trim(); }).filter(Boolean);
 
+    /* 상세 제원과 동·층을 한 줄로 (예: 116㎡ / 102동 6층) */
+    var specLine = [p.specs, p.unitPublic]
+      .map(function (v) { return String(v || '').trim(); })
+      .filter(Boolean)
+      .join(' / ');
+
     return '' +
       '<div class="oc-lift bg-card rounded-xl p-padding-container flex flex-col">' +
         '<div class="flex justify-between items-start mb-stack-sm">' +
@@ -56,8 +62,7 @@
           '</div>' +
         '</div>' +
         '<h2 class="font-headline-md text-headline-md mb-2">' + esc(p.name) + '</h2>' +
-        (p.specs ? '<p class="text-body-text mb-1">' + esc(p.specs) + '</p>' : '') +
-        (p.unitPublic ? '<p class="text-body-text text-sm mb-1">' + esc(p.unitPublic) + '</p>' : '') +
+        (specLine ? '<p class="text-body-text mb-1">' + esc(specLine) + '</p>' : '') +
         '<div class="mb-stack-md">' +
           '<span class="font-headline-md text-headline-md text-primary font-bold">' + esc(p.price) + '</span>' +
         '</div>' +
