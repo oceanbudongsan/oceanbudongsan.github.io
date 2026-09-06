@@ -213,7 +213,7 @@
 <section class="mb-stack-lg oc-reveal oc-delay-3">
   <div class="flex items-center justify-between mb-stack-sm">
     <h2 class="font-headline-md text-headline-md text-on-surface">매물 목록 및 관리</h2>
-    <button type="button" onclick="document.getElementById('property-form-container').classList.toggle('hidden')" class="px-3.5 py-1.5 bg-blue-50 text-primary text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-1">
+    <button type="button" onclick="startNewProperty()" class="px-3.5 py-1.5 bg-blue-50 text-primary text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">add_home</span> 신규 매물 등록 폼 열기
     </button>
   </div>
@@ -238,7 +238,8 @@
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">가격</label>
-          <input type="text" id="prop-price" required class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 6억 5,000만원">
+          <input type="text" id="prop-price" required class="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none" placeholder="예: 70185 (만원 단위) 또는 6억 5,000만원">
+          <p id="prop-price-preview" class="text-[11px] mt-1 text-gray-400">숫자만 적으셔도 됩니다. <b>만원 단위</b>로 계산합니다. (월세는 1000/50 처럼)</p>
         </div>
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">상세 제원 (면적/층수/세대수)</label>
@@ -284,8 +285,8 @@
         <p class="text-[11px] text-gray-400 mt-1">유튜브에 올린 뒤 주소를 붙여넣으세요. 쇼츠(세로 영상)도 됩니다.</p>
       </div>
       <div class="flex justify-end gap-2 pt-2">
-        <button type="button" onclick="document.getElementById('property-form-container').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-100 rounded-lg">취소</button>
-        <button type="submit" class="px-6 py-2 text-xs font-bold text-white bg-primary hover:bg-secondary rounded-lg shadow-sm">매물 등록하기</button>
+        <button type="button" onclick="cancelPropertyForm()" class="px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-100 rounded-lg">취소</button>
+        <button type="submit" id="prop-submit-btn" class="px-6 py-2 text-xs font-bold text-white bg-primary hover:bg-secondary rounded-lg shadow-sm">매물 등록하기</button>
       </div>
     </form>
   </div>
@@ -317,6 +318,7 @@
 
 
 <!-- Scripts -->
+<script src="js/price-format.js"></script>
 <script src="js/github-db.js"></script>
 <script src="js/photo-upload.js"></script>
 <script src="js/ocean-motion.js"></script>
@@ -352,14 +354,21 @@
         const features = document.getElementById('prop-features').value.trim();
         const description = document.getElementById('prop-description').value.trim();
 
-        const res = await OceanDB.saveProperty({ name, type, price, specs, imageUrl, images, videoUrl, category, location, unit, features, description });
+        /* 숫자만 적으셨으면 '7억 185만원' 형태로 바꿔서 저장합니다 */
+        const priceText = (typeof OceanPrice !== 'undefined') ? OceanPrice.format(price) : price;
+
+        const res = await OceanDB.saveProperty({
+          id: editingPropId, name, type, price: priceText, specs,
+          imageUrl, images, videoUrl, category, location, unit, features, description
+        });
+
         if (res.success) {
-          OceanMotion.showToast(res.mode === 'github' ? '🟢 GitHub 저장소에 매물이 등록되었습니다.' : '매물이 등록되었습니다.', 'success');
-          propForm.reset();
-          document.getElementById('property-form-container').classList.add('hidden');
+          const done = editingPropId ? '매물이 수정되었습니다.' : '매물이 등록되었습니다.';
+          OceanMotion.showToast(res.mode === 'github' ? '🟢 GitHub 저장소에 ' + done : done, 'success');
+          cancelPropertyForm();
           await refreshDashboard();
         } else {
-          alert('매물 등록 오류: ' + (res.error || '다시 시도해주세요.'));
+          alert((editingPropId ? '매물 수정 오류: ' : '매물 등록 오류: ') + (res.error || '다시 시도해주세요.'));
         }
       });
     }
@@ -418,7 +427,10 @@
           <td class="p-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded">${prop.type}</span></td>
           <td class="p-4 font-semibold text-blue-600">${prop.price}</td>
           <td class="p-4 text-xs text-gray-500">${prop.specs || '-'}</td>
-          <td class="p-4 text-right">
+          <td class="p-4 text-right whitespace-nowrap">
+            <button onclick="adminEditProperty('${prop.id}')" class="text-blue-600 hover:text-blue-800 text-xs font-bold inline-flex items-center gap-0.5 mr-4">
+              <span class="material-symbols-outlined text-sm">edit</span> 수정
+            </button>
             <button onclick="adminDeleteProperty('${prop.id}')" class="text-red-600 hover:text-red-800 text-xs font-bold inline-flex items-center gap-0.5">
               <span class="material-symbols-outlined text-sm">delete</span> 삭제
             </button>
@@ -438,6 +450,88 @@
       alert('삭제 실패: ' + (res.error || res.message));
     }
   };
+
+  /* ---------- 매물 수정 ---------- */
+
+  let editingPropId = null;   /* 값이 있으면 수정 중, 없으면 새 매물 */
+
+  function setPropFormMode(editing) {
+    const btn = document.getElementById('prop-submit-btn');
+    if (btn) btn.textContent = editing ? '매물 수정 완료' : '매물 등록하기';
+  }
+
+  window.startNewProperty = function() {
+    const box = document.getElementById('property-form-container');
+    const wasHidden = box.classList.contains('hidden');
+    document.getElementById('admin-prop-form').reset();
+    editingPropId = null;
+    setPropFormMode(false);
+    updatePricePreview();
+    if (wasHidden) box.classList.remove('hidden');
+    else box.classList.add('hidden');
+  };
+
+  window.cancelPropertyForm = function() {
+    document.getElementById('admin-prop-form').reset();
+    editingPropId = null;
+    setPropFormMode(false);
+    updatePricePreview();
+    document.getElementById('property-form-container').classList.add('hidden');
+  };
+
+  window.adminEditProperty = async function(id) {
+    const props = await OceanDB.getProperties();
+    const prop = props.find(p => String(p.id) === String(id));
+    if (!prop) { alert('매물을 찾을 수 없습니다.'); return; }
+
+    const set = (elId, val) => { const el = document.getElementById(elId); if (el) el.value = val || ''; };
+    set('prop-name', prop.name);
+    set('prop-type', prop.type);
+    set('prop-price', prop.price);
+    set('prop-specs', prop.specs);
+    set('prop-category', prop.category);
+    set('prop-location', prop.location);
+    set('prop-unit', prop.unit);
+    set('prop-features', prop.features);
+    set('prop-description', prop.description);
+    set('prop-image-url', (prop.images && prop.images.length ? prop.images : [prop.imageUrl]).filter(Boolean).join('\n'));
+    set('prop-video-url', prop.videoUrl);
+
+    editingPropId = prop.id;
+    setPropFormMode(true);
+    updatePricePreview();
+
+    const box = document.getElementById('property-form-container');
+    box.classList.remove('hidden');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  /* ---------- 가격 미리보기 ---------- */
+
+  function updatePricePreview() {
+    const input = document.getElementById('prop-price');
+    const view  = document.getElementById('prop-price-preview');
+    if (!input || !view || typeof OceanPrice === 'undefined') return;
+
+    const raw = input.value.trim();
+    if (!raw) {
+      view.innerHTML = '숫자만 적으셔도 됩니다. <b>만원 단위</b>로 계산합니다. (월세는 1000/50 처럼)';
+      view.className = 'text-[11px] mt-1 text-gray-400';
+      return;
+    }
+    if (OceanPrice.willChange(raw)) {
+      view.textContent = '→ ' + OceanPrice.format(raw) + ' 으로 저장됩니다';
+      view.className = 'text-[11px] mt-1 text-emerald-700 font-bold';
+    } else {
+      view.textContent = '적으신 그대로 저장됩니다: ' + raw;
+      view.className = 'text-[11px] mt-1 text-gray-500';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const priceInput = document.getElementById('prop-price');
+    if (priceInput) priceInput.addEventListener('input', updatePricePreview);
+  });
 
   window.adminDeleteProperty = async function(id) {
     if (!confirm('정말로 이 매물을 삭제하시겠습니까?')) return;
