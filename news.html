@@ -403,16 +403,29 @@
     window.location.href = `news-write.html?id=${id}`;
   };
 
+  let isDeleting = false;   /* 두 번 눌려서 충돌나는 것을 막습니다 */
+
   window.deletePost = async function(id) {
+    if (isDeleting) return;
     if (!confirm('정말로 이 소식글을 삭제하시겠습니까?')) return;
-    
-    const res = await OceanDB.deletePost(id);
-    if (res.success) {
-      OceanMotion.showToast(res.mode === 'github' ? '🟢 GitHub 저장소에서 게시글이 삭제되었습니다.' : '게시글이 삭제되었습니다.', 'success');
-      closePostDetail();
-      await loadPosts();
-    } else {
-      alert('삭제 중 오류가 발생했습니다: ' + (res.error || res.message));
+
+    isDeleting = true;
+    const adminBtns = document.querySelectorAll('.oc-admin-only button');
+    adminBtns.forEach(b => { b.disabled = true; b.style.opacity = '.5'; });
+
+    try {
+      const res = await OceanDB.deletePost(id);
+      if (res.success) {
+        OceanMotion.showToast(res.mode === 'github' ? '🟢 GitHub 저장소에서 게시글이 삭제되었습니다.' : '게시글이 삭제되었습니다.', 'success');
+        closePostDetail();
+        await loadPosts();
+      } else {
+        alert('삭제 중 오류가 발생했습니다: ' + (res.error || res.message) +
+              '\n\n화면을 새로고침해서 실제로 지워졌는지 확인해 주세요.');
+      }
+    } finally {
+      isDeleting = false;
+      adminBtns.forEach(b => { b.disabled = false; b.style.opacity = ''; });
     }
   };
 </script>
