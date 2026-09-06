@@ -127,6 +127,9 @@
         if (targetIndex !== -1) isEdit = true;
       }
 
+      // 제목이나 날짜가 바뀌면 주소도 바뀝니다. 예전 파일을 지우려고 기억해 둡니다.
+      const prevPagePath = (isEdit && posts[targetIndex]) ? (posts[targetIndex].pagePath || '') : '';
+
       const formattedPost = {
         id: isEdit ? postData.id : 'post-' + Date.now(),
         title: postData.title || '제목 없음',
@@ -140,6 +143,11 @@
         createdAt: isEdit ? posts[targetIndex].createdAt : now.toISOString(),
         updatedAt: now.toISOString()
       };
+
+      // GEO: 이 글이 가질 개별 페이지 주소 (예: news/2026-09-06-제목.html)
+      if (typeof OceanGEO !== 'undefined') {
+        formattedPost.pagePath = OceanGEO.pagePath(formattedPost);
+      }
 
       if (isEdit) {
         posts[targetIndex] = formattedPost;
@@ -161,6 +169,36 @@
           console.error('깃허브 커밋 저장 오류:', err);
           gitHubResult = { success: false, mode: 'github', error: err.message };
         }
+
+        // ----- GEO: AI가 읽을 수 있는 개별 페이지와 사이트맵 -----
+        // 여기서 실패해도 글 자체는 이미 저장된 상태이므로 저장을 실패로 만들지 않습니다.
+        if (gitHubResult.success && typeof OceanGEO !== 'undefined') {
+          try {
+            const pagePath = formattedPost.pagePath;
+
+            await this.pushFileToGitHub(
+              pagePath,
+              OceanGEO.buildPostHtml(formattedPost),
+              `[GEO] 게시글 페이지: ${formattedPost.title}`
+            );
+
+            // 제목이 바뀌어 주소가 달라졌으면 예전 페이지는 지웁니다
+            if (prevPagePath && prevPagePath !== pagePath) {
+              await this.deleteFileFromGitHub(prevPagePath, `[GEO] 예전 주소 정리: ${prevPagePath}`);
+            }
+
+            await this.pushFileToGitHub(
+              'sitemap.xml',
+              OceanGEO.buildSitemap(posts),
+              '[GEO] sitemap 갱신'
+            );
+
+            gitHubResult.geo = { success: true, pagePath: pagePath };
+          } catch (err) {
+            console.warn('GEO 페이지 생성 실패 (글은 정상 저장됨):', err);
+            gitHubResult.geo = { success: false, error: err.message };
+          }
+        }
       }
 
       return { post: formattedPost, ...gitHubResult };
@@ -180,6 +218,17 @@
           const commitMsg = `[OceanDB] 게시글 삭제: ${target.title}`;
           await this.pushFileToGitHub(this.config.pathPosts, JSON.stringify(posts, null, 2), commitMsg);
           gitHubResult = { success: true, mode: 'github' };
+
+          // GEO: 개별 페이지도 함께 지우고 사이트맵을 다시 만듭니다
+          if (typeof OceanGEO !== 'undefined') {
+            try {
+              const gone = target.pagePath || OceanGEO.pagePath(target);
+              await this.deleteFileFromGitHub(gone, `[GEO] 게시글 페이지 삭제: ${target.title}`);
+              await this.pushFileToGitHub('sitemap.xml', OceanGEO.buildSitemap(posts), '[GEO] sitemap 갱신');
+            } catch (err) {
+              console.warn('GEO 페이지 삭제 실패:', err);
+            }
+          }
         } catch (err) {
           console.error('깃허브 삭제 커밋 실패:', err);
           gitHubResult = { success: false, mode: 'github', error: err.message };
@@ -311,9 +360,14 @@
     // ----------------------------------------------------
     // GitHub REST API 통신 모듈 (Low-level)
     // ----------------------------------------------------
+    // 한글이 들어간 파일 이름도 GitHub API가 알아듣게 바꿔 줍니다
+    encodePath(filePath) {
+      return String(filePath).split('/').map(encodeURIComponent).join('/');
+    }
+
     async fetchFileFromGitHub(filePath) {
       const { owner, repo, token, branch } = this.config;
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`;
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}?ref=${branch}`;
 
       const res = await fetch(url, {
         headers: {
@@ -334,6 +388,35 @@
       };
     }
 
+    // 저장소에서 파일 하나를 지웁니다 (없으면 조용히 넘어갑니다)
+    async deleteFileFromGitHub(filePath, commitMessage) {
+      const { owner, repo, token, branch } = this.config;
+
+      let sha = '';
+      try {
+        sha = (await this.fetchFileFromGitHub(filePath)).sha;
+      } catch (e) {
+        return null;   // 원래 없던 파일
+      }
+
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}`;
+      const res = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify({ message: commitMessage, sha: sha, branch: branch })
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.message || `GitHub 파일 삭제 실패 (${res.status})`);
+      }
+      return await res.json();
+    }
+
     async pushFileToGitHub(filePath, contentString, commitMessage) {
       const { owner, repo, token, branch } = this.config;
 
@@ -347,7 +430,7 @@
       }
 
       // 2. PUT 커밋 호출
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${this.encodePath(filePath)}`;
       const payload = {
         message: commitMessage,
         content: utf8_to_b64(contentString),
