@@ -116,6 +116,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="common.css">
+<style>
+  /* 필터 드롭다운 - 기본 삼각형 표시를 숨깁니다 */
+  .oc-filter > summary { list-style: none; }
+  .oc-filter > summary::-webkit-details-marker { display: none; }
+  .oc-filter > summary::marker { content: ''; }
+</style>
 </head>
 <body class="bg-canvas text-on-background font-body-md min-h-screen flex flex-col">
 
@@ -127,16 +133,24 @@
 
 <!-- Main Content -->
 <main class="w-full max-w-[1200px] mx-auto px-margin-page py-8 flex-grow pb-24">
-<!-- Title & Search -->
-<div class="mb-stack-lg text-center md:text-left">
-<h1 class="font-headline-lg text-headline-lg mb-stack-md">오션 부동산 매물 찾기</h1>
-<div class="relative max-w-2xl mx-auto md:mx-0">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[24px]">search</span>
-<input id="oc-search" class="w-full h-[56px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-container text-body-md transition-shadow shadow-sm" placeholder="단지명, 지역명으로 검색해 보세요" type="text">
+<!-- 제목 -->
+<div class="mb-7">
+  <p class="text-[11px] font-bold tracking-[0.18em] text-primary mb-2">PROPERTIES</p>
+  <h1 class="text-3xl md:text-4xl font-bold text-on-surface mb-3">매물</h1>
+  <p class="font-body-md text-body-md text-body-text">매매·전세·월세 매물을 확인하고, 마음에 드는 매물은 바로 전화 문의하세요.</p>
 </div>
+
+<!-- 매물 종류 타일 -->
+<div id="oc-tiles" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-4"></div>
+
+<!-- 검색 -->
+<div class="relative mb-3">
+  <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[22px]">search</span>
+  <input id="oc-search" class="w-full h-[52px] pl-12 pr-4 rounded-xl border border-outline-variant bg-surface-container-lowest focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-container text-body-md transition-shadow shadow-sm" placeholder="지역·단지명·키워드 검색" type="text">
 </div>
-<!-- 매물 종류 버튼 (종류가 2가지 이상일 때만 나옵니다) -->
-<div id="oc-cats" class="flex overflow-x-auto gap-2 pb-4 mb-stack-md hide-scrollbar"></div>
+
+<!-- 지역 · 거래 필터 -->
+<div id="oc-filters" class="flex flex-wrap items-center gap-2 mb-stack-md"></div>
 <!-- Property List -->
 <div id="oc-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card">
 <div class="col-span-full py-16 text-center text-on-surface-variant font-body-md">매물을 불러오는 중입니다...</div>
