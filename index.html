@@ -303,7 +303,7 @@
             <p class="font-body-md text-body-md text-body-text font-semibold text-blue-600">${p.price}</p>
             <p class="text-xs text-gray-500">${p.specs || ''}</p>
           </div>
-          <a href="listings.html" class="w-full h-[48px] mt-auto bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:bg-secondary transition-colors flex items-center justify-center shadow-sm">
+          <a href="property-detail.html?id=${encodeURIComponent(p.id)}" class="w-full h-[48px] mt-auto bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:bg-secondary transition-colors flex items-center justify-center shadow-sm">
             자세히 보기
           </a>
         </article>
