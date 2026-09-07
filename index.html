@@ -62,7 +62,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="css/ocean-motion.css?v=20260908a" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260908b" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -164,7 +164,7 @@
 
 
 
-<link rel="stylesheet" href="common.css?v=20260908a">
+<link rel="stylesheet" href="common.css?v=20260908b">
 </head>
 <body class="antialiased min-h-screen flex flex-col pb-[72px] md:pb-0 overflow-x-hidden">
 
@@ -239,8 +239,8 @@
 
 
 <!-- Scripts -->
-<script src="js/github-db.js?v=20260908a"></script>
-<script src="js/ocean-motion.js?v=20260908a"></script>
+<script src="js/github-db.js?v=20260908b"></script>
+<script src="js/ocean-motion.js?v=20260908b"></script>
 <script>
   let allProperties = [];
   let currentFilterCat = '전체';
@@ -288,12 +288,12 @@
 
       return `
         <article class="bg-card rounded-2xl p-padding-container shadow-sm border border-gray-100 flex flex-col gap-stack-md hover:shadow-lg transition-all relative overflow-hidden oc-card-interactive oc-tilt-card">
-          <div class="relative w-full h-48 rounded-xl overflow-hidden bg-canvas oc-img-zoom">
+          <a href="property-detail.html?id=${encodeURIComponent(p.id)}" class="relative block w-full h-48 rounded-xl overflow-hidden bg-canvas oc-img-zoom">
             <img class="object-cover w-full h-full" src="${p.imageUrl}" alt="${p.name}" loading="lazy">
             <div class="absolute top-3 left-3 ${badgeClass} px-2.5 py-1 rounded-[8px] font-label-sm text-label-sm uppercase shadow-sm">
               ${p.type || '매매'}
             </div>
-          </div>
+          </a>
           <div class="flex flex-col gap-1">
             <div class="flex items-center justify-between">
               <span class="font-label-sm text-label-sm text-primary font-bold">${p.category || '아파트'}</span>
@@ -382,5 +382,5 @@
 
 
 
-<script src="common.js?v=20260908a"></script>
+<script src="common.js?v=20260908b"></script>
 </body></html>

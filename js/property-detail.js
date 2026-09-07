@@ -53,10 +53,13 @@
     if (gallery && shots.length && typeof OceanGallery !== 'undefined') {
       OceanGallery.render(gallery, shots, p.name);
     } else {
+      /* 자료가 오기 전에는 감춰 둔다. 예전에는 예시 사진이 박혀 있어서
+         엉뚱한 사진이 잠깐 보였다가 바뀌었다. */
       var img = $('#oc-d-image');
       if (img && p.imageUrl) {
         img.src = p.imageUrl;
         img.alt = p.name || '매물 사진';
+        img.style.display = '';
       }
     }
 
