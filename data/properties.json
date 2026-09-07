@@ -23,20 +23,6 @@
     "featured": true
   },
   {
-    "id": "prop-3",
-    "name": "강릉 유천 유승한내들",
-    "category": "기존 매물",
-    "type": "전세",
-    "price": "3억 2,000만원",
-    "specs": "84㎡ · 중층 · 788세대",
-    "location": "강원도 강릉시 유천동",
-    "status": "노출중",
-    "badge": "전세",
-    "badgeColor": "info",
-    "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuB6uVObS35uwc5ZXxjz6kphUuA8gMQC74DjVJ0jRtWhFj_JvOrH5r7ptR7pjzupA8eWlFq3I_65BLcMs8gs6bIYMekqraYyNBhVLC6YfCvbCXIrRyrB_TR60TEVVF4s54Y5Zi88XqkcpwyxcZ_ZxCrBBi1eTn9gHSqiDLXqVBQhUc-hE_HyRXlNBETLldlpzUaUJ8TcSThPQ-8hvzJVctJ_zJUc7n_UOTwsY3LiGEAwFApD9NkZ6WjyFg",
-    "description": "초·중·고 도보 접근성 우수, 올리모델링 상태 양호한 올바른 주거 공간입니다."
-  },
-  {
     "id": "pos-10671293",
     "name": "강릉오션시티아이파크",
     "category": "아파트",
