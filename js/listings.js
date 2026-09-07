@@ -100,10 +100,10 @@
 
   /* 한 줄짜리 제원이 카드 폭을 넘치면 글자를 조금씩 줄여 맞춥니다.
      엑셀의 "셀에 맞춤"과 같은 동작입니다. 자간을 먼저 좁히고, 그래도
-     넘치면 글자 크기를 0.5px 씩 줄이되 11px 아래로는 내리지 않습니다
+     넘치면 글자 크기를 0.5px 씩 줄이되 13px 아래로는 내리지 않습니다
      (그보다 작으면 읽기 어렵습니다). */
   function fitSpecLines(root) {
-    var MIN_PX = 11;
+    var MIN_PX = 13;
     var nodes = (root || document).querySelectorAll('[data-oc-fit]');
     Array.prototype.forEach.call(nodes, function (el) {
       el.style.letterSpacing = '';
@@ -213,7 +213,7 @@
         /* 매물 특징을 적었으면 그것만, 없을 때만 매물 설명을 보여 줍니다.
            둘 다 같은 글자 모양입니다 (알약 모양 배경 없음) */
         (features || p.description
-          ? '<p class="text-body-text text-sm mb-3 flex-grow line-clamp-3 whitespace-pre-line">' +
+          ? '<p class="text-body-text text-[17px] mb-3 flex-grow line-clamp-3 whitespace-pre-line">' +
               esc(features || p.description) + '</p>'
           : '<div class="flex-grow"></div>') +
         '<div class="flex gap-3">' +
