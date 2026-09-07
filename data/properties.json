@@ -23,21 +23,6 @@
     "featured": true
   },
   {
-    "id": "prop-2",
-    "name": "강릉 롯데캐슬 시그니처",
-    "category": "추천 매물",
-    "type": "매매",
-    "price": "7억 8,000만원",
-    "specs": "114㎡ · 로얄층 · 1,305세대",
-    "location": "강원도 강릉시 교동",
-    "status": "노출중",
-    "badge": "급매",
-    "badgeColor": "danger",
-    "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuAdMS1PYINwXLb1BewywRvZ_RhgWo8487cXr9coSL3RbXF1CeeDQiAAxT7gDNrc8KiowzQc4v9-VywUHG8buOrK6ap1wbWzJ9LUPY9IfaMJ_NbRlPX2g2ykkV2APMag8ETn28XVvu5bOG9jyia4FRdWvRncv_QP4rYO-2L_evkxN2_loqxk2_-I3Xu5FwhpGU2WDVHI3LIgduZGCmQLMD3N8A8o3Rs_glJHxZgC80C--ySlFlbI4-gZOw",
-    "description": "교동 센트럴파크를 품은 최적의 입지, 입주 만족도가 매우 높은 로얄동 로얄층 매물입니다.",
-    "urgent": true
-  },
-  {
     "id": "prop-3",
     "name": "강릉 유천 유승한내들",
     "category": "기존 매물",
