@@ -23,20 +23,6 @@
     "featured": true
   },
   {
-    "id": "prop-1",
-    "name": "강릉 자이 파인베뉴",
-    "category": "신규 분양",
-    "type": "매매",
-    "price": "6억 5,000만원",
-    "specs": "84㎡ · 고층 · 918세대",
-    "location": "강원도 강릉시 내곡동",
-    "status": "노출중",
-    "badge": "매매",
-    "badgeColor": "primary",
-    "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDXlJxfBg-F1A3BZHN-NFfQyt20qWdy0MLMQoOyArdPpvQlXHwimUjlSCvHSOQPX2bwLAtQ2LvdYUu--a4CELsGCrAhQfcpM_D9e2GIlxcnR5-yAwvLPYQg-GgG_STXlkugHEVItRxewcIqlqsWo-X1cGc-scSy--RkZRcUzYdseyL1jU3aiPX9kyBnLk4ZzNTvuqOe_OMMh77NZggaMUrAlA59X1gJmunJeD9DMH1ILGDFlwUzvr_J3g",
-    "description": "탁 트인 조망권과 최고급 신축 커뮤니티 시설을 갖춘 강릉 대표 프리미엄 아파트 단지입니다."
-  },
-  {
     "id": "prop-2",
     "name": "강릉 롯데캐슬 시그니처",
     "category": "추천 매물",
