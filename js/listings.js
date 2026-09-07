@@ -97,6 +97,37 @@
   }
 
   /* ---------- 카드 ---------- */
+
+  /* 한 줄짜리 제원이 카드 폭을 넘치면 글자를 조금씩 줄여 맞춥니다.
+     엑셀의 "셀에 맞춤"과 같은 동작입니다. 자간을 먼저 좁히고, 그래도
+     넘치면 글자 크기를 0.5px 씩 줄이되 11px 아래로는 내리지 않습니다
+     (그보다 작으면 읽기 어렵습니다). */
+  function fitSpecLines(root) {
+    var MIN_PX = 11;
+    var nodes = (root || document).querySelectorAll('[data-oc-fit]');
+    Array.prototype.forEach.call(nodes, function (el) {
+      el.style.letterSpacing = '';
+      el.style.fontSize = '';
+      if (el.scrollWidth <= el.clientWidth) return;
+
+      el.style.letterSpacing = '-0.02em';
+      if (el.scrollWidth <= el.clientWidth) return;
+
+      var px = parseFloat(window.getComputedStyle(el).fontSize) || 14;
+      while (px > MIN_PX && el.scrollWidth > el.clientWidth) {
+        px -= 0.5;
+        el.style.fontSize = px + 'px';
+      }
+    });
+  }
+
+  /* 카드 폭은 창 크기에 따라 달라지므로 창이 바뀌면 다시 맞춥니다. */
+  var fitTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(function () { fitSpecLines(); }, 150);
+  });
+
   function card(p) {
     var badgeStyle = BADGE[p.type] || 'bg-primary-container text-on-primary-container';
     var detailHref = 'property-detail.html?id=' + encodeURIComponent(p.id);
@@ -110,11 +141,11 @@
     var FALLBACK = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80';
     var features = String(p.features || '').trim();
 
-    /* 상세 제원과 동·층을 한 줄로 (예: 116㎡ / 102동 6층) */
-    var specLine = [p.specs, p.unitPublic]
-      .map(function (v) { return String(v || '').trim(); })
-      .filter(Boolean)
-      .join(' / ');
+    /* 제원은 첫 줄, 동·층은 그 아래 줄에 둔다.
+       공급/전용은 한 줄에 다 들어가야 읽기 좋아서, 칸을 넘치면 아래
+       fitSpecLines() 가 글자 크기를 조금씩 줄여 맞춘다(엑셀의 "셀에 맞춤"). */
+    var specText = String(p.specs || '').trim();
+    var unitText = String(p.unitPublic || '').trim();
 
     return '' +
       '<div class="oc-lift bg-card rounded-xl p-padding-container flex flex-col">' +
@@ -140,8 +171,8 @@
           : /* 사진이 없으면 종류에 맞는 그림을 보여 줍니다 (사진 있는 카드와 높이가 같아집니다) */
             '<a href="' + detailHref + '" class="relative block w-full aspect-[4/3] rounded-lg overflow-hidden bg-surface-container ' +
                  'flex flex-col items-center justify-center gap-1.5 mb-stack-sm">' +
-              '<span class="material-symbols-outlined text-[44px] text-on-surface-variant opacity-30">' + catIcon(p.category) + '</span>' +
-              '<span class="text-[11px] font-bold text-on-surface-variant opacity-50">' + esc(p.category || '매물') + '</span>' +
+              '<span class="material-symbols-outlined text-[88px] leading-none text-on-surface-variant opacity-30">' + catIcon(p.category) + '</span>' +
+              '<span class="text-[14px] font-bold text-on-surface-variant opacity-50">' + esc(p.category || '매물') + '</span>' +
               '<div class="absolute top-2 left-2 flex items-center gap-1">' + urgentTag +
                 '<span class="' + badgeStyle + ' px-2 py-1 rounded-[8px] font-label-sm text-label-sm shadow-sm">' + esc(p.type || '매물') + '</span>' +
               '</div>' +
@@ -156,7 +187,14 @@
           '</h2>' +
           (p.propertyNo ? '<span class="text-[11px] font-bold text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded shrink-0">' + esc(p.propertyNo) + '번</span>' : '') +
         '</div>' +
-        (specLine ? '<p class="text-body-text mb-1">' + esc(specLine) + '</p>' : '') +
+        (specText
+          ? '<p class="text-body-text mb-0.5 whitespace-nowrap overflow-hidden" data-oc-fit>' +
+              esc(specText) + '</p>'
+          : '') +
+        (unitText
+          ? '<p class="text-body-text mb-1 whitespace-nowrap overflow-hidden" data-oc-fit>' +
+              esc(unitText) + '</p>'
+          : '') +
         '<div class="mb-stack-md">' +
           '<span class="font-headline-md text-headline-md text-primary font-bold">' + esc(p.price) + '</span>' +
         '</div>' +
@@ -294,6 +332,7 @@
     }
 
     list.innerHTML = props.map(card).join('');
+    fitSpecLines(list);
     list.classList.add('oc-stagger');
     /* 백그라운드 탭에서도 확실히 보이도록 (requestAnimationFrame 은 숨은 탭에서 멈춥니다) */
     setTimeout(function () { list.classList.add('oc-in'); }, 30);
