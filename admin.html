@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="css/ocean-motion.css?v=20260908f" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260908g" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -107,8 +107,8 @@
 
 
 
-<link rel="stylesheet" href="common.css?v=20260908f">
-<script src="js/admin-auth.js?v=20260908f"></script>
+<link rel="stylesheet" href="common.css?v=20260908g">
+<script src="js/admin-auth.js?v=20260908g"></script>
 </head>
 <body class="bg-canvas text-on-surface antialiased flex flex-col min-h-screen">
 
@@ -131,6 +131,10 @@
     <a href="news-write.html" class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md hover:bg-secondary transition-all flex items-center gap-1.5">
       <span class="material-symbols-outlined text-sm">edit_note</span> 소식 글쓰기
     </a>
+    <button onclick="ocAdminLogout()" title="로그아웃하면 메뉴의 관리자 링크도 사라집니다"
+            class="px-4 py-2.5 bg-white border border-gray-200 text-red-600 rounded-xl text-sm font-semibold hover:bg-red-50 transition-all flex items-center gap-1.5 shadow-sm">
+      <span class="material-symbols-outlined text-base">logout</span> 로그아웃
+    </button>
     <button onclick="OceanDB.openConfigModal()" class="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all flex items-center gap-1.5 shadow-sm">
       <span class="material-symbols-outlined text-sm text-gray-500">cloud_sync</span> GitHub 토큰 설정
     </button>
@@ -359,10 +363,10 @@
 
 
 <!-- Scripts -->
-<script src="js/price-format.js?v=20260908f"></script>
-<script src="js/github-db.js?v=20260908f"></script>
-<script src="js/photo-upload.js?v=20260908f"></script>
-<script src="js/ocean-motion.js?v=20260908f"></script>
+<script src="js/price-format.js?v=20260908g"></script>
+<script src="js/github-db.js?v=20260908g"></script>
+<script src="js/photo-upload.js?v=20260908g"></script>
+<script src="js/ocean-motion.js?v=20260908g"></script>
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await refreshDashboard();
@@ -707,5 +711,5 @@
   <span class="material-symbols-outlined text-sm">settings</span> GitHub 연동 설정
 </button>
 </template>
-<script src="common.js?v=20260908f" data-bottomnav="off"></script>
+<script src="common.js?v=20260908g" data-bottomnav="off"></script>
 </body></html>

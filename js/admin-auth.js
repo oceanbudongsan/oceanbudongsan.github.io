@@ -22,6 +22,12 @@
   var PASS_HASH = '93ad2d6cdafbe929d0423af6c12f1aece4d3d9862357b1aa9eee109d5a893237';
   var KEY       = 'oc-admin-auth';
 
+  /* 메뉴에 "관리자" 링크를 보여줄지만 정하는 표시입니다.
+     로그인 자체는 위의 KEY(sessionStorage, 탭 하나에서만 유지)로 판단하고,
+     이 표시는 브라우저에 남겨 다른 탭에서도 링크가 보이게 합니다.
+     이 표시가 있어도 관리자 페이지는 여전히 비밀번호를 묻습니다. */
+  var LINK_KEY = 'oc-admin-seen';
+
   /* 비밀번호 해시 만들기 (콘솔에서 사용) */
   window.ocMakeHash = function (pw) {
     return sha256(pw).then(function (h) {
@@ -42,6 +48,14 @@
         .join('');
     });
   }
+
+  /* 로그아웃: 로그인과 메뉴 표시를 모두 지웁니다.
+     공용 컴퓨터를 쓰실 때 이 단추로 "관리자" 링크까지 감출 수 있습니다. */
+  window.ocAdminLogout = function () {
+    try { sessionStorage.removeItem(KEY); } catch (e) {}
+    try { localStorage.removeItem(LINK_KEY); } catch (e) {}
+    location.href = 'index.html';
+  };
 
   /* 이미 로그인했으면 그냥 통과 (브라우저를 닫으면 풀립니다) */
   try {
@@ -103,6 +117,7 @@
           /* 저장해두면 다음에 안 물어봅니다. 저장이 막힌 환경이어도
              아래에서 화면을 바로 열어주므로 로그인은 정상 동작합니다.  */
           try { sessionStorage.setItem(KEY, 'ok'); } catch (e2) {}
+          try { localStorage.setItem(LINK_KEY, 'ok'); } catch (e3) {}
 
           if (hide.parentNode) hide.parentNode.removeChild(hide);
           if (gate.parentNode) gate.parentNode.removeChild(gate);

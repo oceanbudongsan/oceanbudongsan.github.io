@@ -42,11 +42,15 @@
      로그인 뒤 매물찾기 같은 다른 화면으로 넘어가면 관리자 페이지로 돌아올
      길이 없었습니다. 로그인 여부는 admin-auth.js 가 남기는 값으로 봅니다
      (브라우저 탭을 닫으면 풀립니다). */
-  var ADMIN_KEY = 'oc-admin-auth';
+  var ADMIN_KEY = 'oc-admin-auth';   /* 로그인 (탭 하나에서만 유지) */
+  var ADMIN_LINK_KEY = 'oc-admin-seen';  /* 링크를 보여줄지 (브라우저에 남음) */
 
   function isAdmin() {
     try {
-      return sessionStorage.getItem(ADMIN_KEY) === 'ok';
+      if (sessionStorage.getItem(ADMIN_KEY) === 'ok') return true;
+    } catch (e) { /* 저장소를 못 쓰는 환경 */ }
+    try {
+      return localStorage.getItem(ADMIN_LINK_KEY) === 'ok';
     } catch (e) {
       return false;
     }
