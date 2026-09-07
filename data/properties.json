@@ -19,7 +19,8 @@
       "images/20260906-103514-829-1.jpg"
     ],
     "videoUrl": "",
-    "urgent": true
+    "urgent": true,
+    "featured": true
   },
   {
     "id": "prop-1",
