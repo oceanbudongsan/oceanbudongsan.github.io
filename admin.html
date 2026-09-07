@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="css/ocean-motion.css?v=20260908c" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260908d" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -107,8 +107,8 @@
 
 
 
-<link rel="stylesheet" href="common.css?v=20260908c">
-<script src="js/admin-auth.js?v=20260908c"></script>
+<link rel="stylesheet" href="common.css?v=20260908d">
+<script src="js/admin-auth.js?v=20260908d"></script>
 </head>
 <body class="bg-canvas text-on-surface antialiased flex flex-col min-h-screen">
 
@@ -216,6 +216,25 @@
     <button type="button" onclick="startNewProperty()" class="px-3.5 py-1.5 bg-blue-50 text-primary text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">add_home</span> 신규 매물 등록 폼 열기
     </button>
+  </div>
+
+  <!-- 매물이 100건을 넘어가면 표만으로는 찾기 어렵다. 검색과 간단한 거르개를 둔다. -->
+  <div class="flex flex-wrap items-center gap-2 mb-stack-sm">
+    <div class="relative flex-1 min-w-[220px]">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+      <input id="admin-prop-search" type="text" placeholder="매물명 · 번호 · 매물특징으로 검색"
+             class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100">
+    </div>
+    <select id="admin-prop-category"
+            class="px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white">
+      <option value="">종류 전체</option>
+    </select>
+    <div class="flex gap-1" id="admin-prop-quick">
+      <button type="button" data-quick="" class="px-3 py-2 rounded-xl text-xs font-bold border border-gray-200 bg-primary text-white">전체</button>
+      <button type="button" data-quick="urgent" class="px-3 py-2 rounded-xl text-xs font-bold border border-gray-200 bg-white text-gray-600">급매</button>
+      <button type="button" data-quick="featured" class="px-3 py-2 rounded-xl text-xs font-bold border border-gray-200 bg-white text-gray-600">메인추천</button>
+    </div>
+    <span id="admin-prop-count" class="text-xs text-gray-400 ml-1"></span>
   </div>
 
   <!-- Hidden Property Register Form -->
@@ -340,10 +359,10 @@
 
 
 <!-- Scripts -->
-<script src="js/price-format.js?v=20260908c"></script>
-<script src="js/github-db.js?v=20260908c"></script>
-<script src="js/photo-upload.js?v=20260908c"></script>
-<script src="js/ocean-motion.js?v=20260908c"></script>
+<script src="js/price-format.js?v=20260908d"></script>
+<script src="js/github-db.js?v=20260908d"></script>
+<script src="js/photo-upload.js?v=20260908d"></script>
+<script src="js/ocean-motion.js?v=20260908d"></script>
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await refreshDashboard();
@@ -442,9 +461,37 @@
     }
 
     // Render Properties Table
+    allProps = props;
+    renderPropsTable();
+  }
+
+  /* 검색어·종류·빠른 거르개를 적용해 표를 다시 그립니다. */
+  let allProps = [];
+  let propFilter = { q: '', category: '', quick: '' };
+
+  function renderPropsTable() {
     const propsTbody = document.getElementById('props-table-body');
+    if (!propsTbody) return;
+
+    const q = propFilter.q.trim().toLowerCase();
+    const props = allProps.filter(p => {
+      if (propFilter.category && p.category !== propFilter.category) return false;
+      if (propFilter.quick === 'urgent' && !p.urgent) return false;
+      if (propFilter.quick === 'featured' && !p.featured) return false;
+      if (!q) return true;
+      return [p.name, p.propertyNo, p.naverNo, p.features, p.location]
+        .some(v => String(v || '').toLowerCase().includes(q));
+    });
+
+    const countBox = document.getElementById('admin-prop-count');
+    if (countBox) {
+      countBox.textContent = props.length === allProps.length
+        ? `${allProps.length}건`
+        : `${props.length}건 / 전체 ${allProps.length}건`;
+    }
+
     if (props.length === 0) {
-      propsTbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-400">등록된 매물이 없습니다.</td></tr>`;
+      propsTbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-400">조건에 맞는 매물이 없습니다.</td></tr>`;
     } else {
       propsTbody.innerHTML = props.map(prop => `
         <tr class="hover:bg-gray-50 transition-colors">
@@ -455,7 +502,10 @@
           <td class="p-4 font-bold text-gray-900">${prop.name}${prop.unit ? `<div class="text-[11px] font-normal text-gray-400 mt-0.5">${prop.unit}</div>` : ''}</td>
           <td class="p-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded">${prop.type}</span>${prop.urgent ? '<span class="ml-1 px-2 py-0.5 bg-red-50 text-red-600 text-xs font-bold rounded">급매</span>' : ''}</td>
           <td class="p-4 font-semibold text-blue-600">${prop.price}</td>
-          <td class="p-4 text-xs text-gray-500">${prop.specs || '-'}</td>
+          <td class="p-4 text-xs">
+            <div class="text-gray-700">${prop.features || '-'}</div>
+            ${prop.specs ? `<div class="text-[11px] text-gray-400 mt-0.5">${prop.specs}</div>` : ''}
+          </td>
           <td class="p-4 text-center">
             <button onclick="adminToggleFeatured('${prop.id}')" title="메인 화면에 앞세우기"
                     class="text-2xl leading-none ${prop.featured ? 'text-amber-400' : 'text-gray-300 hover:text-amber-300'}">
@@ -473,7 +523,49 @@
         </tr>
       `).join('');
     }
+
+    /* 종류 선택칸은 실제로 있는 종류만 채웁니다 */
+    const sel = document.getElementById('admin-prop-category');
+    if (sel && sel.options.length <= 1) {
+      const kinds = [...new Set(allProps.map(p => p.category).filter(Boolean))].sort();
+      kinds.forEach(k => {
+        const o = document.createElement('option');
+        o.value = k; o.textContent = k;
+        sel.appendChild(o);
+      });
+    }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const search = document.getElementById('admin-prop-search');
+    if (search) {
+      search.addEventListener('input', () => {
+        propFilter.q = search.value;
+        renderPropsTable();
+      });
+    }
+    const cat = document.getElementById('admin-prop-category');
+    if (cat) {
+      cat.addEventListener('change', () => {
+        propFilter.category = cat.value;
+        renderPropsTable();
+      });
+    }
+    const quick = document.getElementById('admin-prop-quick');
+    if (quick) {
+      quick.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-quick]');
+        if (!btn) return;
+        propFilter.quick = btn.dataset.quick;
+        quick.querySelectorAll('button').forEach(b => {
+          const on = b === btn;
+          b.className = 'px-3 py-2 rounded-xl text-xs font-bold border border-gray-200 '
+            + (on ? 'bg-primary text-white' : 'bg-white text-gray-600');
+        });
+        renderPropsTable();
+      });
+    }
+  });
 
   window.adminDeletePost = async function(id) {
     if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
@@ -615,5 +707,5 @@
   <span class="material-symbols-outlined text-sm">settings</span> GitHub 연동 설정
 </button>
 </template>
-<script src="common.js?v=20260908c" data-bottomnav="off"></script>
+<script src="common.js?v=20260908d" data-bottomnav="off"></script>
 </body></html>
