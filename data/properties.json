@@ -2,11 +2,11 @@
   {
     "id": "prop-1788658524502",
     "name": "강릉오션시티아이피크",
-    "category": "아파트/주상복합",
+    "category": "아파트",
     "features": "마피 6천 116타입 6층이지만 확트인 조망권 확보 안목바다뷰 에어컨",
     "unit": "102동 603호",
     "unitPublic": "102동 6층",
-    "type": "급매",
+    "type": "매매",
     "price": "7억 185만원",
     "specs": "116㎡ 6층",
     "location": "강원특별자치도 강릉시 견소동",
@@ -18,7 +18,8 @@
     "images": [
       "images/20260906-103514-829-1.jpg"
     ],
-    "videoUrl": ""
+    "videoUrl": "",
+    "urgent": true
   },
   {
     "id": "prop-1",
@@ -38,7 +39,7 @@
     "id": "prop-2",
     "name": "강릉 롯데캐슬 시그니처",
     "category": "추천 매물",
-    "type": "급매",
+    "type": "매매",
     "price": "7억 8,000만원",
     "specs": "114㎡ · 로얄층 · 1,305세대",
     "location": "강원도 강릉시 교동",
@@ -46,7 +47,8 @@
     "badge": "급매",
     "badgeColor": "danger",
     "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuAdMS1PYINwXLb1BewywRvZ_RhgWo8487cXr9coSL3RbXF1CeeDQiAAxT7gDNrc8KiowzQc4v9-VywUHG8buOrK6ap1wbWzJ9LUPY9IfaMJ_NbRlPX2g2ykkV2APMag8ETn28XVvu5bOG9jyia4FRdWvRncv_QP4rYO-2L_evkxN2_loqxk2_-I3Xu5FwhpGU2WDVHI3LIgduZGCmQLMD3N8A8o3Rs_glJHxZgC80C--ySlFlbI4-gZOw",
-    "description": "교동 센트럴파크를 품은 최적의 입지, 입주 만족도가 매우 높은 로얄동 로얄층 매물입니다."
+    "description": "교동 센트럴파크를 품은 최적의 입지, 입주 만족도가 매우 높은 로얄동 로얄층 매물입니다.",
+    "urgent": true
   },
   {
     "id": "prop-3",
@@ -1247,7 +1249,7 @@
     "discountText": "마피 5,500만원",
     "unitType": "84A타입",
     "areaShort": "109㎡(33평)",
-    "featured": false,
+    "featured": true,
     "description": "▣▣ 매매특징 ▣▣\n✔️ 계약금 5% 세대로 실투자금 2700만원\n✔️ 중도금 무이자+발코니 확장 무상으로 실입주 부담 최소화\n✔️ 비치 프론트 아파트로 단지 앞이 바로 바다 \n✔️ 거실 작은창, 주방, 작은방 바다조망, \n✔️ 지상에 차가 없는 공원형 아파트\n✔️ 커뮤니티 시설 : 스크린골프, 실내골프연습장., 피트니스, GX, 독서실, 도서관 등\n\n▣▣ 매물정보 ▣▣\n🏡 타입: 84A타입\n📐 공급면적 : 108.56㎡ (구.44py)\n📏 전용면적 : 84.96㎡ (구.35py)\n🏢 해당층 : 104동 4층\n🌅 방향 : 북서향(주된 출입구 기준)\n🗓️ 입주시기 : 즉시입주가능\n\n▣▣ 매매가격 ▣▣\n- 분양가 :522,000,000원\n- 프리미엄 : -55.000.000원\n- 옵션(공간·가전옵션) : 8,230,000원\n- 베란다 확장 : 무상\n- 중도금 무이자\n매매가 : 475,230,000원\n\n▣▣ 명의변경시 필요금액 ▣▣\n없음 \n\n▣▣ 옵션사항 ▣▣\n- 시스템에어컨 (무풍)- 5대 : 8,230,000원\n- (무상): 파우더장_무상선택형(좌식화장대)\n- (무상) : 냉장고장_기본형(김치냉장고 설치형)",
     "imageUrl": "",
     "images": []
@@ -1809,7 +1811,7 @@
   {
     "id": "pos-10710575",
     "name": "토지 (강릉시 송정동)",
-    "category": "토지",
+    "category": "토지/임야",
     "type": "매매",
     "price": "2억 6,000만원",
     "specs": "대지 1286㎡(389.01평)",
