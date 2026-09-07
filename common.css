@@ -155,3 +155,10 @@ body:not(.oc-is-admin) .oc-admin-only{display:none!important;}
 .oc-bnav a .material-symbols-outlined{font-size:24px;}
 .oc-bnav a.oc-active{color:var(--oc-blue);}
 .oc-bnav a.oc-bnav-cta{color:var(--oc-blue); background:#e8f3ff; margin:0 6px;}
+
+/* 관리자로 로그인했을 때만 나타나는 메뉴. 일반 메뉴와 구별되게 색을 준다. */
+.oc-nav a[data-oc-page="admin.html"],
+.oc-dropdown a[data-oc-page="admin.html"] {
+  color: #b42318;
+  font-weight: 800;
+}

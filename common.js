@@ -38,6 +38,28 @@
   ];
   /* --------------------------------------------------- */
 
+  /* 관리자로 로그인한 동안에만 메뉴에 "관리자"를 끼워 넣습니다.
+     로그인 뒤 매물찾기 같은 다른 화면으로 넘어가면 관리자 페이지로 돌아올
+     길이 없었습니다. 로그인 여부는 admin-auth.js 가 남기는 값으로 봅니다
+     (브라우저 탭을 닫으면 풀립니다). */
+  var ADMIN_KEY = 'oc-admin-auth';
+
+  function isAdmin() {
+    try {
+      return sessionStorage.getItem(ADMIN_KEY) === 'ok';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function menuItems() {
+    var items = MENU.slice();
+    if (isAdmin()) {
+      items.push({ href: 'admin.html', label: '관리자', icon: 'settings' });
+    }
+    return items;
+  }
+
   var script = document.currentScript;
   var showBottomNav = !(script && script.getAttribute('data-bottomnav') === 'off');
 
@@ -54,7 +76,7 @@
 
   /* ---------- 헤더 ---------- */
   function buildHeader() {
-    var nav = MENU.map(function (m) {
+    var nav = menuItems().map(function (m) {
       return '<a href="' + m.href + '" data-oc-page="' + m.href + '">' + m.label + '</a>';
     }).join('');
 
@@ -78,7 +100,7 @@
 
   /* ---------- 모바일 드롭다운 메뉴 (햄버거) ---------- */
   function buildDropdown() {
-    var items = MENU.map(function (m) {
+    var items = menuItems().map(function (m) {
       return '<a href="' + m.href + '" data-oc-page="' + m.href + '">' +
              '<span class="material-symbols-outlined">' + m.icon + '</span>' + m.label + '</a>';
     }).join('');
