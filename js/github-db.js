@@ -325,6 +325,28 @@
       return [];
     }
 
+    /* 매물의 값 하나만 바꿉니다 (예: 메인추천 켜기/끄기).
+       saveProperty() 는 폼에 있는 항목으로 통째로 덮어쓰기 때문에, 목록에서
+       체크만 바꿀 때 쓰면 자동화가 넣어둔 다른 값까지 지워집니다. */
+    async setPropertyFlag(id, key, value) {
+      const props = await this.getProperties();
+      const idx = props.findIndex((p) => String(p.id) === String(id));
+      if (idx === -1) return { success: false, error: '매물을 찾을 수 없습니다.' };
+
+      props[idx] = { ...props[idx], [key]: value };
+      localStorage.setItem(STORAGE_KEY_PROPS, JSON.stringify(props));
+
+      if (!this.isGitHubConfigured()) return { success: true, mode: 'local' };
+      try {
+        await this.pushFileToGitHub(
+          this.config.pathProperties, JSON.stringify(props, null, 2),
+          `[OceanDB] ${props[idx].name} ${key}=${value}`);
+        return { success: true, mode: 'github' };
+      } catch (err) {
+        return { success: false, mode: 'github', error: err.message };
+      }
+    }
+
     async saveProperty(propData) {
       const props = await this.getProperties();
       let isEdit = false;
@@ -335,7 +357,10 @@
         if (idx !== -1) isEdit = true;
       }
 
+      /* 기존 항목을 먼저 펼쳐 둔다. 그러지 않으면 여기 적히지 않은 항목
+         (자동화가 넣는 급매·할인 정보 등)이 수정할 때마다 사라진다. */
       const formatted = {
+        ...(isEdit ? props[idx] : {}),
         id: isEdit ? propData.id : 'prop-' + Date.now(),
         /* 노션 매물장과 같은 두 가지 번호
            propertyNo : 내부매물번호 (손님에게 말하는 짧은 번호)
@@ -349,6 +374,7 @@
         unitPublic: maskUnit(propData.unit),
         type: propData.type || '매매',
         urgent: !!propData.urgent,
+        featured: !!propData.featured,
         price: propData.price || '가격 문의',
         specs: propData.specs || '',
         location: propData.location || '강원도 강릉시',

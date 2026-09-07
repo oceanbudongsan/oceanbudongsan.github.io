@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="css/ocean-motion.css?v=20260908b" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260908c" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -107,8 +107,8 @@
 
 
 
-<link rel="stylesheet" href="common.css?v=20260908b">
-<script src="js/admin-auth.js?v=20260908b"></script>
+<link rel="stylesheet" href="common.css?v=20260908c">
+<script src="js/admin-auth.js?v=20260908c"></script>
 </head>
 <body class="bg-canvas text-on-surface antialiased flex flex-col min-h-screen">
 
@@ -315,17 +315,19 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-surface-container-lowest border-b border-surface-variant text-xs text-gray-500">
+            <th class="p-4 font-bold w-20">사진</th>
             <th class="p-4 font-bold w-20">번호</th>
             <th class="p-4 font-bold">매물명</th>
             <th class="p-4 font-bold">구분</th>
             <th class="p-4 font-bold">가격</th>
             <th class="p-4 font-bold">상세제원</th>
+            <th class="p-4 font-bold text-center w-24">메인추천</th>
             <th class="p-4 font-bold text-right">관리</th>
           </tr>
         </thead>
         <tbody id="props-table-body" class="font-body-md text-body-md divide-y divide-surface-variant">
           <tr>
-            <td colspan="6" class="p-8 text-center text-gray-400">매물 목록을 불러오는 중입니다...</td>
+            <td colspan="7" class="p-8 text-center text-gray-400">매물 목록을 불러오는 중입니다...</td>
           </tr>
         </tbody>
       </table>
@@ -338,10 +340,10 @@
 
 
 <!-- Scripts -->
-<script src="js/price-format.js?v=20260908b"></script>
-<script src="js/github-db.js?v=20260908b"></script>
-<script src="js/photo-upload.js?v=20260908b"></script>
-<script src="js/ocean-motion.js?v=20260908b"></script>
+<script src="js/price-format.js?v=20260908c"></script>
+<script src="js/github-db.js?v=20260908c"></script>
+<script src="js/photo-upload.js?v=20260908c"></script>
+<script src="js/ocean-motion.js?v=20260908c"></script>
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
     await refreshDashboard();
@@ -442,15 +444,24 @@
     // Render Properties Table
     const propsTbody = document.getElementById('props-table-body');
     if (props.length === 0) {
-      propsTbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400">등록된 매물이 없습니다.</td></tr>`;
+      propsTbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-400">등록된 매물이 없습니다.</td></tr>`;
     } else {
       propsTbody.innerHTML = props.map(prop => `
         <tr class="hover:bg-gray-50 transition-colors">
+          <td class="p-2">${prop.imageUrl
+            ? `<img src="${prop.imageUrl}" alt="" loading="lazy" class="w-16 h-12 object-cover rounded-md border border-gray-200">`
+            : `<div class="w-16 h-12 rounded-md bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-300"><span class="material-symbols-outlined text-lg">apartment</span></div>`}</td>
           <td class="p-4 text-sm font-bold text-primary">${prop.propertyNo || '-'}${prop.naverNo ? `<div class="text-[10px] font-normal text-gray-400 mt-0.5">N ${prop.naverNo}</div>` : ''}</td>
           <td class="p-4 font-bold text-gray-900">${prop.name}${prop.unit ? `<div class="text-[11px] font-normal text-gray-400 mt-0.5">${prop.unit}</div>` : ''}</td>
           <td class="p-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-bold rounded">${prop.type}</span>${prop.urgent ? '<span class="ml-1 px-2 py-0.5 bg-red-50 text-red-600 text-xs font-bold rounded">급매</span>' : ''}</td>
           <td class="p-4 font-semibold text-blue-600">${prop.price}</td>
           <td class="p-4 text-xs text-gray-500">${prop.specs || '-'}</td>
+          <td class="p-4 text-center">
+            <button onclick="adminToggleFeatured('${prop.id}')" title="메인 화면에 앞세우기"
+                    class="text-2xl leading-none ${prop.featured ? 'text-amber-400' : 'text-gray-300 hover:text-amber-300'}">
+              ${prop.featured ? '★' : '☆'}
+            </button>
+          </td>
           <td class="p-4 text-right whitespace-nowrap">
             <button onclick="adminEditProperty('${prop.id}')" class="text-blue-600 hover:text-blue-800 text-xs font-bold inline-flex items-center gap-0.5 mr-4">
               <span class="material-symbols-outlined text-sm">edit</span> 수정
@@ -567,6 +578,23 @@
     if (priceInput) priceInput.addEventListener('input', updatePricePreview);
   });
 
+  /* 메인추천 켜기/끄기. 값 하나만 바꿔 저장하므로 자동화가 넣어둔 다른
+     정보(급매·할인 금액 등)를 건드리지 않습니다. */
+  window.adminToggleFeatured = async function(id) {
+    const props = await OceanDB.getProperties();
+    const prop = props.find(p => String(p.id) === String(id));
+    if (!prop) return;
+
+    const next = !prop.featured;
+    const res = await OceanDB.setPropertyFlag(id, 'featured', next);
+    if (res.success) {
+      OceanMotion.showToast(next ? '메인추천으로 올렸습니다.' : '메인추천에서 내렸습니다.', 'success');
+      await refreshDashboard();
+    } else {
+      alert('저장 실패: ' + (res.error || '다시 시도해주세요.'));
+    }
+  };
+
   window.adminDeleteProperty = async function(id) {
     if (!confirm('정말로 이 매물을 삭제하시겠습니까?')) return;
     const res = await OceanDB.deleteProperty(id);
@@ -587,5 +615,5 @@
   <span class="material-symbols-outlined text-sm">settings</span> GitHub 연동 설정
 </button>
 </template>
-<script src="common.js?v=20260908b" data-bottomnav="off"></script>
+<script src="common.js?v=20260908c" data-bottomnav="off"></script>
 </body></html>
