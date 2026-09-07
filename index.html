@@ -62,7 +62,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<link href="css/ocean-motion.css?v=20260908d" rel="stylesheet">
+<link href="css/ocean-motion.css?v=20260908e" rel="stylesheet">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -164,7 +164,7 @@
 
 
 
-<link rel="stylesheet" href="common.css?v=20260908d">
+<link rel="stylesheet" href="common.css?v=20260908e">
 </head>
 <body class="antialiased min-h-screen flex flex-col pb-[72px] md:pb-0 overflow-x-hidden">
 
@@ -202,18 +202,37 @@
   </div>
 </section>
 
-<!-- Category Tabs -->
-<section class="flex gap-stack-sm overflow-x-auto no-scrollbar pb-1 oc-reveal oc-delay-1" id="main-category-tabs">
-  <button data-cat="전체" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-all">전체 매물</button>
-  <button data-cat="신규 분양" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">신규 분양</button>
-  <button data-cat="추천 매물" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">추천 매물</button>
-  <button data-cat="기존 매물" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">기존 매물</button>
+<!-- 급매 매물 (자동으로 골라 보여줍니다. 관리자페이지에서 별표를 켠 매물이 맨 앞) -->
+<section class="oc-reveal oc-delay-1" id="urgent-section" hidden>
+  <div class="flex items-end justify-between mb-1">
+    <h2 class="font-headline-md text-headline-md text-gray-900 flex items-center gap-2">
+      <span>🔥</span> 급매 · 마피 매물
+      <span id="urgent-count" class="text-sm font-bold text-red-600"></span>
+    </h2>
+    <a href="listings.html" class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5 whitespace-nowrap">
+      급매 전체 보기 <span class="material-symbols-outlined text-sm">chevron_right</span>
+    </a>
+  </div>
+  <p class="text-xs text-gray-400 mb-4">분양가보다 싸게 나온 매물입니다.</p>
+  <div id="urgent-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card"></div>
 </section>
 
-<!-- Dynamic Property Grid (3-column grid) -->
-<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card oc-reveal oc-delay-2" id="property-grid-container">
-  <!-- Dynamic Property Cards Rendered Here -->
+<!-- 거래 종류 -->
+<section class="flex gap-stack-sm overflow-x-auto no-scrollbar pb-1 oc-reveal oc-delay-1" id="main-category-tabs">
+  <button data-deal="전체" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-all">전체</button>
+  <button data-deal="매매" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">매매</button>
+  <button data-deal="전세" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">전세</button>
+  <button data-deal="월세" class="oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all">월세</button>
 </section>
+
+<!-- 단지별 매물 -->
+<section id="complex-sections" class="flex flex-col gap-10 oc-reveal oc-delay-2"></section>
+
+<!-- 전체 보기 -->
+<a href="listings.html" id="see-all-btn"
+   class="block w-full text-center bg-gray-900 text-white font-label-lg text-label-lg rounded-2xl py-5 hover:bg-gray-800 transition-colors shadow-sm oc-reveal oc-delay-2">
+  전체 매물 보러 가기 →
+</a>
 
 <!-- Recent News Teaser Banner Section -->
 <section class="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 oc-reveal oc-delay-3">
@@ -239,11 +258,24 @@
 
 
 <!-- Scripts -->
-<script src="js/github-db.js?v=20260908d"></script>
-<script src="js/ocean-motion.js?v=20260908d"></script>
+<script src="js/github-db.js?v=20260908e"></script>
+<script src="js/ocean-motion.js?v=20260908e"></script>
 <script>
+  /* 메인 화면에 앞세울 입주 단지입니다.
+     단지명은 홈페이지 매물의 "매물명"과 똑같이 적어야 합니다.
+     입주 시기가 바뀌면 이 세 줄만 고치시면 됩니다. */
+  const MOVE_IN = [
+    { name: '강릉오션시티아이파크',  badge: '입주 중' },
+    { name: '강릉자이르네디오션',    badge: '11월 입주 예정' },
+    { name: '강릉모아미래도오션리버', badge: '12월 입주 예정' }
+  ];
+
+  const PER_SECTION = 3;      /* 단지마다 메인에 보여줄 개수 */
+  const URGENT_SLOTS = 6;     /* 급매 영역 칸 수 */
+  const MAX_PER_COMPLEX = 2;  /* 급매 영역에서 한 단지가 차지할 수 있는 최대 개수 */
+
   let allProperties = [];
-  let currentFilterCat = '전체';
+  let currentDeal = '전체';
 
   document.addEventListener('DOMContentLoaded', async () => {
     await loadMainData();
@@ -253,7 +285,9 @@
   async function loadMainData() {
     try {
       allProperties = await OceanDB.getProperties();
-      renderProperties();
+      renderUrgent();
+      renderComplexSections();
+      updateSeeAll();
 
       const posts = await OceanDB.getPosts();
       renderNewsPreview(posts.slice(0, 3));
@@ -262,96 +296,131 @@
     }
   }
 
-  function renderProperties() {
-    const container = document.getElementById('property-grid-container');
-    const searchVal = (document.getElementById('main-search-input')?.value || '').trim().toLowerCase();
-
-    let filtered = allProperties.filter(p => {
-      const matchCat = (currentFilterCat === '전체' || p.category === currentFilterCat);
-      const matchSearch = !searchVal || p.name.toLowerCase().includes(searchVal) || (p.location && p.location.toLowerCase().includes(searchVal));
-      return matchCat && matchSearch;
-    });
-
-    if (filtered.length === 0) {
-      container.innerHTML = `
-        <div class="col-span-full py-12 text-center text-gray-500 bg-white rounded-2xl">
-          등록된 매물이 없거나 검색 조건에 맞지 않습니다.
-        </div>
-      `;
-      return;
-    }
-
-    container.innerHTML = filtered.map(p => {
-      let badgeClass = 'bg-[#3182f6] text-white';
-      if (p.badgeColor === 'danger' || p.type === '급매') badgeClass = 'bg-red-500 text-white';
-      if (p.badgeColor === 'info' || p.type === '전세') badgeClass = 'bg-sky-100 text-sky-700 border border-sky-200';
-
-      return `
-        <article class="bg-card rounded-2xl p-padding-container shadow-sm border border-gray-100 flex flex-col gap-stack-md hover:shadow-lg transition-all relative overflow-hidden oc-card-interactive oc-tilt-card">
-          <a href="property-detail.html?id=${encodeURIComponent(p.id)}" class="relative block w-full h-48 rounded-xl overflow-hidden bg-canvas oc-img-zoom">
-            <img class="object-cover w-full h-full" src="${p.imageUrl}" alt="${p.name}" loading="lazy">
-            <div class="absolute top-3 left-3 ${badgeClass} px-2.5 py-1 rounded-[8px] font-label-sm text-label-sm uppercase shadow-sm">
-              ${p.type || '매매'}
-            </div>
-          </a>
-          <div class="flex flex-col gap-1">
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-primary font-bold">${p.category || '아파트'}</span>
-              <span class="text-xs text-gray-400 font-semibold">${p.location || ''}</span>
-            </div>
-            <h2 class="font-headline-md text-headline-md text-on-surface line-clamp-1">${p.name}</h2>
-            <p class="font-body-md text-body-md text-body-text font-semibold text-blue-600">${p.price}</p>
-            <p class="text-xs text-gray-500">${p.specs || ''}</p>
-          </div>
-          <a href="property-detail.html?id=${encodeURIComponent(p.id)}" class="w-full h-[48px] mt-auto bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:bg-secondary transition-colors flex items-center justify-center shadow-sm">
-            자세히 보기
-          </a>
-        </article>
-      `;
-    }).join('');
-
-    // Re-init tilt cards for new elements
-    if (window.OceanMotion) {
-      window.OceanMotion.initTiltCards();
-    }
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  function renderNewsPreview(posts) {
-    const container = document.getElementById('index-news-preview');
-    if (!posts || posts.length === 0) {
-      container.innerHTML = '<div class="col-span-full text-center text-gray-400 text-xs py-4">등록된 소식이 없습니다.</div>';
-      return;
-    }
+  /* 카드 셋째 줄: 동·층 · 타입 · 면적 을 있는 것만 이어 붙입니다. */
+  function metaLine(p) {
+    return [p.unitPublic, p.unitType, p.areaShort]
+      .map(v => String(v || '').trim()).filter(Boolean).join(' · ');
+  }
 
-    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80';
-
-    container.innerHTML = posts.map(post => {
-      /* 개별 글 페이지가 있으면 그 글로 바로 갑니다 (없으면 소식 목록으로) */
-      const href = post.pagePath || 'news.html';
-
-      /* 작은 정사각 썸네일을 오른쪽에 둡니다
-         (카드뉴스가 1080x1080 이라 정사각으로 넣어야 글자가 안 잘립니다) */
-      const thumb = post.imageUrl ? `
-        <div class="w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-          <img src="${post.imageUrl}" alt="${post.title}" loading="lazy"
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-               onerror="this.src='${FALLBACK_IMG}'">
-        </div>
-      ` : '';
-
-      return `
-      <a href="${href}" class="group flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-blue-50/60 border border-gray-100 transition-all">
-        <div class="min-w-0 flex-grow">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="px-2 py-0.5 bg-white text-blue-600 border border-blue-200 text-[11px] font-bold rounded">${post.category || '뉴스'}</span>
-            <span class="text-[11px] text-gray-400">${post.date}</span>
+  function cardHtml(p, hot) {
+    const href = 'property-detail.html?id=' + encodeURIComponent(p.id);
+    const dealClass = p.type === '전세'
+      ? 'bg-sky-100 text-sky-700 border border-sky-200'
+      : 'bg-[#3182f6] text-white';
+    const pic = p.imageUrl
+      ? `<img class="object-cover w-full h-full" src="${esc(p.imageUrl)}" alt="${esc(p.name)}" loading="lazy">`
+      : `<div class="w-full h-full flex flex-col items-center justify-center gap-1 text-on-surface-variant">
+           <span class="material-symbols-outlined text-[72px] leading-none opacity-30">apartment</span>
+           <span class="text-[13px] font-bold opacity-50">${esc(p.category || '매물')}</span>
+         </div>`;
+    const meta = metaLine(p);
+    return `
+      <article class="bg-card rounded-2xl p-padding-container shadow-sm border ${hot ? 'border-2 border-red-400' : 'border-gray-100'} flex flex-col gap-2 hover:shadow-lg transition-all relative overflow-hidden oc-card-interactive">
+        <a href="${href}" class="relative block w-full h-48 rounded-xl overflow-hidden bg-canvas oc-img-zoom">
+          ${pic}
+          <div class="absolute top-3 left-3 flex gap-1">
+            ${hot ? '<span class="bg-red-600 text-white px-2.5 py-1 rounded-[8px] font-label-sm text-label-sm shadow-sm">급매</span>' : ''}
+            <span class="${dealClass} px-2.5 py-1 rounded-[8px] font-label-sm text-label-sm shadow-sm">${esc(p.type || '매매')}</span>
           </div>
-          <h3 class="font-bold text-sm text-gray-900 group-hover:text-primary transition-colors line-clamp-1">${post.title}</h3>
-          <p class="text-xs text-gray-500 mt-0.5 line-clamp-1">${post.summary || ''}</p>
+        </a>
+        ${hot && p.discountText ? `<div class="self-start bg-red-50 text-red-600 font-extrabold text-sm px-2.5 py-1 rounded-lg">${esc(p.discountText)}</div>` : ''}
+        <div class="flex flex-col gap-0.5">
+          <h2 class="font-headline-md text-headline-md text-on-surface line-clamp-1">
+            <a href="${href}" class="hover:text-primary transition-colors">${esc(p.name)}</a>
+          </h2>
+          <p class="font-body-md text-body-md font-bold text-blue-600 text-[20px]">${esc(p.price)}</p>
+          ${meta ? `<p class="text-sm text-gray-500">${esc(meta)}</p>` : ''}
         </div>
-        ${thumb}
-      </a>`;
+        ${hot && p.features ? `<p class="text-red-600 font-bold text-[15px] leading-snug border-t border-red-100 pt-2">${esc(p.features)}</p>` : ''}
+        <a href="${href}" class="w-full h-[48px] mt-auto bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:bg-secondary transition-colors flex items-center justify-center shadow-sm">
+          자세히 보기
+        </a>
+      </article>`;
+  }
+
+  /* 급매 고르기
+     1) 관리자페이지에서 별표를 켠 매물을 먼저 넣는다
+     2) 남은 칸은 할인 큰 순으로 채우되, 한 단지가 화면을 다 차지하지 않도록
+        단지당 최대 MAX_PER_COMPLEX 건까지만 넣는다 */
+  function pickUrgent() {
+    const urgent = allProperties.filter(p => p.urgent);
+    const picked = [];
+    const used = new Set();
+    const perName = {};
+
+    urgent.filter(p => p.featured).forEach(p => {
+      if (picked.length >= URGENT_SLOTS) return;
+      picked.push(p); used.add(p.id);
+      perName[p.name] = (perName[p.name] || 0) + 1;
+    });
+
+    urgent
+      .filter(p => !used.has(p.id))
+      .sort((a, b) => (b.discount || 0) - (a.discount || 0))
+      .forEach(p => {
+        if (picked.length >= URGENT_SLOTS) return;
+        if ((perName[p.name] || 0) >= MAX_PER_COMPLEX) return;
+        picked.push(p); used.add(p.id);
+        perName[p.name] = (perName[p.name] || 0) + 1;
+      });
+
+    return { picked, total: urgent.length };
+  }
+
+  function renderUrgent() {
+    const box = document.getElementById('urgent-section');
+    const grid = document.getElementById('urgent-grid');
+    if (!box || !grid) return;
+
+    const { picked, total } = pickUrgent();
+    if (!picked.length) { box.hidden = true; return; }
+
+    box.hidden = false;
+    document.getElementById('urgent-count').textContent = total + '건';
+    grid.innerHTML = picked.map(p => cardHtml(p, true)).join('');
+  }
+
+  function renderComplexSections() {
+    const box = document.getElementById('complex-sections');
+    if (!box) return;
+
+    const html = MOVE_IN.map(item => {
+      const rows = allProperties.filter(p =>
+        p.name === item.name && (currentDeal === '전체' || p.type === currentDeal));
+      if (!rows.length) return '';
+
+      const shown = rows.slice(0, PER_SECTION);
+      const rest = rows.length - shown.length;
+      const moreHref = 'listings.html?q=' + encodeURIComponent(item.name);
+      return `
+        <div>
+          <div class="flex items-center gap-2 mb-3 flex-wrap">
+            <h2 class="font-headline-md text-headline-md text-gray-900">${esc(item.name)}</h2>
+            <span class="text-sm font-bold text-primary">${rows.length}건</span>
+            <span class="bg-red-50 text-red-600 text-xs font-extrabold px-2.5 py-1 rounded-lg">${esc(item.badge)}</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-card">
+            ${shown.map(p => cardHtml(p, !!p.urgent)).join('')}
+          </div>
+          ${rest > 0 ? `<a href="${moreHref}" class="mt-4 block text-center border border-dashed border-outline-variant text-primary rounded-xl py-3 font-label-md text-label-md hover:bg-surface-container transition-colors">＋ 더보기 (${rest}건 남음)</a>` : ''}
+        </div>`;
     }).join('');
+
+    box.innerHTML = html || `
+      <div class="py-12 text-center text-gray-500 bg-white rounded-2xl">
+        해당 거래 종류의 매물이 없습니다.
+      </div>`;
+  }
+
+  function updateSeeAll() {
+    const btn = document.getElementById('see-all-btn');
+    if (btn) btn.textContent = `전체 매물 ${allProperties.length}건 보러 가기 →`;
   }
 
   function setupMainEvents() {
@@ -360,27 +429,26 @@
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.className = 'oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all');
         tab.className = 'oc-main-cat-btn whitespace-nowrap px-6 py-3 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-all';
-        currentFilterCat = tab.getAttribute('data-cat');
-        renderProperties();
+        currentDeal = tab.getAttribute('data-deal');
+        renderComplexSections();
       });
     });
 
+    /* 위쪽 검색창은 매물찾기 페이지로 넘겨 거기서 찾게 합니다 */
     const searchInput = document.getElementById('main-search-input');
     if (searchInput) {
-      searchInput.addEventListener('input', () => {
-        renderProperties();
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        const q = searchInput.value.trim();
+        location.href = q ? 'listings.html?q=' + encodeURIComponent(q) : 'listings.html';
       });
     }
   }
-
-  window.filterMainProps = function(cat) {
-    currentFilterCat = cat;
-    renderProperties();
-  };
 </script>
 
 
 
 
-<script src="common.js?v=20260908d"></script>
+<script src="common.js?v=20260908e"></script>
 </body></html>

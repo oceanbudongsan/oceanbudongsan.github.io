@@ -408,6 +408,17 @@
   });
 
   /* ---------- 검색창 ---------- */
+  /* 메인 화면의 "더보기"가 listings.html?q=단지명 으로 넘어옵니다.
+     그 값을 검색창에 채워 넣어 그 단지만 보이게 합니다. */
+  (function applyQueryFromUrl() {
+    var m = /[?&]q=([^&#]*)/.exec(location.search);
+    if (!m) return;
+    var q = decodeURIComponent(m[1].replace(/\+/g, ' ')).trim();
+    if (!q) return;
+    state.q = q;
+    if (input) input.value = q;
+  })();
+
   if (input) {
     input.addEventListener('input', function () {
       state.q = input.value;
