@@ -121,6 +121,18 @@
     });
   }
 
+  /* 화면에 그려지기 전에는 폭이 0이라 넘치는지 알 수 없습니다. 다음 프레임까지
+     기다렸다가 맞추고, 웹폰트가 늦게 오면 글자 폭이 달라지므로 폰트가 준비된
+     뒤에도 한 번 더 맞춥니다. */
+  function scheduleFit(root) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { fitSpecLines(root); });
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { fitSpecLines(root); });
+    }
+  }
+
   /* 카드 폭은 창 크기에 따라 달라지므로 창이 바뀌면 다시 맞춥니다. */
   var fitTimer;
   window.addEventListener('resize', function () {
@@ -332,7 +344,7 @@
     }
 
     list.innerHTML = props.map(card).join('');
-    fitSpecLines(list);
+    scheduleFit(list);
     list.classList.add('oc-stagger');
     /* 백그라운드 탭에서도 확실히 보이도록 (requestAnimationFrame 은 숨은 탭에서 멈춥니다) */
     setTimeout(function () { list.classList.add('oc-in'); }, 30);
