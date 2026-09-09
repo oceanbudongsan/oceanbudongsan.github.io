@@ -672,7 +672,7 @@
          </div>`;
     const meta = metaLine(p);
     return `
-      <article class="bg-card rounded-2xl p-padding-container shadow-sm border ${hot ? 'border-2 border-red-400' : 'border-gray-100'} flex flex-col gap-2 hover:shadow-lg transition-all relative overflow-hidden oc-card-interactive">
+      <article class="bg-card rounded-2xl p-padding-container shadow-sm border border-gray-100 flex flex-col gap-2 hover:shadow-lg transition-all relative overflow-hidden oc-card-interactive">
         <a href="${href}" class="relative block w-full h-48 rounded-xl overflow-hidden bg-canvas oc-img-zoom">
           ${pic}
           <div class="absolute top-3 left-3 flex gap-1">
@@ -688,7 +688,7 @@
           <p class="font-body-md text-body-md font-bold text-blue-600 text-[20px]">${esc(p.price)}</p>
           ${meta ? `<p class="text-sm text-gray-500">${esc(meta)}</p>` : ''}
         </div>
-        ${hot && p.features ? `<p class="text-red-600 font-bold text-[15px] leading-snug border-t border-red-100 pt-2">${esc(p.features)}</p>` : ''}
+        ${hot && p.features ? `<p class="text-on-surface font-bold text-[15px] leading-snug border-t border-gray-100 pt-2">${esc(p.features)}</p>` : ''}
         <a href="${href}" class="w-full h-[48px] mt-auto bg-primary text-on-primary font-label-md text-label-md rounded-xl hover:bg-secondary transition-colors flex items-center justify-center shadow-sm">
           자세히 보기
         </a>
