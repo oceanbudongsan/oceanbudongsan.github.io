@@ -151,7 +151,7 @@ window.OceanGEO = (function () {
 
   function articleLd(post) {
     var url   = pageUrl(post);
-    var img   = absUrl(post.imageUrl || firstBodyImage(post.content));
+    var img   = absUrl(post.imageUrl || firstBodyImage(post.content)) || SITE + '/images/og-cover.jpg';
     var pub   = isoDate(post.createdAt, post.date);
     var mod   = isoDate(post.updatedAt || post.createdAt, post.date);
 
@@ -175,7 +175,23 @@ window.OceanGEO = (function () {
       '    "@type": "RealEstateAgent",',
       '    "@id": "' + SITE + '/#organization",',
       '    "name": ' + jsonStr(INFO.company) + ',',
-      '    "telephone": "+82-33-652-7988"',
+      '    "url": "' + SITE + '/",',
+      '    "logo": {',
+      '      "@type": "ImageObject",',
+      '      "url": "' + SITE + '/images/logo-512.png",',
+      '      "width": 512,',
+      '      "height": 512',
+      '    },',
+      '    "telephone": "+82-33-652-7988",',
+      '    "address": {',
+      '      "@type": "PostalAddress",',
+      '      "streetAddress": "경강로 2334 103호",',
+      '      "addressLocality": "강릉시",',
+      '      "addressRegion": "강원특별자치도",',
+      '      "addressCountry": "KR"',
+      '    },',
+      '    "areaServed": { "@type": "City", "name": "강릉시" },',
+      '    "sameAs": ["https://map.naver.com/p/entry/place/2081529012"]',
       '  }',
       '}'
     );
@@ -257,7 +273,7 @@ window.OceanGEO = (function () {
     var category = post.category || '뉴스';
     var isFaq    = category === 'FAQ' || category === '자주묻는질문';
     var pub      = isoDate(post.createdAt, post.date);
-    var img      = absUrl(cover || firstBodyImage(post.content));
+    var img      = absUrl(cover || firstBodyImage(post.content)) || SITE + '/images/og-cover.jpg';
 
     var coverHtml = (cover && !inBody)
       ? '<figure class="w-full rounded-2xl overflow-hidden mb-8 bg-gray-100">' +
@@ -272,6 +288,8 @@ window.OceanGEO = (function () {
       '<meta charset="utf-8">',
       '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
       '<base href="../">',
+      '<link rel="icon" href="favicon.ico" sizes="any">',
+      '<link rel="apple-touch-icon" href="images/apple-touch-icon.png">',
       '<title>오션부동산 - ' + esc(title) + '</title>',
       '<meta name="description" content="' + esc(desc) + '">',
       '<link rel="canonical" href="' + esc(url) + '">',
@@ -281,7 +299,9 @@ window.OceanGEO = (function () {
       '<meta property="og:description" content="' + esc(desc) + '">',
       '<meta property="og:url" content="' + esc(url) + '">',
       '<meta property="og:locale" content="ko_KR">',
-      img ? '<meta property="og:image" content="' + esc(img) + '">' : '',
+      '<meta property="og:image" content="' + esc(img) + '">',
+      '<meta name="twitter:card" content="summary_large_image">',
+      '<meta name="twitter:image" content="' + esc(img) + '">',
       '<meta property="article:published_time" content="' + esc(pub) + '">',
       '<meta property="article:section" content="' + esc(category) + '">',
       '',

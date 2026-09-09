@@ -1,63 +1,414 @@
 <!DOCTYPE html><html lang="ko" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <title>오션부동산 - 강릉 아파트·오션뷰·분양권 전문</title>
 <!-- GEO:jsonld-business -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  "@id": "https://oceanbudongsan.github.io/#organization",
-  "name": "강릉 오션 부동산",
-  "url": "https://oceanbudongsan.github.io/",
-  "telephone": "+82-33-652-7988",
-  "founder": { "@type": "Person", "name": "전효정" },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "경강로 2334 1층",
-    "addressLocality": "강릉시",
-    "addressRegion": "강원특별자치도",
-    "addressCountry": "KR"
-  },
-  "areaServed": [
-    { "@type": "City", "name": "강릉시" },
-    { "@type": "Place", "name": "경포" },
-    { "@type": "Place", "name": "안목" },
-    { "@type": "Place", "name": "사천" },
-    { "@type": "Place", "name": "주문진" }
-  ],
-  "knowsAbout": [
-    "강릉 아파트 매매",
-    "강릉 오션뷰 매물",
-    "생활형숙박시설",
-    "분양권 거래",
-    "강릉 상가 임대",
-    "강릉 토지"
-  ],
-  "identifier": {
-    "@type": "PropertyValue",
-    "name": "중개사무소 등록번호",
-    "value": "51150-2025-00021"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+82-10-9254-7988",
-    "contactType": "sales",
-    "areaServed": "KR",
-    "availableLanguage": "Korean"
-  }
+  "@graph": [
+    {
+      "@type": "RealEstateAgent",
+      "@id": "https://oceanbudongsan.github.io/#organization",
+      "name": "강릉 오션 부동산",
+      "alternateName": [
+        "강릉오션공인중개사사무소",
+        "오션부동산",
+        "강릉 오션부동산"
+      ],
+      "description": "강원특별자치도 강릉시 경강로에 있는 공인중개사무소입니다. 강릉 아파트 매매·전월세, 오션뷰 주택, 생활형숙박시설, 분양권, 상가, 토지를 중개합니다.",
+      "url": "https://oceanbudongsan.github.io/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://oceanbudongsan.github.io/images/logo-512.png",
+        "width": 512,
+        "height": 512,
+        "caption": "강릉 오션 부동산 로고"
+      },
+      "image": "https://oceanbudongsan.github.io/images/og-cover.jpg",
+      "telephone": "+82-33-652-7988",
+      "founder": {
+        "@type": "Person",
+        "name": "전효정"
+      },
+      "employee": {
+        "@type": "Person",
+        "name": "전효정",
+        "jobTitle": "공인중개사"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "경강로 2334 103호",
+        "addressLocality": "강릉시",
+        "addressRegion": "강원특별자치도",
+        "addressCountry": "KR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 37.768646,
+        "longitude": 128.9163297
+      },
+      "hasMap": "https://map.naver.com/p/entry/place/2081529012",
+      "sameAs": [
+        "https://map.naver.com/p/entry/place/2081529012",
+        "https://naver.me/Fto5bvaO"
+      ],
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "강릉시"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "주문진읍"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "연곡면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "사천면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "성산면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "왕산면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "구정면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "강동면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "옥계면"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "홍제동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "중앙동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "옥천동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "교1동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "교2동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "포남1동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "포남2동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "초당동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "송정동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "강남동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "성덕동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "경포동"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "내곡동"
+        },
+        {
+          "@type": "Place",
+          "name": "경포"
+        },
+        {
+          "@type": "Place",
+          "name": "안목"
+        },
+        {
+          "@type": "Place",
+          "name": "강문"
+        },
+        {
+          "@type": "Place",
+          "name": "사천진"
+        },
+        {
+          "@type": "Place",
+          "name": "정동진"
+        },
+        {
+          "@type": "Place",
+          "name": "남항진"
+        },
+        {
+          "@type": "Place",
+          "name": "심곡"
+        },
+        {
+          "@type": "Place",
+          "name": "유천지구"
+        },
+        {
+          "@type": "Place",
+          "name": "솔올지구"
+        },
+        {
+          "@type": "Place",
+          "name": "교동택지지구"
+        },
+        {
+          "@type": "Place",
+          "name": "입암동"
+        },
+        {
+          "@type": "Place",
+          "name": "노암동"
+        },
+        {
+          "@type": "Place",
+          "name": "두산동"
+        },
+        {
+          "@type": "Place",
+          "name": "지변동"
+        },
+        {
+          "@type": "Place",
+          "name": "저동"
+        },
+        {
+          "@type": "Place",
+          "name": "안현동"
+        },
+        {
+          "@type": "Place",
+          "name": "회산동"
+        },
+        {
+          "@type": "Place",
+          "name": "유산동"
+        },
+        {
+          "@type": "Place",
+          "name": "월호평동"
+        },
+        {
+          "@type": "Place",
+          "name": "담산동"
+        }
+      ],
+      "knowsAbout": [
+        "강릉 아파트 매매",
+        "강릉 아파트 전세",
+        "강릉 아파트 월세",
+        "강릉 오션뷰 아파트",
+        "경포 오션뷰 매물",
+        "안목해변 상가",
+        "주문진 아파트",
+        "정동진 오션뷰 매물",
+        "사천진 생활형숙박시설",
+        "연곡 전원주택",
+        "강릉 생활형숙박시설",
+        "강릉 분양권 전매",
+        "강릉 신축 분양",
+        "강릉 상가 임대",
+        "강릉 사무실 임대",
+        "강릉 토지 매매",
+        "강릉 전원주택",
+        "강릉 유천지구 아파트",
+        "강릉 솔올지구 아파트",
+        "강릉 교동택지 아파트",
+        "강릉 포남동 아파트",
+        "강릉 옥계 토지",
+        "강릉 부동산 시세",
+        "강릉 부동산 시황"
+      ],
+      "knowsLanguage": "ko-KR",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "중개 서비스",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "아파트 매매 중개",
+              "areaServed": {
+                "@type": "City",
+                "name": "강릉시"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "아파트 전세·월세 중개",
+              "areaServed": {
+                "@type": "City",
+                "name": "강릉시"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "분양권 전매 중개",
+              "areaServed": {
+                "@type": "City",
+                "name": "강릉시"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "생활형숙박시설 중개",
+              "areaServed": {
+                "@type": "City",
+                "name": "강릉시"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "상가·사무실 임대 중개",
+              "areaServed": {
+                "@type": "City",
+                "name": "강릉시"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "토지·전원주택 중개",
+              "areaServed": {
+                "@type": "City",
+                "name": "강릉시"
+              }
+            }
+          }
+        ]
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Sunday",
+          "opens": "00:00",
+          "closes": "00:00"
+        }
+      ],
+      "identifier": {
+        "@type": "PropertyValue",
+        "name": "중개사무소 등록번호",
+        "value": "51150-2025-00021"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+82-10-9254-7988",
+          "contactType": "sales",
+          "areaServed": "KR",
+          "availableLanguage": "Korean"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+82-33-652-7988",
+          "contactType": "customer service",
+          "areaServed": "KR",
+          "availableLanguage": "Korean"
+        }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://oceanbudongsan.github.io/#website",
+      "url": "https://oceanbudongsan.github.io/",
+      "name": "강릉 오션 부동산",
+      "inLanguage": "ko-KR",
+      "publisher": {
+        "@id": "https://oceanbudongsan.github.io/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://oceanbudongsan.github.io/index.html#webpage",
+      "url": "https://oceanbudongsan.github.io/index.html",
+      "name": "강릉 오션 부동산 - 강릉 아파트·오션뷰·분양권 전문",
+      "isPartOf": {
+        "@id": "https://oceanbudongsan.github.io/#website"
+      },
+      "about": {
+        "@id": "https://oceanbudongsan.github.io/#organization"
+      },
+      "inLanguage": "ko-KR"
+    }
+  ]
 }
 </script>
 
 <!-- GEO:meta -->
-<meta name="description" content="강릉 아파트, 오션뷰 주택, 생활형숙박시설, 분양권 매물을 강릉 오션 부동산이 직접 확인하고 안내합니다. 강원도 강릉시 경강로 2334 1층, 상담 010-9254-7988.">
+<meta name="description" content="강릉 아파트, 오션뷰 주택, 생활형숙박시설, 분양권 매물을 강릉 오션 부동산이 직접 확인하고 안내합니다. 강원특별자치도 강릉시 경강로 2334 103호, 상담 010-9254-7988.">
 <link rel="canonical" href="https://oceanbudongsan.github.io/index.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="강릉 오션 부동산">
 <meta property="og:title" content="강릉 오션 부동산 - 강릉 아파트·오션뷰·분양권 전문">
-<meta property="og:description" content="강릉 아파트, 오션뷰 주택, 생활형숙박시설, 분양권 매물을 강릉 오션 부동산이 직접 확인하고 안내합니다. 강원도 강릉시 경강로 2334 1층, 상담 010-9254-7988.">
+<meta property="og:description" content="강릉 아파트, 오션뷰 주택, 생활형숙박시설, 분양권 매물을 강릉 오션 부동산이 직접 확인하고 안내합니다. 강원특별자치도 강릉시 경강로 2334 103호, 상담 010-9254-7988.">
 <meta property="og:url" content="https://oceanbudongsan.github.io/index.html">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://oceanbudongsan.github.io/images/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="강릉 오션 부동산 로고">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://oceanbudongsan.github.io/images/og-cover.jpg">
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
@@ -421,6 +772,41 @@
   function updateSeeAll() {
     const btn = document.getElementById('see-all-btn');
     if (btn) btn.textContent = `전체 매물 ${allProperties.length}건 보러 가기 →`;
+  }
+
+  /* 메인 아래쪽 '최신 부동산소식' 칸을 채웁니다.
+     글이 없으면 칸 자체를 감춥니다. 제목을 누르면 글마다 따로 만들어 둔
+     news/... 페이지로 갑니다 (AI·검색엔진이 읽을 수 있는 진짜 주소입니다). */
+  function renderNewsPreview(posts) {
+    const box = document.getElementById('index-news-preview');
+    if (!box) return;
+
+    const section = box.closest('section');
+    const list = Array.isArray(posts) ? posts : [];
+
+    if (!list.length) {
+      if (section) section.hidden = true;
+      return;
+    }
+    if (section) section.hidden = false;
+
+    box.innerHTML = list.map(post => {
+      let badge = 'bg-sub-blue-bg text-secondary';
+      if (post.category === '공지')     badge = 'bg-amber-50 text-amber-700 border border-amber-200';
+      if (post.category === '지역정보') badge = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+      if (post.category === 'FAQ')      badge = 'bg-violet-50 text-violet-700 border border-violet-200';
+
+      const href = post.pagePath ? esc(post.pagePath) : 'news.html';
+
+      return `
+        <a href="${href}" class="group flex items-center gap-3 py-2.5 px-3 -mx-3 rounded-xl hover:bg-surface-container transition-colors">
+          <span class="inline-block px-2 py-0.5 font-label-sm text-label-sm rounded-lg flex-shrink-0 ${badge}">${esc(post.category || '뉴스')}</span>
+          <span class="flex-grow min-w-0 font-body-md text-body-md text-on-surface truncate group-hover:text-primary transition-colors">${esc(post.title || '')}</span>
+          <span class="font-label-sm text-label-sm text-gray-400 flex-shrink-0 hidden sm:inline">${esc(post.date || '')}</span>
+          <span class="material-symbols-outlined text-sm text-gray-300 group-hover:text-primary transition-colors flex-shrink-0">chevron_right</span>
+        </a>
+      `;
+    }).join('');
   }
 
   function setupMainEvents() {

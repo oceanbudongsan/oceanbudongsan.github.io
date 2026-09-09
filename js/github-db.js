@@ -377,7 +377,7 @@
         featured: !!propData.featured,
         price: propData.price || '가격 문의',
         specs: propData.specs || '',
-        location: propData.location || '강원도 강릉시',
+        location: propData.location || '강원특별자치도 강릉시',
         status: propData.status || '노출중',
         badge: propData.badge || propData.type || '매매',
         badgeColor: propData.urgent ? 'danger' : propData.type === '전세' ? 'info' : 'primary',

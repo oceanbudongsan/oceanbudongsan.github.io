@@ -19,5 +19,14 @@ desktop.ini
 # ── 쓰지 않는 사진 ─────────────────────────────────────
 gz6mpqCCbf6sv8_*.jpg
 
+# ── 로고 원본 (4267x4268, 1.8MB) ───────────────────────
+# 웹에서는 이 원본 대신 아래 파일들을 씁니다.
+#   images/logo-512.png         · schema.org 로고
+#   images/og-cover.jpg         · 카톡·페북 공유 썸네일
+#   favicon.ico                 · 브라우저 탭
+#   images/apple-touch-icon.png · 아이폰 홈화면
+# 원본은 내 컴퓨터에만 두고, 나중에 크기를 다시 뽑을 때 씁니다.
+images/logo.png
+
 # ── 올리기 도우미 (내 컴퓨터에서만 씀) ──────────────────
 올리기.bat
