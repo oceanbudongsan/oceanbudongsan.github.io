@@ -22,11 +22,10 @@
   var PASS_HASH = '93ad2d6cdafbe929d0423af6c12f1aece4d3d9862357b1aa9eee109d5a893237';
   var KEY       = 'oc-admin-auth';
 
-  /* 메뉴에 "관리자" 링크를 보여줄지만 정하는 표시입니다.
-     로그인 자체는 위의 KEY(sessionStorage, 탭 하나에서만 유지)로 판단하고,
-     이 표시는 브라우저에 남겨 다른 탭에서도 링크가 보이게 합니다.
-     이 표시가 있어도 관리자 페이지는 여전히 비밀번호를 묻습니다. */
+  /* 예전 버전이 브라우저에 남겨둔 "관리자 링크 표시"입니다.
+     지금은 쓰지 않으므로 발견하면 지웁니다. (이게 남아 있으면 홈 화면에 관리자가 보였음) */
   var LINK_KEY = 'oc-admin-seen';
+  try { localStorage.removeItem(LINK_KEY); } catch (e) {}
 
   /* 비밀번호 해시 만들기 (콘솔에서 사용) */
   window.ocMakeHash = function (pw) {
@@ -117,7 +116,6 @@
           /* 저장해두면 다음에 안 물어봅니다. 저장이 막힌 환경이어도
              아래에서 화면을 바로 열어주므로 로그인은 정상 동작합니다.  */
           try { sessionStorage.setItem(KEY, 'ok'); } catch (e2) {}
-          try { localStorage.setItem(LINK_KEY, 'ok'); } catch (e3) {}
 
           if (hide.parentNode) hide.parentNode.removeChild(hide);
           if (gate.parentNode) gate.parentNode.removeChild(gate);

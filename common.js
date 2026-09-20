@@ -38,19 +38,12 @@
   ];
   /* --------------------------------------------------- */
 
-  /* 관리자로 로그인한 동안에만 메뉴에 "관리자"를 끼워 넣습니다.
-     로그인 뒤 매물찾기 같은 다른 화면으로 넘어가면 관리자 페이지로 돌아올
-     길이 없었습니다. 로그인 여부는 admin-auth.js 가 남기는 값으로 봅니다
-     (브라우저 탭을 닫으면 풀립니다). */
-  var ADMIN_KEY = 'oc-admin-auth';   /* 로그인 (탭 하나에서만 유지) */
-  var ADMIN_LINK_KEY = 'oc-admin-seen';  /* 링크를 보여줄지 (브라우저에 남음) */
-
+  /* "관리자" 메뉴는 admin.html 에서 로그인한 탭에서만 보입니다.
+     로그인한 채 매물찾기 등 다른 메뉴로 이동해도 계속 보이고,
+     탭을 닫거나 로그아웃하면 사라집니다. 일반 방문자에게는 보이지 않습니다. */
   function isAdmin() {
     try {
-      if (sessionStorage.getItem(ADMIN_KEY) === 'ok') return true;
-    } catch (e) { /* 저장소를 못 쓰는 환경 */ }
-    try {
-      return localStorage.getItem(ADMIN_LINK_KEY) === 'ok';
+      return sessionStorage.getItem('oc-admin-auth') === 'ok';
     } catch (e) {
       return false;
     }
