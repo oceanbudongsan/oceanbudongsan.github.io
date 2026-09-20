@@ -20,7 +20,7 @@
     ],
     "videoUrl": "",
     "urgent": true,
-    "featured": true
+    "featured": false
   },
   {
     "id": "pos-10671293",
@@ -459,7 +459,7 @@
   {
     "id": "pos-10704251",
     "name": "토지 (강릉시 송정동)",
-    "category": "토지",
+    "category": "토지/임야",
     "type": "매매",
     "price": "3억 3,000만원",
     "specs": "대지 1756㎡(531.19평)",
