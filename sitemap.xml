@@ -2,33 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://oceanbudongsan.github.io/index.html</loc>
-    <lastmod>2026-09-20</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://oceanbudongsan.github.io/listings.html</loc>
-    <lastmod>2026-09-20</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://oceanbudongsan.github.io/news.html</loc>
-    <lastmod>2026-09-20</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://oceanbudongsan.github.io/property-submit.html</loc>
-    <lastmod>2026-09-20</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://oceanbudongsan.github.io/contact.html</loc>
-    <lastmod>2026-09-20</lastmod>
+    <lastmod>2026-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://oceanbudongsan.github.io/news/2026-10-06-2026%EB%85%84-%EC%B2%AD%EB%85%84%EC%9B%94%EC%84%B8%EC%A7%80%EC%9C%88-%EB%82%B4-%EC%A1%B0%EA%B1%B4%EC%9D%80.html</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://oceanbudongsan.github.io/news/2026-09-21-%EC%83%9D%EC%95%A0%EC%B5%9C%EC%B4%88-%EC%A3%BC%EB%8B%B4%EB%8C%80-%EB%B6%88%EA%B0%80%ED%94%BC%ED%95%9C-%EC%82%AC%EC%9C%A0-%EC%97%90%EB%8F%84-%EB%AC%B8-%EC%97%B4%EB%A6%BD%EB%8B%88%EB%8B%A4.html</loc>
